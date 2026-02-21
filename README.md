@@ -217,8 +217,8 @@ http://localhost:5000
 *Namrata & Riya Malik*  
 B.Tech Computer Science AI/ML 
 
-🔗 GitHub: https://github.com/riyamalik05 
 🔗 GitHub: https://github.com/namsrkive
+🔗 GitHub: https://github.com/riyamalik05 
 
 ---
 
@@ -233,6 +233,7 @@ This project is licensed under the MIT License.
 ⭐ If this project inspires you, consider giving it a star! ⭐
 
 </div>
+
 
 
 
