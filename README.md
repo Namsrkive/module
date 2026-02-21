@@ -143,8 +143,8 @@ proctored-placement-portal
 ### 1️⃣ Clone Repository
 
 ⁠ bash
-git clone https://github.com/YOUR_USERNAME/proctored-placement-portal.git
-cd proctored-placement-portal
+git clone https://github.com/Namsrkive/module.git
+cd module
  ⁠
 
 ---
@@ -233,4 +233,5 @@ This project is licensed under the MIT License.
 ⭐ If this project inspires you, consider giving it a star! ⭐
 
 </div>
+
 
