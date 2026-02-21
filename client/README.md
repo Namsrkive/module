@@ -1,70 +1,234 @@
-# Getting Started with Create React App
+<div align="center">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🚀 Proctored Placement Readiness Assessment Portal
 
-## Available Scripts
+### 🧠 AI-Powered Recruitment Simulation Platform  
+### 🎯 Bridging the Gap Between Academia & Industry Hiring
 
-In the project directory, you can run:
+![React](https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react)
+![Node](https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge&logo=node.js)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen?style=for-the-badge&logo=mongodb)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange?style=for-the-badge)
+![AI Proctoring](https://img.shields.io/badge/AI-Proctoring-red?style=for-the-badge)
 
-### `npm start`
+</div>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📌 Overview
 
-### `npm test`
+The *Proctored Placement Readiness Assessment Portal* is a full-stack AI-enabled web platform designed to simulate real company-level recruitment exams under controlled, proctored environments.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+It provides:
 
-### `npm run build`
+•⁠  ⁠🎯 Company-specific recruitment simulation  
+•⁠  ⁠🧠 Multi-domain skill evaluation  
+•⁠  ⁠📊 Performance analytics & readiness scoring  
+•⁠  ⁠🎥 AI-based proctoring for integrity  
+•⁠  ⁠🏫 Institutional monitoring dashboards  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This system transforms fragmented preparation into a structured, measurable, and industry-aligned readiness framework.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ❗ Problem Statement
 
-### `npm run eject`
+In today’s competitive job market, students struggle with:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+•⁠  ⁠Fragmented preparation platforms
+•⁠  ⁠Lack of realistic exam simulation
+•⁠  ⁠No company-specific patterns
+•⁠  ⁠Absence of proctoring during mock tests
+•⁠  ⁠Limited analytics & readiness tracking
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This project solves these challenges by providing a *centralized, intelligent, and proctored assessment ecosystem.*
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🧠 Core System Modules
 
-## Learn More
+### 👨‍🎓 Student Interface
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+•⁠  ⁠Secure Authentication (JWT)
+•⁠  ⁠Module-wise Testing:
+  - Aptitude & Reasoning
+  - Data Structures & Algorithms
+  - DBMS & SQL
+  - Programming & Core CS
+•⁠  ⁠Company-Specific Simulations:
+  - TCS
+  - IBM
+  - Accenture
+  - Wipro
+  - Deloitte
+•⁠  ⁠AI Camera Monitoring
+•⁠  ⁠Tab-switch detection
+•⁠  ⁠Automatic scoring engine
+•⁠  ⁠Topic-wise analytics dashboard
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+### 🛠 Admin Interface
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+•⁠  ⁠Question Bank Management
+•⁠  ⁠Company Pattern Configuration
+•⁠  ⁠Test Scheduling Engine
+•⁠  ⁠Proctoring Violation Logs
+•⁠  ⁠Institutional Readiness Analytics
+•⁠  ⁠Cohort-level performance tracking
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🏗 System Architecture
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Frontend (React)
+        ↓
+REST API Layer (Express)
+        ↓
+Authentication (JWT)
+        ↓
+MongoDB Database
+        ↓
+AI Proctoring Engine (WebRTC + TensorFlow.js)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🛠 Technology Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 🔹 Frontend
+•⁠  ⁠React.js
+•⁠  ⁠React Router DOM
+•⁠  ⁠CSS3
+•⁠  ⁠Chart.js (Analytics Visualization)
 
-### `npm run build` fails to minify
+### 🔹 Backend
+•⁠  ⁠Node.js
+•⁠  ⁠Express.js
+•⁠  ⁠RESTful APIs
+•⁠  ⁠JWT Authentication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 🔹 Database
+•⁠  ⁠MongoDB Atlas
+
+### 🔹 AI & Monitoring
+•⁠  ⁠WebRTC (Live Camera Access)
+•⁠  ⁠TensorFlow.js / Face Detection
+•⁠  ⁠Tab Visibility API
+
+### 🔹 Deployment
+•⁠  ⁠Vercel (Frontend)
+•⁠  ⁠Render (Backend)
+•⁠  ⁠MongoDB Atlas (Cloud DB)
+
+---
+
+## 📂 Project Structure
+
+
+proctored-placement-portal
+│
+├── client        # React Frontend
+│
+├── server        # Node.js Backend
+│
+└── README.md
+
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone Repository
+
+⁠ bash
+git clone https://github.com/YOUR_USERNAME/proctored-placement-portal.git
+cd proctored-placement-portal
+ ⁠
+
+---
+
+### 2️⃣ Run Frontend
+
+⁠ bash
+cd client
+npm install
+npm start
+ ⁠
+
+Frontend runs on:
+
+
+http://localhost:3000
+
+
+---
+
+### 3️⃣ Run Backend
+
+⁠ bash
+cd server
+npm install
+npm start
+ ⁠
+
+Backend runs on:
+
+
+http://localhost:5000
+
+
+---
+
+## 📊 Key Functional Highlights
+
+✔ Realistic company-level exam patterns  
+✔ AI-powered behavioral monitoring  
+✔ Performance-based readiness scoring  
+✔ Modular and scalable architecture  
+✔ Recruiter-aligned assessment logic  
+
+---
+
+## 🚀 Future Enhancements
+
+•⁠  ⁠Adaptive AI difficulty adjustment
+•⁠  ⁠Real-time anomaly detection
+•⁠  ⁠Resume-to-skill gap prediction
+•⁠  ⁠Company-fit recommendation engine
+•⁠  ⁠Multi-institution SaaS model
+•⁠  ⁠Cloud video log storage
+
+---
+
+## 📈 Impact & Expected Outcomes
+
+•⁠  ⁠Improved student placement rates
+•⁠  ⁠Reduced malpractice in mock tests
+•⁠  ⁠Enhanced institutional performance metrics
+•⁠  ⁠Real-world simulation exposure
+•⁠  ⁠Data-driven readiness assessment
+
+---
+
+## 👨‍💻 Author
+
+*Namrata & Riya Malik*  
+B.Tech Computer Science AI/ML 
+
+🔗 GitHub: https://github.com/YOUR_USERNAME  
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+
+⭐ If this project inspires you, consider giving it a star! ⭐
+
+</div>
