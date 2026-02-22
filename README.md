@@ -142,43 +142,30 @@ proctored-placement-portal
 
 ### 1️⃣ Clone Repository
 
-⁠ bash
-git clone https://github.com/Namsrkive/module.git
-cd module
+•⁠  git clone https://github.com/Namsrkive/module.git
+•⁠  cd module
  ⁠
 
 ---
 
 ### 2️⃣ Run Frontend
 
-⁠ bash
-cd client
-npm install
-npm start
+•⁠  cd client
+•⁠  npm install
+•⁠  npm start
  ⁠
 
-Frontend runs on:
-
-
-http://localhost:3000
-
-
+Frontend runs on: http://localhost:3000
 ---
 
 ### 3️⃣ Run Backend
 
-⁠ bash
-cd server
-npm install
-npm start
+•⁠  cd server
+•⁠  npm install
+•⁠  npm start
  ⁠
 
-Backend runs on:
-
-
-http://localhost:5000
-
-
+Backend runs on: http://localhost:5000
 ---
 
 ## 📊 Key Functional Highlights
@@ -233,6 +220,7 @@ This project is licensed under the MIT License.
 ⭐ If this project inspires you, consider giving it a star! ⭐
 
 </div>
+
 
 
 
