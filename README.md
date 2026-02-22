@@ -123,13 +123,11 @@ AI Proctoring Engine (WebRTC + TensorFlow.js)
 
 ## 📂 Project Structure
 
-proctored-placement-portal
-│
-├── client        # React Frontend
-│
-├── server        # Node.js Backend
-│
-└── README.md
+proctored-placement-portal  
+│  
+├── client        # React Frontend  
+├── server        # Node.js Backend  
+└── README.md 
 ---
 
 ## ⚙️ Setup & Installation
@@ -211,3 +209,4 @@ This project is licensed under the MIT License.
 ⭐ If this project inspires you, consider giving it a star! ⭐
 
 </div>
+
