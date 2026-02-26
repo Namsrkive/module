@@ -1,34 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
- 
-function AnimatedRoutes() {
-  const location = useLocation();
- 
-  return (
-<AnimatePresence mode="wait">
-<motion.div
-        key={location.pathname}
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -40 }}
-        transition={{ duration: 0.4 }}
->
-<Routes location={location}>
-<Route path="/" element={<Login />} />
-<Route path="/dashboard" element={<Dashboard />} />
-</Routes>
-</motion.div>
-</AnimatePresence>
-  );
-}
+import Home from "./pages/Home";
+import StudentLogin from "./pages/StudentLogin";
+import AdminLogin from "./pages/AdminLogin";
+import StudentDashboard from "./pages/StudentDashboard";
  
 function App() {
   return (
 <Router>
-<AnimatedRoutes />
+<Routes>
+<Route path="/" element={<Home />} />
+<Route path="/login/student" element={<StudentLogin />} />
+<Route path="/login/admin" element={<AdminLogin />} />
+<Route path="/dashboard/student" element={<StudentDashboard />} />
+</Routes>
 </Router>
   );
 }
