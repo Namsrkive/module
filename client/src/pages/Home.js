@@ -1,99 +1,165 @@
 import { useNavigate } from "react-router-dom";
- 
+import { motion } from "framer-motion";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer
+} from "recharts";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 60 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" }
+  }
+};
+
+const staggerContainer = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.2 }
+  }
+};
+
+const data = [
+  { name: "Week 1", score: 52 },
+  { name: "Week 2", score: 60 },
+  { name: "Week 3", score: 70 },
+  { name: "Week 4", score: 78 }
+];
+
 function Home() {
   const navigate = useNavigate();
- 
+
   return (
-<div className="container">
- 
+    <div className="home-wrapper">
+
+      {/* FLOATING SHAPES */}
+      <div className="floating-shape shape-1" />
+      <div className="floating-shape shape-2" />
+
       {/* HERO */}
-<section className="hero-section">
-<h1>
-          Proctored Placement <span className="highlight">Readiness Portal</span>
-</h1>
-<p>
-          Simulating real company recruitment exams with AI-based proctoring
-          and advanced performance analytics.
-</p>
- 
-        <div className="hero-buttons">
-<button
-            className="primary-btn"
-            onClick={() => navigate("/login/student")}
->
-            Student Login
-</button>
- 
-          <button
-            className="secondary-btn"
-            onClick={() => navigate("/login/admin")}
->
-            Admin Login
-</button>
-</div>
-</section>
- 
+      <section className="hero-section">
+        <div className="hero-layout">
+
+          <div className="hero-left">
+            <motion.h1
+              className="animated-gradient-text"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Proctored Placement Readiness Portal
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              Real company simulations. AI proctoring. Data-driven growth.
+            </motion.p>
+
+            <motion.div
+              className="hero-buttons"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <button
+                className="primary-btn large"
+                onClick={() => navigate("/login/student")}
+              >
+                Student Login
+              </button>
+
+              <button
+                className="secondary-btn"
+                onClick={() => navigate("/login/admin")}
+              >
+                Admin Login
+              </button>
+            </motion.div>
+          </div>
+
+          <div className="hero-right">
+            <div className="mock-dashboard glow-card">
+              <h4>Placement Analytics</h4>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={data}>
+                  <XAxis dataKey="name" stroke="var(--subtext)" />
+                  <YAxis stroke="var(--subtext)" />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="score"
+                    stroke="var(--primary)"
+                    strokeWidth={3}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* MODULES */}
-<section className="section">
-<h2>The Four Pillars</h2>
- 
-        <div className="grid">
-<div className="card">
-<h3>Aptitude & Reasoning</h3>
-<p>Quantitative, Logical & Verbal evaluation.</p>
-</div>
- 
-          <div className="card">
-<h3>DSA & Algorithms</h3>
-<p>Problem solving & optimization techniques.</p>
-</div>
- 
-          <div className="card">
-<h3>DBMS & SQL</h3>
-<p>Execution-based database evaluation.</p>
-</div>
- 
-          <div className="card">
-<h3>Programming & Core CS</h3>
-<p>OOP, OS, CN & coding assessment.</p>
-</div>
-</div>
-</section>
- 
-      {/* COMPANIES */}
-<section className="section">
-<h2>Company-Specific Simulations</h2>
- 
-        <div className="company-tags">
-<div>TCS</div>
-<div>IBM</div>
-<div>Accenture</div>
-<div>Wipro</div>
-<div>Deloitte</div>
-</div>
-</section>
- 
+      <motion.section
+        className="section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
+        <div className="section-header">
+          <h2>The Four Pillars of Readiness</h2>
+        </div>
+
+        <motion.div
+          className="modules-grid"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+        >
+          {[
+            "Aptitude & Reasoning",
+            "DSA & Algorithms",
+            "DBMS & SQL",
+            "Programming & Core CS"
+          ].map((title) => (
+            <motion.div
+              key={title}
+              variants={fadeUp}
+              className="module-card glow-card tilt-card"
+            >
+              <h3>{title}</h3>
+              <p>Advanced simulation-driven evaluation.</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.section>
+
       {/* CTA */}
-<section className="cta-section">
-<h2>Start Your Placement Readiness Journey</h2>
- 
+      <motion.section
+        className="cta-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+      >
+        <h2>Start Your Placement Journey</h2>
         <button
-          className="primary-btn"
+          className="primary-btn large"
           onClick={() => navigate("/login/student")}
->
+        >
           Begin Assessment
-</button>
-</section>
- 
-      <footer className="footer">
-<div>© 2026 Proctored Placement Portal</div>
-<div>
-          About | Contact
-</div>
-</footer>
- 
+        </button>
+      </motion.section>
     </div>
   );
 }
- 
+
 export default Home;
