@@ -6,29 +6,18 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
   BarChart,
   Bar
 } from "recharts";
+import { useEffect } from "react";
+import CountUp from "react-countup";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 
 const trendData = [
   { week: "W1", score: 55 },
   { week: "W2", score: 62 },
   { week: "W3", score: 70 },
   { week: "W4", score: 78 }
-];
-
-const radarData = [
-  { subject: "Aptitude", value: 82 },
-  { subject: "DSA", value: 74 },
-  { subject: "DBMS", value: 69 },
-  { subject: "Core CS", value: 80 }
 ];
 
 const companyData = [
@@ -39,101 +28,122 @@ const companyData = [
   { name: "Deloitte", score: 72 }
 ];
 
-function StudentDashboard() {
+const skills = [
+  { name: "Aptitude", value: 82 },
+  { name: "DSA", value: 74 },
+  { name: "DBMS", value: 69 },
+  { name: "Core CS", value: 80 }
+];
 
-  const [loading, setLoading] = useState(true);
+function StudentDashboard() {
 
   useEffect(() => {
     document.body.classList.add("dashboard-theme");
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => {
-      document.body.classList.remove("dashboard-theme");
-      clearTimeout(timer);
-    };
+    return () => document.body.classList.remove("dashboard-theme");
   }, []);
-
-  if (loading) {
-    return (
-      <DashboardLayout>
-        <div className="loading-skeleton">
-          Loading Placement Intelligence...
-        </div>
-      </DashboardLayout>
-    );
-  }
 
   return (
     <DashboardLayout>
 
-      {/* HEADER */}
-      <div className="dashboard-header">
+      {/* ================= ENTERPRISE TOP BAR ================= */}
+      <div className="enterprise-topbar">
+
         <div>
-          <h2>Placement Intelligence Dashboard</h2>
-          <p>Track. Analyze. Improve. Dominate your placement journey.</p>
+          <h2>Placement Intelligence</h2>
+          <span>Realtime analytics & readiness tracking</span>
         </div>
 
-        <motion.div
-          className="stat-counter"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-        >
-          <h1>78%</h1>
-          <span>Overall Readiness</span>
-        </motion.div>
+        <div className="enterprise-actions">
+          <div className="bell">🔔</div>
+          <div className="avatar">DS</div>
+          <button className="enterprise-cta">
+            + Start Test
+          </button>
+        </div>
+
       </div>
 
-      {/* GRID */}
-      <div className="extreme-grid">
+      {/* ================= KPI STRIP ================= */}
+      <div className="enterprise-kpi-row">
 
-        <div className="dashboard-card">
-          <h3>Performance Trend</h3>
-          <ResponsiveContainer width="100%" height={250}>
+        <div className="enterprise-kpi">
+          <span>Readiness</span>
+          <h1>
+            <CountUp end={78} duration={2} />%
+          </h1>
+        </div>
+
+        <div className="enterprise-kpi">
+          <span>Tests</span>
+          <h1>24</h1>
+        </div>
+
+        <div className="enterprise-kpi">
+          <span>Average</span>
+          <h1>76%</h1>
+        </div>
+
+        <div className="enterprise-kpi">
+          <span>Rank</span>
+          <h1>#12</h1>
+        </div>
+
+      </div>
+
+      {/* ================= MAIN GRID ================= */}
+      <div className="enterprise-grid">
+
+        {/* Trend */}
+        <div className="enterprise-card">
+          <h3>Performance Growth</h3>
+          <ResponsiveContainer width="100%" height={230}>
             <LineChart data={trendData}>
-              <XAxis dataKey="week" stroke="var(--subtext)" />
-              <YAxis stroke="var(--subtext)" />
+              <XAxis dataKey="week" stroke="#94a3b8" />
+              <YAxis stroke="#94a3b8" />
               <Tooltip />
               <Line
                 type="monotone"
                 dataKey="score"
-                stroke="var(--primary)"
+                stroke="#6366f1"
                 strokeWidth={3}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="dashboard-card">
-          <h3>Skill Matrix</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <RadarChart data={radarData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <PolarRadiusAxis />
-              <Radar
-                dataKey="value"
-                stroke="var(--primary)"
-                fill="var(--primary)"
-                fillOpacity={0.4}
-              />
-            </RadarChart>
-          </ResponsiveContainer>
+        {/* Skills */}
+        <div className="enterprise-card">
+          <h3>Skill Strength</h3>
+          {skills.map((skill, i) => (
+            <div key={i} className="skill-row">
+              <div className="skill-label">
+                <span>{skill.name}</span>
+                <span>{skill.value}%</span>
+              </div>
+              <div className="skill-bar">
+                <div
+                  className="skill-fill"
+                  style={{ width: `${skill.value}%` }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
 
-        <div className="dashboard-card">
-          <h3>Company Readiness</h3>
-          <ResponsiveContainer width="100%" height={250}>
+        {/* Company */}
+        <div className="enterprise-card">
+          <h3>Company Alignment</h3>
+          <ResponsiveContainer width="100%" height={230}>
             <BarChart data={companyData}>
-              <XAxis dataKey="name" stroke="var(--subtext)" />
-              <YAxis stroke="var(--subtext)" />
+              <XAxis dataKey="name" stroke="#94a3b8" />
+              <YAxis stroke="#94a3b8" />
               <Tooltip />
-              <Bar dataKey="score" fill="var(--primary)" />
+              <Bar dataKey="score" fill="#8b5cf6" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
       </div>
-
-      <button className="floating-btn">+ Start Test</button>
 
     </DashboardLayout>
   );
