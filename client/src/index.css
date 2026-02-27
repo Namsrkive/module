@@ -433,6 +433,7 @@ body::before {
   font-weight: 800;
   letter-spacing: -1px;
   background: linear-gradient(135deg, var(--text), var(--primary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -699,6 +700,7 @@ body::before {
     var(--primary)
   );
   background-size: 600% 600%;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradientShift 8s ease infinite;
@@ -900,6 +902,7 @@ body {
   font-size: 38px;
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
@@ -1085,6 +1088,7 @@ body {
 .stat-counter h1 {
   font-size: 48px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1232,6 +1236,7 @@ body {
 .stat-counter h1 {
   font-size: 48px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
