@@ -1,55 +1,46 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
- 
+import { motion } from "framer-motion";
+
 function StudentLogin() {
   const navigate = useNavigate();
- 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
- 
-  const handleLogin = (e) => {
-    e.preventDefault();
- 
-    if (email && password) {
-      // Temporary login until backend is built
-      navigate("/dashboard/student");
-    }
-  };
- 
+
   return (
-<div className="login-wrapper">
-<div className="login-card">
-<h2>Student Login</h2>
-<p>Access your placement dashboard</p>
- 
-        <form onSubmit={handleLogin}>
-<div className="input-group">
-<input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-</div>
- 
-          <div className="input-group">
-<input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-</div>
- 
-          <button className="login-btn" type="submit">
-            Login
-</button>
-</form>
-</div>
-</div>
+    <div className="auth-wrapper student-auth">
+      {/* LEFT PANEL */}
+      <div className="auth-left">
+        <h1>Welcome Back, Future Achiever</h1>
+        <p>
+          Track your readiness, simulate real company exams, and level up your
+          placement preparation.
+        </p>
+      </div>
+
+      {/* RIGHT PANEL */}
+      <motion.div
+        className="auth-card glass-card"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h2>Student Login</h2>
+
+        <div className="input-group">
+          <input type="email" placeholder="Email Address" />
+          <input type="password" placeholder="Password" />
+        </div>
+
+        <button
+          className="primary-btn large"
+          onClick={() => navigate("/dashboard/student")}
+        >
+          Login
+        </button>
+
+        <p className="auth-footer">
+          Don’t have an account? <span>Contact your institution</span>
+        </p>
+      </motion.div>
+    </div>
   );
 }
- 
+
 export default StudentLogin;

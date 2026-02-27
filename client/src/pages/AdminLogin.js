@@ -1,48 +1,44 @@
-import { useState } from "react";
- 
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
 function AdminLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
- 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (email && password) {
-      alert("Admin login (backend coming next)");
-    }
-  };
- 
+  const navigate = useNavigate();
+
   return (
-<div className="login-wrapper">
-<div className="login-card">
-<h2>Admin Login</h2>
-<p>Manage tests and monitor performance</p>
- 
-        <form onSubmit={handleLogin}>
-<div className="input-group">
-<input
-              type="email"
-              placeholder="Admin Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-</div>
- 
-          <div className="input-group">
-<input
-              type="password"
-              placeholder="Admin Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-</div>
- 
-          <button className="login-btn">Login as Admin</button>
-</form>
-</div>
-</div>
+    <div className="auth-wrapper admin-auth">
+      <div className="auth-left">
+        <h1>Institution Control Center</h1>
+        <p>
+          Manage assessments, monitor integrity logs, and analyze cohort
+          readiness with precision.
+        </p>
+      </div>
+
+      <motion.div
+        className="auth-card glass-card"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h2>Admin Login</h2>
+
+        <div className="input-group">
+          <input type="email" placeholder="Admin Email" />
+          <input type="password" placeholder="Password" />
+        </div>
+
+        <button
+          className="primary-btn admin-btn large"
+          onClick={() => navigate("/dashboard/admin")}
+        >
+          Login
+        </button>
+
+        <p className="auth-footer">
+          Authorized access only
+        </p>
+      </motion.div>
+    </div>
   );
 }
- 
+
 export default AdminLogin;

@@ -18,6 +18,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import ScrollToTop from "./components/ScrollToTop";
 
 /* ================= NAV ITEMS ================= */
 
@@ -32,6 +33,7 @@ const NAV_ITEMS = [
 function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/dashboard");
 
   /* ---------- Dark Mode ---------- */
   const [darkMode, setDarkMode] = useState(() => {
@@ -54,39 +56,41 @@ function Layout() {
   return (
     <>
       {/* ================= NAVBAR ================= */}
-      <div className="navbar">
-        <div className="nav-container">
-          <div className="nav-title" onClick={() => navigate("/")}>
-            Proctored Portal
-          </div>
-
-          <div className="nav-center">
-            {NAV_ITEMS.map((item) => {
-              const isActive =
-                item.path === "/"
-                  ? location.pathname === "/"
-                  : location.pathname.startsWith(item.path);
-
-              return (
-                <button
-                  key={item.path}
-                  className={`nav-link ${isActive ? "active" : ""}`}
-                  onClick={() => navigate(item.path)}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-
-          <button
-            className="theme-toggle"
-            onClick={() => setDarkMode((prev) => !prev)}
-          >
-            {darkMode ? "☀" : "🌙"}
-          </button>
-        </div>
+      {!isDashboard && (
+  <div className="navbar">
+    <div className="nav-container">
+      <div className="nav-title" onClick={() => navigate("/")}>
+        Proctored Portal
       </div>
+
+      <div className="nav-center">
+        {NAV_ITEMS.map((item) => {
+          const isActive =
+            item.path === "/"
+              ? location.pathname === "/"
+              : location.pathname.startsWith(item.path);
+
+          return (
+            <button
+              key={item.path}
+              className={`nav-link ${isActive ? "active" : ""}`}
+              onClick={() => navigate(item.path)}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        className={`theme-switch ${darkMode ? "active" : ""}`}
+        onClick={() => setDarkMode((prev) => !prev)}
+      >
+        <div className="switch-thumb" />
+      </div>
+    </div>
+  </div>
+)}
 
       {/* ================= PAGE TRANSITION ================= */}
       <AnimatePresence mode="wait">
@@ -110,6 +114,7 @@ function Layout() {
       </AnimatePresence>
 
       {/* ================= FOOTER ================= */}
+      {!isDashboard && (
       <footer className="footer">
         <div className="footer-inner">
           <div>
@@ -129,7 +134,7 @@ function Layout() {
             <p>support@placementportal.com</p>
           </div>
         </div>
-      </footer>
+      </footer>)}
     </>
   );
 }
@@ -139,6 +144,7 @@ function Layout() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout />
     </Router>
   );
