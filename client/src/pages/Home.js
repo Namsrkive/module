@@ -1,164 +1,146 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer
-} from "recharts";
+import { useState } from "react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 60 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: "easeOut" }
+const modules = [
+  {
+    title: "Aptitude & Reasoning",
+    desc: "Quantitative intelligence simulation workflows.",
+    icon: "🧠"
+  },
+  {
+    title: "Data Structures & Algorithms",
+    desc: "High-performance coding evaluation engine.",
+    icon: "⚙️"
+  },
+  {
+    title: "DBMS & SQL Optimization",
+    desc: "Database query intelligence benchmarking.",
+    icon: "🗄️"
+  },
+  {
+    title: "Core Programming & CS",
+    desc: "System design & foundational CS assessment.",
+    icon: "💻"
   }
-};
-
-const staggerContainer = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.2 }
-  }
-};
-
-const data = [
-  { name: "Week 1", score: 52 },
-  { name: "Week 2", score: 60 },
-  { name: "Week 3", score: 70 },
-  { name: "Week 4", score: 78 }
 ];
 
 function Home() {
   const navigate = useNavigate();
+  const [active, setActive] = useState(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { innerWidth, innerHeight } = window;
+    setOffset({
+      x: (e.clientX - innerWidth / 2) / 120,
+      y: (e.clientY - innerHeight / 2) / 120
+    });
+  };
 
   return (
-    <div className="home-wrapper">
+    <motion.div
+      className="home-production"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <section
+        className="hero-production"
+        onMouseMove={handleMouseMove}
+        style={{
+          transform: `translate(${offset.x}px, ${offset.y}px)`
+        }}
+      >
+        {/* LEFT SIDE */}
+        <motion.div
+          className="hero-left-production"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <h1>
+            Proctored Placement<br />
+            Readiness Platform
+          </h1>
 
-      {/* FLOATING SHAPES */}
-      <div className="floating-shape shape-1" />
-      <div className="floating-shape shape-2" />
+          <p>
+            Institutional-grade evaluation infrastructure designed
+            for measurable placement performance.
+          </p>
 
-      {/* HERO */}
-      <section className="hero-section">
-        <div className="hero-layout">
-
-          <div className="hero-left">
-            <motion.h1
-              className="animated-gradient-text"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
+          <div className="hero-buttons-production">
+            <button
+              className="btn-prod-primary"
+              onClick={() => navigate("/login/student")}
             >
-              Proctored Placement Readiness Portal
-            </motion.h1>
+              Student Portal
+            </button>
 
-            <motion.p
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+            <button
+              className="btn-prod-secondary"
+              onClick={() => navigate("/login/admin")}
             >
-              Real company simulations. AI proctoring. Data-driven growth.
-            </motion.p>
-
-            <motion.div
-              className="hero-buttons"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              <button
-                className="primary-btn large"
-                onClick={() => navigate("/login/student")}
-              >
-                Student Login
-              </button>
-
-              <button
-                className="secondary-btn"
-                onClick={() => navigate("/login/admin")}
-              >
-                Admin Login
-              </button>
-            </motion.div>
+              Admin Console
+            </button>
           </div>
+        </motion.div>
 
-          <div className="hero-right">
-            <div className="mock-dashboard glow-card">
-              <h4>Placement Analytics</h4>
-              <ResponsiveContainer width="100%" height={200}>
-                <LineChart data={data}>
-                  <XAxis dataKey="name" stroke="var(--subtext)" />
-                  <YAxis stroke="var(--subtext)" />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="score"
-                    stroke="var(--primary)"
-                    strokeWidth={3}
+        {/* RIGHT SIDE */}
+        <motion.div
+          className="hero-right-production"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <div className="hero-right-production">
+            <div className="unicorn-architecture">
+
+              {/* DASHED DATA FLOW */}
+              <svg className="unicorn-lines" viewBox="0 0 420 420">
+                {[
+                  { x: 70, y: 70 },
+                  { x: 350, y: 70 },
+                  { x: 70, y: 350 },
+                  { x: 350, y: 350 }
+                ].map((point, index) => (
+                  <line
+                    key={index}
+                    className={active === index ? "line-active" : ""}
+                    x1={point.x}
+                    y1={point.y}
+                    x2="210"
+                    y2="210"
                   />
-                </LineChart>
-              </ResponsiveContainer>
+                ))}
+              </svg>
+
+              {/* MODULE CARDS */}
+              {modules.map((mod, index) => (
+                <motion.div
+                  key={index}
+                  className={`unicorn-module module-${index}`}
+                  onMouseEnter={() => setActive(index)}
+                  onMouseLeave={() => setActive(null)}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 14 }}
+                >
+                  <div className="module-icon">{mod.icon}</div>
+                  <h3>{mod.title}</h3>
+                  <p>{mod.desc}</p>
+                </motion.div>
+              ))}
+
+              {/* CORE */}
+              <div className="unicorn-core">
+                AI Intelligence Core
+              </div>
+
             </div>
           </div>
-
-        </div>
-      </section>
-
-      {/* MODULES */}
-      <motion.section
-        className="section"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-      >
-        <div className="section-header">
-          <h2>The Four Pillars of Readiness</h2>
-        </div>
-
-        <motion.div
-          className="modules-grid"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-        >
-          {[
-            "Aptitude & Reasoning",
-            "DSA & Algorithms",
-            "DBMS & SQL",
-            "Programming & Core CS"
-          ].map((title) => (
-            <motion.div
-              key={title}
-              variants={fadeUp}
-              className="module-card glow-card tilt-card"
-            >
-              <h3>{title}</h3>
-              <p>Advanced simulation-driven evaluation.</p>
-            </motion.div>
-          ))}
         </motion.div>
-      </motion.section>
-
-      {/* CTA */}
-      <motion.section
-        className="cta-section"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-      >
-        <h2>Start Your Placement Journey</h2>
-        <button
-          className="primary-btn large"
-          onClick={() => navigate("/login/student")}
-        >
-          Begin Assessment
-        </button>
-      </motion.section>
-    </div>
+      </section>
+    </motion.div>
   );
 }
 
