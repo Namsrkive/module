@@ -11,7 +11,6 @@ import {
 } from "recharts";
 import { useEffect } from "react";
 import CountUp from "react-countup";
-import { motion } from "framer-motion";
 
 const trendData = [
   { week: "W1", score: 55 },
