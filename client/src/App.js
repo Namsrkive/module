@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import { Link } from "react-router-dom";
 
 import Home from "./pages/Home";
 import StudentLogin from "./pages/StudentLogin";
@@ -39,7 +40,10 @@ function Layout() {
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");
     if (saved) return saved === "dark";
-    return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ?? false;
+    return (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    );
   });
 
   useEffect(() => {
@@ -57,40 +61,40 @@ function Layout() {
     <>
       {/* ================= NAVBAR ================= */}
       {!isDashboard && (
-  <div className="navbar">
-    <div className="nav-container">
-      <div className="nav-title" onClick={() => navigate("/")}>
-        Proctored Portal
-      </div>
+        <div className="navbar">
+          <div className="nav-container">
+            <div className="nav-title" onClick={() => navigate("/")}>
+              Proctored Portal
+            </div>
 
-      <div className="nav-center">
-        {NAV_ITEMS.map((item) => {
-          const isActive =
-            item.path === "/"
-              ? location.pathname === "/"
-              : location.pathname.startsWith(item.path);
+            <div className="nav-center">
+              {NAV_ITEMS.map((item) => {
+                const isActive =
+                  item.path === "/"
+                    ? location.pathname === "/"
+                    : location.pathname.startsWith(item.path);
 
-          return (
-            <button
-              key={item.path}
-              className={`nav-link ${isActive ? "active" : ""}`}
-              onClick={() => navigate(item.path)}
+                return (
+                  <button
+                    key={item.path}
+                    className={`nav-link ${isActive ? "active" : ""}`}
+                    onClick={() => navigate(item.path)}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              className={`theme-switch ${darkMode ? "active" : ""}`}
+              onClick={() => setDarkMode((prev) => !prev)}
             >
-              {item.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div
-        className={`theme-switch ${darkMode ? "active" : ""}`}
-        onClick={() => setDarkMode((prev) => !prev)}
-      >
-        <div className="switch-thumb" />
-      </div>
-    </div>
-  </div>
-)}
+              <div className="switch-thumb" />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ================= PAGE TRANSITION ================= */}
       <AnimatePresence mode="wait">
@@ -115,26 +119,64 @@ function Layout() {
 
       {/* ================= FOOTER ================= */}
       {!isDashboard && (
-      <footer className="footer">
-        <div className="footer-inner">
-          <div>
-            <h4>Placement Portal</h4>
-            <p>Simulated hiring. Real readiness.</p>
+        <footer className="footer-enterprise">
+
+          <div className="footer-gradient-line" />
+
+          <div className="footer-container">
+
+            <div className="footer-brand">
+              <h3>Proctored Portal</h3>
+              <p>
+                Institutional-grade placement analytics and AI-powered
+                proctoring infrastructure engineered for academic excellence.
+              </p>
+
+              <div className="footer-socials">
+                <span>LinkedIn</span>
+                <span>Twitter</span>
+                <span>GitHub</span>
+              </div>
+            </div>
+
+            <div className="footer-col">
+              <h4>Platform</h4>
+              <Link to="/">Assessments</Link>
+              <Link to="/">Analytics</Link>
+              <Link to="/">AI Proctoring</Link>
+              <Link to="/">Company Simulation</Link>
+            </div>
+
+            <div className="footer-col">
+              <h4>Institution</h4>
+              <Link to="/about">About</Link>
+              <Link to="/contact">Contact</Link>
+              <Link to="/login/admin">Admin Portal</Link>
+              <Link to="/login/student">Student Portal</Link>
+            </div>
+
+            <div className="footer-col">
+              <h4>Support</h4>
+              <span>support@placementportal.com</span>
+              <span>Mon – Fri | 09:00 – 18:00 IST</span>
+              <span>India | Global Deployment</span>
+            </div>
+
           </div>
 
-          <div>
-            <h4>Platform</h4>
-            <p>Assessments</p>
-            <p>Analytics</p>
-            <p>Proctoring</p>
+          <div className="footer-bottom">
+            <div>
+              © 2026 Proctored Placement Portal
+            </div>
+            <div className="footer-legal">
+              <span>Privacy Policy</span>
+              <span>Terms of Service</span>
+              <span>Security</span>
+            </div>
           </div>
 
-          <div>
-            <h4>Contact</h4>
-            <p>support@placementportal.com</p>
-          </div>
-        </div>
-      </footer>)}
+        </footer>
+      )}
     </>
   );
 }
