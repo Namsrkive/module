@@ -1,0 +1,49 @@
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.password-strength {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.password-strength.weak {
+  color: #ef4444;
+}
+
+.password-strength.medium {
+  color: #f59e0b;
+}
+
+.password-strength.strong {
+  color: #10b981;
+}
+
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.forgot-link,
+.resend-link {
+  cursor: pointer;
+  color: #6366f1;
+  font-weight: 500;
+}
+
+.forgot-link:hover,
+.resend-link:hover {
+  text-decoration: underline;
+}

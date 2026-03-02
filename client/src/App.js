@@ -22,8 +22,9 @@ import Contact from "./pages/Contact";
 import ScrollToTop from "./components/common/ScrollToTop";
 import ThemeSwitch from "./components/common/ThemeSwitch";
 import StudentRegister from "./pages/StudentRegister";
- 
-
+import { Toaster } from "react-hot-toast";
+import "./styles/auth.css";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 /* ================= NAV ITEMS ================= */
 
@@ -109,19 +110,27 @@ function Layout() {
             <Route path="/" element={<Home />} />
             <Route path="/login/student" element={<StudentLogin />} />
             <Route path="/login/admin" element={<AdminLogin />} />
-            <Route path="/dashboard/student" element={
-            <StudentDashboard
-                  darkMode={darkMode}
-                  setDarkMode={setDarkMode}
-                />
+            <Route
+              path="/dashboard/student"
+              element={
+                <ProtectedRoute allowedRole="student">
+                  <StudentDashboard
+                    darkMode={darkMode}
+                    setDarkMode={setDarkMode}
+                  />
+                </ProtectedRoute>
               }
             />
-            
-            <Route path="/dashboard/admin" element={
-            <AdminDashboard
-                  darkMode={darkMode}
-                  setDarkMode={setDarkMode}
-                />
+
+            <Route
+              path="/dashboard/admin"
+              element={
+                <ProtectedRoute allowedRole="admin">
+                  <AdminDashboard
+                    darkMode={darkMode}
+                    setDarkMode={setDarkMode}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route path="/about" element={<About />} />
@@ -201,6 +210,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Toaster position="top-right" reverseOrder={false} />
       <Layout />
     </Router>
   );
