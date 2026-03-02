@@ -19,7 +19,11 @@ import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTop from "./components/common/ScrollToTop";
+import ThemeSwitch from "./components/common/ThemeSwitch";
+import StudentRegister from "./pages/StudentRegister";
+ 
+
 
 /* ================= NAV ITEMS ================= */
 
@@ -86,12 +90,8 @@ function Layout() {
               })}
             </div>
 
-            <div
-              className={`theme-switch ${darkMode ? "active" : ""}`}
-              onClick={() => setDarkMode((prev) => !prev)}
-            >
-              <div className="switch-thumb" />
-            </div>
+            <ThemeSwitch darkMode={darkMode} setDarkMode={setDarkMode} />
+
           </div>
         </div>
       )}
@@ -109,10 +109,24 @@ function Layout() {
             <Route path="/" element={<Home />} />
             <Route path="/login/student" element={<StudentLogin />} />
             <Route path="/login/admin" element={<AdminLogin />} />
-            <Route path="/dashboard/student" element={<StudentDashboard />} />
-            <Route path="/dashboard/admin" element={<AdminDashboard />} />
+            <Route path="/dashboard/student" element={
+            <StudentDashboard
+                  darkMode={darkMode}
+                  setDarkMode={setDarkMode}
+                />
+              }
+            />
+            
+            <Route path="/dashboard/admin" element={
+            <AdminDashboard
+                  darkMode={darkMode}
+                  setDarkMode={setDarkMode}
+                />
+              }
+            />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/register/student" element={<StudentRegister />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

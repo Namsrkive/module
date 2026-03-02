@@ -36,7 +36,10 @@ function StudentLogin() {
         </button>
 
         <p className="auth-footer">
-          Don’t have an account? <span>Contact your institution</span>
+          Don’t have an account?{" "}
+        <span onClick={() => navigate("/register/student")}>
+            Register here
+        </span>
         </p>
       </motion.div>
     </div>
