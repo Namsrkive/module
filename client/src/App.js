@@ -25,6 +25,8 @@ import StudentRegister from "./pages/StudentRegister";
 import { Toaster } from "react-hot-toast";
 import "./styles/auth.css";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import TestPage from "./pages/TestPage";
+import TestResult from "./pages/TestResult";
 
 /* ================= NAV ITEMS ================= */
 
@@ -136,6 +138,8 @@ function Layout() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/register/student" element={<StudentRegister />} />
+            <Route path="/test" element={<TestPage />} />
+            <Route path="/test-result" element={<TestResult />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
