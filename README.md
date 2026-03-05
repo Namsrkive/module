@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Proctored Placement Readiness Assessment Port
+# 🚀 Proctored Placement Readiness Assessment Portal
 
 ### 🧠 AI-Powered Recruitment Simulation Platform  
 ### 🎯 Bridging the Gap Between Academia & Industry Hiring
@@ -209,5 +209,6 @@ This project is licensed under the MIT License.
 ⭐ If this project inspires you, consider giving it a star! ⭐
 
 </div>
+
 
 
