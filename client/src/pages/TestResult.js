@@ -28,32 +28,33 @@ function TestResult() {
 
   const performance = getPerformanceLabel();
 
-  /* ================= READINESS SCORE ================= */
   const readinessScore = Math.round(
     (accuracy / 100) * 10
-  ); // Scale of 10
+  );
 
-  const saveAttempt = () => {
+  /* ================= SAVE ATTEMPT (IMPORTANT PART) ================= */
+  useEffect(() => {
+    if (!location.state) return; 
+    // Prevent saving if page refreshed without test
+
     const existing =
-        JSON.parse(localStorage.getItem("testHistory")) || [];
+      JSON.parse(localStorage.getItem("testHistory")) || [];
 
     const newAttempt = {
-        id: Date.now(),
-        title: "TCS Mock Test 1",
-        totalScore,
-        totalQuestions,
-        accuracy,
-        sectionScores,
-        date: new Date().toLocaleString(),
+      id: Date.now(),
+      title: "TCS Mock Test 1",
+      totalScore,
+      totalQuestions,
+      accuracy,
+      sectionScores,
+      date: new Date().toLocaleString(),
     };
 
     localStorage.setItem(
-        "testHistory",
-        JSON.stringify([newAttempt, ...existing])
+      "testHistory",
+      JSON.stringify([newAttempt, ...existing])
     );
-    };
-
-    saveAttempt();
+  }, []); // empty dependency → runs only once
 
   return (
     <div className="result-container">

@@ -1,97 +1,91 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import Sidebar from "../components/dashboard/Sidebar";
+import ModuleTestCard from "../components/dashboard/ModuleTestCard";
+import CompanyTestCard from "../components/dashboard/CompanyTestCard";
+import ModulePerformanceChart from "../components/dashboard/ModulePerformanceChart";
+import ScoreTrendChart from "../components/dashboard/ScoreTrendChart";
+import WeakAreasCard from "../components/dashboard/WeakAreasCard";
+import Leaderboard from "../components/dashboard/Leaderboard";
 
-function StudentDashboard({ darkMode, setDarkMode }) {
-  const navigate = useNavigate();
-  const [history, setHistory] = useState([]);
+import { useState } from "react";
 
-  useEffect(() => {
-    const data =
-      JSON.parse(localStorage.getItem("testHistory")) || [];
-    setHistory(data);
-  }, []);
+export default function StudentDashboard() {
 
-  const totalTests = history.length;
+  const [selectedTest, setSelectedTest] = useState(null);
 
-  const avgScore =
-    totalTests > 0
-      ? (
-          history.reduce(
-            (sum, t) => sum + parseFloat(t.accuracy),
-            0
-          ) / totalTests
-        ).toFixed(1)
-      : 0;
+  const modules = [
+    {
+      module: "Aptitude",
+      syllabus: ["Quant", "Logical", "Verbal"],
+    },
+    {
+      module: "DSA",
+      syllabus: ["Arrays", "Trees", "Graphs"],
+    },
+    {
+      module: "DBMS",
+      syllabus: ["SQL", "ER Model", "Normalization"],
+    },
+    {
+      module: "Programming",
+      syllabus: ["OOP", "OS", "CN"],
+    },
+  ];
 
-  const readiness =
-    totalTests > 0 ? Math.round(avgScore / 10) : 0;
-
-  const lastTest =
-    totalTests > 0 ? history[0].accuracy : "N/A";
+  const companies = [
+    { company: "TCS", focus: "Aptitude + Verbal" },
+    { company: "IBM", focus: "DSA + Logic" },
+    { company: "Accenture", focus: "Mixed aptitude + coding" },
+    { company: "Wipro", focus: "Aptitude + CS fundamentals" },
+    { company: "Deloitte", focus: "Business logic" },
+  ];
 
   return (
-    <div className="dashboard-container">
-      <h2>Student Dashboard</h2>
+    <div className="dashboard-layout">
 
-      {/* Overview Cards */}
-      <div className="dashboard-cards">
-        <div className="dash-card">
-          <h4>Total Tests</h4>
-          <p>{totalTests}</p>
+      <Sidebar />
+
+      <div className="dashboard-main">
+
+        <h1>Student Dashboard</h1>
+
+        <div className="charts-grid">
+          <ScoreTrendChart />
+          <ModulePerformanceChart />
         </div>
 
-        <div className="dash-card">
-          <h4>Average Accuracy</h4>
-          <p>{avgScore}%</p>
+        <h2>Module Tests</h2>
+
+        <div className="test-grid">
+          {modules.map((m) => (
+            <ModuleTestCard
+              key={m.module}
+              module={m.module}
+              syllabus={m.syllabus}
+              openModal={(test) => setSelectedTest({ name: test })}
+            />
+          ))}
         </div>
 
-        <div className="dash-card">
-          <h4>Readiness Score</h4>
-          <p>{readiness} / 10</p>
+        <h2>Company Mock Tests</h2>
+
+        <div className="test-grid">
+          {companies.map((c) => (
+            <CompanyTestCard
+              key={c.company}
+              company={c.company}
+              focus={c.focus}
+              openModal={(test) => setSelectedTest({ name: test })}
+            />
+          ))}
         </div>
 
-        <div className="dash-card">
-          <h4>Last Test</h4>
-          <p>{lastTest}%</p>
+        <div className="bottom-grid">
+          <WeakAreasCard />
+          <Leaderboard />
         </div>
+
       </div>
 
-      {/* Start Test */}
-      <div className="dashboard-actions">
-        <button
-          className="primary-btn"
-          onClick={() => navigate("/test")}
-        >
-          Start Practice Test
-        </button>
-      </div>
-
-      {/* Test History */}
-      <h3>Test History</h3>
-
-      <div className="history-table">
-        {history.length === 0 ? (
-          <p>No tests attempted yet.</p>
-        ) : (
-          history.map((test) => (
-            <div key={test.id} className="history-row">
-              <div>{test.title}</div>
-              <div>
-                {test.totalScore}/{test.totalQuestions}
-              </div>
-              <div>{test.accuracy}%</div>
-              <div>{test.date}</div>
-              <button
-                onClick={() => navigate("/test")}
-              >
-                Retake
-              </button>
-            </div>
-          ))
-        )}
-      </div>
     </div>
   );
 }
-
-export default StudentDashboard;
