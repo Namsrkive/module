@@ -210,9 +210,9 @@ proctored-placement-portal
 ## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/proctored-placement-portal.git
+git clone https://github.com/namsrkive/module.git
 
-cd proctored-placement-portal
+cd module
 ```
 
 ---
@@ -265,17 +265,17 @@ Add screenshots for better project presentation.
 
 ```
 /screenshots
-   ├── home.png
+   ├── home.jpg
    ├── student-dashboard.png
-   ├── test-interface.png
+   ├── Login-interface.jpg
    └── analytics.png
 ```
 
 Example preview:
 
-| Home Page | Test Interface |
+| Home Page | Login Interface |
 |-----------|---------------|
-| ![](screenshots/home.png) | ![](screenshots/test-interface.png) |
+| ![](screenshots/home.jpg) | ![](screenshots/Login-interface.jpg) |
 
 ---
 
@@ -352,3 +352,4 @@ This project is licensed under the **MIT License**.
 ⭐ If you like this project, please consider giving it a star ⭐
 
 </div>
+
