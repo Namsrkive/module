@@ -265,9 +265,9 @@ Add screenshots for better project presentation.
 
 ```
 /screenshots
-   ├── home.jpg
+   ├── home.png
    ├── student-dashboard.png
-   ├── Login-interface.jpg
+   ├── Login-interface.png
    └── analytics.png
 ```
 
@@ -275,7 +275,7 @@ Example preview:
 
 | Home Page | Login Interface |
 |-----------|---------------|
-| ![](screenshots/home.jpg) | ![](screenshots/Login-interface.jpg) |
+| ![](screenshots/home.png) | ![](screenshots/Login-interface.png) |
 
 ---
 
