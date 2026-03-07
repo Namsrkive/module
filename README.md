@@ -10,205 +10,302 @@
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen?style=for-the-badge&logo=mongodb)
 ![JWT](https://img.shields.io/badge/Auth-JWT-orange?style=for-the-badge)
 ![AI Proctoring](https://img.shields.io/badge/AI-Proctoring-red?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)
 
 </div>
 
 ---
 
-## 📌 Overview
+# 📌 About The Project
 
-The Proctored Placement Readiness Assessment Portal is a full-stack AI-enabled web platform designed to simulate real company-level recruitment exams under controlled, proctored environments.
+The **Proctored Placement Readiness Assessment Portal** is a full-stack web platform designed to simulate **real company recruitment exams** under a **secure and proctored environment**.
 
-It provides:
+The platform evaluates a student's placement readiness across multiple domains while ensuring exam integrity through **AI-based monitoring and proctoring mechanisms**.
 
-- 🎯 Company-specific recruitment simulation  
-- 🧠 Multi-domain skill evaluation  
-- 📊 Performance analytics & readiness scoring  
-- 🎥 AI-based proctoring for integrity  
-- 🏫 Institutional monitoring dashboards  
+It bridges the gap between **academic preparation and real recruitment processes** by simulating the hiring assessments of companies such as:
 
-This system transforms fragmented preparation into a structured, measurable, and industry-aligned readiness framework.
+- **TCS**
+- **IBM**
+- **Accenture**
+- **Wipro**
+- **Deloitte**
 
----
-
-## ❗ Problem Statement
-
-In today’s competitive job market, students struggle with:
-
-- Fragmented preparation platforms
-- Lack of realistic exam simulation
-- No company-specific patterns
-- Absence of proctoring during mock tests
-- Limited analytics & readiness tracking
-
-This project solves these challenges by providing a centralized, intelligent, and proctored assessment ecosystem.
+Students receive **performance analytics, readiness scores, and improvement insights** to better prepare for actual placement drives.
 
 ---
 
-## 🧠 Core System Modules
+# ✨ Core Features
 
-### 👨‍🎓 Student Interface
+## 👨‍🎓 Student Portal
 
-- Secure Authentication (JWT)
-- Module-wise Testing:
-  - Aptitude & Reasoning
-  - Data Structures & Algorithms
-  - DBMS & SQL
-  - Programming & Core CS
-- Company-Specific Simulations:
-  - TCS
-  - IBM
-  - Accenture
-  - Wipro
-  - Deloitte
-- AI Camera Monitoring
-- Tab-switch detection
+- Secure **JWT Authentication**
+- Module-wise assessment system
+- Company-specific recruitment simulations
+- Real-time **AI camera monitoring**
+- **Tab switching detection**
+- Timer-controlled test interface
 - Automatic scoring engine
-- Topic-wise analytics dashboard
+- Topic-wise performance analytics
+- Placement readiness score dashboard
+
+### Assessment Modules
+
+- 🧠 Aptitude & Logical Reasoning  
+- 💻 Data Structures & Algorithms  
+- 🗄 DBMS & SQL  
+- ⚙ Programming & Core Computer Science  
 
 ---
 
-### 🛠 Admin Interface
+## 🛠 Admin Portal
 
 - Question Bank Management
-- Company Pattern Configuration
-- Test Scheduling Engine
-- Proctoring Violation Logs
-- Institutional Readiness Analytics
-- Cohort-level performance tracking
+- Company Exam Pattern Configuration
+- Test Scheduling System
+- Proctoring Violation Monitoring
+- Institutional Performance Analytics
+- Cohort Readiness Tracking
 
 ---
 
-## 🏗 System Architecture
+# 🧠 Problem Statement
 
+Students preparing for placements face several major issues:
+
+- Fragmented preparation platforms
+- Lack of realistic recruitment exam simulations
+- No company-specific test structures
+- Absence of proctoring during mock tests
+- Limited readiness analytics
+
+This project solves these problems by providing a **centralized AI-proctored placement assessment ecosystem** that mirrors real recruitment environments.
+
+---
+
+# 🏗 System Architecture
+
+```
 Frontend (React)
-        ↓
-REST API Layer (Express)
-        ↓
+      │
+      ▼
+REST API Layer (Express.js)
+      │
+      ▼
 Authentication (JWT)
-        ↓
+      │
+      ▼
 MongoDB Database
-        ↓
-AI Proctoring Engine (WebRTC + TensorFlow.js)
+      │
+      ▼
+AI Proctoring Engine
+(WebRTC + Face Detection + Activity Monitoring)
+```
+
 ---
 
-## 🛠 Technology Stack
+# 🛠 Tech Stack
 
-### 🔹 Frontend
+## Frontend
 - React.js
-- React Router DOM
+- React Router
+- HTML5
 - CSS3
 - Chart.js (Analytics Visualization)
 
-### 🔹 Backend
+## Backend
 - Node.js
 - Express.js
-- RESTful APIs
+- REST APIs
 - JWT Authentication
 
-### 🔹 Database
+## Database
 - MongoDB Atlas
 
-### 🔹 AI & Monitoring
-- WebRTC (Live Camera Access)
+## AI Proctoring
+- WebRTC (Camera Monitoring)
 - TensorFlow.js / Face Detection
 - Tab Visibility API
 
-### 🔹 Deployment
-- Vercel (Frontend)
-- Render (Backend)
-- MongoDB Atlas (Cloud DB)
+## Deployment
+
+| Layer | Platform |
+|------|---------|
+Frontend | Vercel |
+Backend | Render |
+Database | MongoDB Atlas |
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
-proctored-placement-portal  
-│  
-├── client        # React Frontend  
-├── server        # Node.js Backend  
-└── README.md 
+```
+proctored-placement-portal
+│
+├── client
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── styles
+│   │   └── App.js
+│   │
+│   └── public
+│
+├── server
+│   ├── controllers
+│   ├── models
+│   ├── routes
+│   ├── middleware
+│   └── server.js
+│
+└── README.md
+```
+
 ---
 
-## ⚙️ Setup & Installation
+# ⚙️ Installation & Setup
 
-### 1️⃣ Clone Repository
+## 1️⃣ Clone Repository
 
-git clone https://github.com/namsrkive/module.git
-cd module
+```bash
+git clone https://github.com/yourusername/proctored-placement-portal.git
+
+cd proctored-placement-portal
+```
+
 ---
 
-### 2️⃣ Run Frontend
+## 2️⃣ Setup Frontend
 
+```bash
 cd client
 npm install
 npm start
+```
+
 Frontend runs on:
 
+```
 http://localhost:3000
+```
+
 ---
 
-### 3️⃣ Run Backend
+## 3️⃣ Setup Backend
 
+```bash
 cd server
 npm install
 npm start
+```
+
 Backend runs on:
 
+```
 http://localhost:5000
----
-
-## 📊 Key Functional Highlights
-
-✔ Realistic company-level exam patterns  
-✔ AI-powered behavioral monitoring  
-✔ Performance-based readiness scoring  
-✔ Modular and scalable architecture  
-✔ Recruiter-aligned assessment logic  
+```
 
 ---
 
-## 🚀 Future Enhancements
+# 📊 Functional Highlights
+
+✔ Realistic **company-level recruitment simulations**  
+✔ **AI-based monitoring** for exam integrity  
+✔ **Topic-wise performance analytics**  
+✔ **Placement readiness scoring**  
+✔ Scalable modular architecture
+
+---
+
+# 📸 Screenshots
+
+Add screenshots for better project presentation.
+
+```
+/screenshots
+   ├── home.png
+   ├── student-dashboard.png
+   ├── test-interface.png
+   └── analytics.png
+```
+
+Example preview:
+
+| Home Page | Test Interface |
+|-----------|---------------|
+| ![](screenshots/home.png) | ![](screenshots/test-interface.png) |
+
+---
+
+# 🚀 Future Enhancements
 
 - Adaptive AI difficulty adjustment
-- Real-time anomaly detection
-- Resume-to-skill gap prediction
-- Company-fit recommendation engine
-- Multi-institution SaaS model
-- Cloud video log storage
+- Real-time cheating anomaly detection
+- Resume-to-skill gap analysis
+- Company-fit recommendation system
+- Multi-institution SaaS platform
+- Cloud-based proctoring video logs
 
 ---
 
-## 📈 Impact & Expected Outcomes
-- Improved student placement rates
-- Reduced malpractice in mock tests
-- Enhanced institutional performance metrics
-- Real-world simulation exposure
-- Data-driven readiness assessment
+# 📈 Impact
+
+This platform aims to:
+
+- Improve **student placement readiness**
+- Reduce malpractice in online assessments
+- Provide **data-driven institutional insights**
+- Simulate **real recruitment environments**
+- Bridge the **academia–industry gap**
 
 ---
 
-## 👨‍💻 Author
+# 👩‍💻 Authors
 
-Namrata & Riya Malik  
-B.Tech Computer Science AI/ML 
+### Namrata
+B.Tech Computer Science (AI/ML)  
+GitHub: https://github.com/namsrkive  
 
-🔗 GitHub: https://github.com/namsrkive
-🔗 GitHub: https://github.com/riyamalik05
+### Riya Malik
+B.Tech Computer Science (AI/ML)  
+GitHub: https://github.com/riyamalik05  
 
 ---
 
-## 📜 License
+# 🤝 Contributing
 
-This project is licensed under the MIT License.
+Contributions are welcome.
+
+1. Fork the repository  
+2. Create a new branch  
+
+```
+git checkout -b feature/new-feature
+```
+
+3. Commit changes  
+
+```
+git commit -m "Added new feature"
+```
+
+4. Push branch  
+
+```
+git push origin feature/new-feature
+```
+
+5. Open a Pull Request
+
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
 
 ---
 
 <div align="center">
 
-⭐ If this project inspires you, consider giving it a star! ⭐
+⭐ If you like this project, please consider giving it a star ⭐
 
 </div>
-
-
-
