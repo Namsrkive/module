@@ -31,7 +31,10 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreateTest from "./pages/admin/CreateTest";
-import QuestionBuilder from "./pages/admin/QuestionBuilder";
+
+import QuestionBank from "./pages/admin/QuestionBank";
+import ManageTests from "./pages/admin/ManageTests";
+import TestBuilder from "./pages/admin/TestBuilder";
 
 /* ================= NAV ITEMS ================= */
 
@@ -46,7 +49,9 @@ const NAV_ITEMS = [
 function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const isDashboard = location.pathname.startsWith("/dashboard");
+  const isDashboard =
+    location.pathname.startsWith("/dashboard") ||
+    location.pathname.startsWith("/admin");
 
   /* ---------- Dark Mode ---------- */
   const [darkMode, setDarkMode] = useState(() => {
@@ -184,13 +189,32 @@ function Layout() {
             />
             
             <Route
-            path="/admin/add-question"
+            path="/admin/question-bank"
             element={
             <ProtectedRoute allowedRole="admin">
-            <QuestionBuilder/>
+            <QuestionBank/>
             </ProtectedRoute>
             }
             />
+
+            <Route
+            path="/admin/manage-tests"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <ManageTests/>
+            </ProtectedRoute>
+            }
+            />
+            
+            <Route
+            path="/admin/test-builder"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <TestBuilder/>
+            </ProtectedRoute>
+            }
+            />
+            
             <Route path="/dashboard/modules" element={<ModuleTests />} />
             <Route path="/dashboard/company" element={<CompanyMocks />} />
             <Route path="/about" element={<About />} />

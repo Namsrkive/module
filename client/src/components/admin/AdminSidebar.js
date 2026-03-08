@@ -1,10 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-function AdminSidebar(){
+function AdminSidebar() {
 
 const navigate = useNavigate();
 
-return(
+return (
 
 <div className="sidebar">
 
@@ -29,6 +29,10 @@ Create Test
 
 <NavLink to="/admin/question-bank" className="menu-item">
 Question Bank
+</NavLink>
+
+<NavLink to="/admin/test-builder" className="menu-item">
+Test Builder
 </NavLink>
 
 <NavLink to="/admin/manage-tests" className="menu-item">

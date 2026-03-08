@@ -247,18 +247,13 @@ flex-direction:column;
 background:#f3f4f6;
 }
 
-/* HEADER */
-
 .tcs-header{
 display:flex;
 justify-content:space-between;
-align-items:center;
-background:white;
 padding:14px 20px;
+background:white;
 border-bottom:1px solid #e5e7eb;
 }
-
-/* BODY */
 
 .tcs-body{
 flex:1;
@@ -268,21 +263,59 @@ gap:20px;
 padding:20px;
 }
 
-/* QUESTION PANEL */
-
 .tcs-left{
 background:white;
 padding:20px;
-border-radius:12px;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
+border-radius:10px;
 }
 
-/* RIGHT PANEL */
+.options{
+margin-top:15px;
+}
 
-.tcs-right{
+.option{
+padding:10px;
+border:1px solid #e5e7eb;
+border-radius:6px;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.option.selected{
+background:#6366f1;
+color:white;
+}
+
+.palette-grid{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:8px;
+}
+
+.palette-btn{
+padding:8px;
+border-radius:6px;
+border:1px solid #d1d5db;
+}
+
+.palette-current{
+background:#6366f1;
+color:white;
+}
+
+.test-nav{
 display:flex;
-flex-direction:column;
-gap:15px;
+justify-content:space-between;
+padding:12px;
+background:white;
+}
+
+.submit-btn{
+background:#10b981;
+color:white;
+padding:8px 14px;
+border:none;
+border-radius:6px;
 }
 
 /* NAVBAR */
@@ -293,4 +326,79 @@ padding:12px 20px;
 display:flex;
 justify-content:space-between;
 border-top:1px solid #e5e7eb;
+}
+
+.form-card{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.question-card{
+background:white;
+padding:12px;
+border-radius:8px;
+margin-top:10px;
+box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+
+.test-card{
+background:white;
+padding:16px;
+border-radius:10px;
+margin-bottom:15px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.page-title{
+margin-bottom:20px;
+}
+
+.builder-card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+margin-bottom:30px;
+max-width:700px;
+}
+
+.form-group{
+display:flex;
+flex-direction:column;
+margin-bottom:16px;
+}
+
+.form-group label{
+font-weight:600;
+margin-bottom:6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+padding:10px;
+border:1px solid #e5e7eb;
+border-radius:8px;
+}
+
+.options-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:15px;
+}
+
+.question-list{
+margin-top:20px;
+}
+
+.question-card{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+margin-bottom:12px;
 }

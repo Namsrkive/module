@@ -530,3 +530,62 @@ border:none;
 border-radius:6px;
 cursor:pointer;
 }
+
+.builder-card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+margin-bottom:20px;
+}
+
+.form-row{
+display:flex;
+gap:20px;
+margin-bottom:20px;
+}
+
+.form-group{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.form-group label{
+margin-bottom:6px;
+font-weight:600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+padding:10px;
+border:1px solid #e5e7eb;
+border-radius:8px;
+}
+
+.question-list{
+margin-top:25px;
+}
+
+.question-card{
+background:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.tests-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.test-card{
+background:white;
+padding:18px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
