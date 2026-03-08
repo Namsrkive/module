@@ -1,6 +1,6 @@
 function TestLayout({ children }) {
   return (
-    <div className="tcs-test-container">
+    <div className="exam-container">
       {children}
     </div>
   );

@@ -466,3 +466,67 @@ transform:translateY(-3px) translateZ(0);
 .footer-enterprise{
 margin-left:260px;
 }
+
+/* Admin */
+
+.admin-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+margin-top:30px;
+}
+
+.admin-card{
+background:white;
+padding:25px;
+border-radius:14px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+transition:.2s;
+}
+
+.admin-card:hover{
+transform:translateY(-4px);
+box-shadow:0 12px 24px rgba(0,0,0,.1);
+}
+
+.admin-card h3{
+font-size:18px;
+margin-bottom:6px;
+}
+
+.create-test-form{
+background:white;
+padding:25px;
+border-radius:14px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+max-width:500px;
+margin-top:20px;
+}
+
+.form-group{
+margin-bottom:15px;
+display:flex;
+flex-direction:column;
+}
+
+.form-group label{
+font-size:14px;
+margin-bottom:5px;
+}
+
+.form-group input,
+.form-group select{
+padding:8px;
+border-radius:6px;
+border:1px solid #d1d5db;
+}
+
+.create-test-btn{
+margin-top:10px;
+padding:10px 16px;
+background:#6366f1;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}

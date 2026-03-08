@@ -16,7 +16,6 @@ import Home from "./pages/Home";
 import StudentLogin from "./pages/StudentLogin";
 import AdminLogin from "./pages/AdminLogin";
 import StudentDashboard from "./pages/StudentDashboard";
-import AdminDashboard from "./pages/AdminDashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/common/ScrollToTop";
@@ -29,6 +28,10 @@ import ModuleTests from "./pages/ModuleTests";
 import CompanyMocks from "./pages/CompanyMocks";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import CreateTest from "./pages/admin/CreateTest";
+import QuestionBuilder from "./pages/admin/QuestionBuilder";
 
 /* ================= NAV ITEMS ================= */
 
@@ -163,15 +166,30 @@ function Layout() {
             />
 
             <Route
-              path="/dashboard/admin"
-              element={
-                <ProtectedRoute allowedRole="admin">
-                  <AdminDashboard
-                    darkMode={darkMode}
-                    setDarkMode={setDarkMode}
-                  />
-                </ProtectedRoute>
-              }
+            path="/dashboard/admin"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <AdminDashboard/>
+            </ProtectedRoute>
+            }
+            />
+
+            <Route
+            path="/admin/create-test"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <CreateTest/>
+            </ProtectedRoute>
+            }
+            />
+            
+            <Route
+            path="/admin/add-question"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <QuestionBuilder/>
+            </ProtectedRoute>
+            }
             />
             <Route path="/dashboard/modules" element={<ModuleTests />} />
             <Route path="/dashboard/company" element={<CompanyMocks />} />

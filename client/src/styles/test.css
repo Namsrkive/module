@@ -173,3 +173,124 @@ font-size:13px;
 .start-mock-btn:hover{
 background:#4f46e5;
 }
+
+/* code editor */
+
+.code-editor{
+margin-top:20px;
+border-radius:10px;
+overflow:hidden;
+}
+
+.editor-header{
+display:flex;
+justify-content:space-between;
+background:#111827;
+padding:10px;
+}
+
+.run-btn{
+background:#10b981;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.submit-btn{
+background:#6366f1;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* proctor panel */
+
+/* ================= PROCTOR PANEL ================= */
+
+.proctor-panel{
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.webcam-box{
+margin-bottom:10px;
+border-radius:8px;
+overflow:hidden;
+}
+
+.proctor-status p{
+font-size:13px;
+margin-bottom:4px;
+}
+
+.face-monitor{
+margin-bottom:10px;
+border-radius:10px;
+overflow:hidden;
+}
+
+.face-status{
+font-size:12px;
+margin-top:6px;
+}
+
+.exam-container{
+height:100vh;
+display:flex;
+flex-direction:column;
+background:#f3f4f6;
+}
+
+/* HEADER */
+
+.tcs-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:white;
+padding:14px 20px;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* BODY */
+
+.tcs-body{
+flex:1;
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+padding:20px;
+}
+
+/* QUESTION PANEL */
+
+.tcs-left{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+/* RIGHT PANEL */
+
+.tcs-right{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+/* NAVBAR */
+
+.test-nav{
+background:white;
+padding:12px 20px;
+display:flex;
+justify-content:space-between;
+border-top:1px solid #e5e7eb;
+}
