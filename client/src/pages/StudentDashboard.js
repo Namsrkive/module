@@ -11,6 +11,7 @@ import ModulePerformanceChart from "../components/dashboard/ModulePerformanceCha
 import PlacementRadar from "../components/dashboard/PlacementRadar";
 import WeakAreasCard from "../components/dashboard/WeakAreasCard";
 import Leaderboard from "../components/dashboard/Leaderboard";
+import ProgressRing from "../components/dashboard/ProgressRing";
 
 import "../styles/dashboard.css";
 
@@ -111,17 +112,17 @@ level:"Hard"
 /* ANALYTICS DATA */
 
 const scoreTrend = [
-{test:"1",score:50},
-{test:"2",score:65},
-{test:"3",score:72},
-{test:"4",score:80}
+{test:"TEST 1",score:50},
+{test:"TEST 2",score:65},
+{test:"TEST 3",score:72},
+{test:"TEST 4",score:80}
 ];
 
 const modulePerformance = [
 {module:"Aptitude",accuracy:75},
 {module:"DSA",accuracy:68},
 {module:"DBMS",accuracy:55},
-{module:"Programming",accuracy:72}
+{module:"Prog.",accuracy:72}
 ];
 
 const radarData = [
@@ -159,8 +160,11 @@ return(
 <div className="header-right">
 
 <div className="readiness-card">
-<h4>Readiness</h4>
-<div className="readiness-score">{readinessScore}%</div>
+
+  <h4>Placement Readiness</h4>
+
+  <ProgressRing score={readinessScore} />
+
 </div>
 
 <ThemeToggle

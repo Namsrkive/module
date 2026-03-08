@@ -1,22 +1,13 @@
-import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-
-  const [active,setActive] = useState("dashboard");
-
-  const menu = [
-  {id:"dashboard",label:"Dashboard",icon:"📊"},
-  {id:"modules",label:"Module Tests",icon:"🧠"},
-  {id:"company",label:"Company Mocks",icon:"🏢"},
-  {id:"leaderboard",label:"Leaderboard",icon:"🏆"},
-  {id:"analytics",label:"Analytics",icon:"📈"}
-  ];
-
+      const navigate = useNavigate();
+      
   return (
 
     <div className="sidebar">
 
-      <div className="sidebar-top">
+      <div>
 
         <div className="sidebar-user">
 
@@ -25,35 +16,46 @@ export default function Sidebar() {
 
         </div>
 
-        <div className="sidebar-divider">
+        <div className="sidebar-divider"></div>
 
-          {menu.map(item=>(
-            <div
-              key={item.id}
-              className={`menu-item ${active===item.id ? "active":""}`}
-              onClick={()=>setActive(item.id)}
-            >
-              <span className="icon">{item.icon}</span>
-              <span>{item.label}</span>
-            </div>
-          ))}
+        <div className="menu">
+
+          <NavLink to="/dashboard/student" className="menu-item">
+            📊 Dashboard
+          </NavLink>
+
+          <NavLink to="/dashboard/modules" className="menu-item">
+            🧠 Module Tests
+          </NavLink>
+
+          <NavLink to="/dashboard/company" className="menu-item">
+            🏢 Company Mocks
+          </NavLink>
+
+          <NavLink to="/dashboard/leaderboard" className="menu-item">
+            🏆 Leaderboard
+          </NavLink>
+
+          <NavLink to="/dashboard/analytics" className="menu-item">
+            📈 Analytics
+          </NavLink>
 
         </div>
 
       </div>
 
-      <div className="sidebar-bottom">
-
-        <button
-        className="logout-btn"
-        onClick={()=> window.location.href="/login/student"}
-        >
-        🚪 Logout
-        </button>
-
-      </div>
+      <button
+      className="logout-btn"
+      onClick={()=>{
+      localStorage.removeItem("token");
+      navigate("/login/student");
+      }}
+      >
+      Logout
+      </button>
 
     </div>
 
   );
+
 }

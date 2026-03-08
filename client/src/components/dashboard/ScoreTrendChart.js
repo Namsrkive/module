@@ -14,7 +14,7 @@ export default function ScoreTrendChart({ data }) {
     <div className="chart-card">
       <h3>Score Trend</h3>
 
-      <ResponsiveContainer width="100%" height={250}>
+      <ResponsiveContainer width="100%" height={290}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="test" />

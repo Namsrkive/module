@@ -25,8 +25,10 @@ import StudentRegister from "./pages/StudentRegister";
 import { Toaster } from "react-hot-toast";
 import "./styles/auth.css";
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import TestPage from "./pages/TestPage";
-import TestResult from "./pages/TestResult";
+import ModuleTests from "./pages/ModuleTests";
+import CompanyMocks from "./pages/CompanyMocks";
+import LeaderboardPage from "./pages/LeaderboardPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
 /* ================= NAV ITEMS ================= */
 
@@ -125,6 +127,42 @@ function Layout() {
             />
 
             <Route
+              path="/dashboard/modules"
+              element={
+                <ProtectedRoute allowedRole="student">
+                  <ModuleTests />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/company"
+              element={
+                <ProtectedRoute allowedRole="student">
+                  <CompanyMocks />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/leaderboard"
+              element={
+                <ProtectedRoute allowedRole="student">
+                  <LeaderboardPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/analytics"
+              element={
+                <ProtectedRoute allowedRole="student">
+                  <AnalyticsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
               path="/dashboard/admin"
               element={
                 <ProtectedRoute allowedRole="admin">
@@ -135,17 +173,16 @@ function Layout() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/dashboard/modules" element={<ModuleTests />} />
+            <Route path="/dashboard/company" element={<CompanyMocks />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/register/student" element={<StudentRegister />} />
-            <Route path="/test" element={<TestPage />} />
-            <Route path="/test-result" element={<TestResult />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
 
       {/* ================= FOOTER ================= */}
-      {!isDashboard && (
         <footer className="footer-enterprise">
 
           <div className="footer-gradient-line" />
@@ -186,7 +223,7 @@ function Layout() {
               <h4>Support</h4>
               <span>support@placementportal.com</span>
               <span>Mon – Fri | 09:00 – 18:00 IST</span>
-              <span>India | Global Deployment</span>
+              <span>India | KRMU </span>
             </div>
 
           </div>
@@ -203,7 +240,6 @@ function Layout() {
           </div>
 
         </footer>
-      )}
     </>
   );
 }

@@ -14,7 +14,7 @@ export default function PlacementRadar({ data }) {
 
       <h3>Skill Radar</h3>
 
-      <ResponsiveContainer width="100%" height={320}>
+      <ResponsiveContainer width="100%" height={290}>
 
         <RadarChart outerRadius={130} data={data}>
 

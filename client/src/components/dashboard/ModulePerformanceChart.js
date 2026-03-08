@@ -13,7 +13,7 @@ export default function ModulePerformanceChart({ data }) {
     <div className="chart-card">
       <h3>Module Performance</h3>
 
-      <ResponsiveContainer width="100%" height={250}>
+      <ResponsiveContainer width="100%" height={290}>
         <BarChart data={data}>
           <XAxis dataKey="module" />
           <YAxis />
