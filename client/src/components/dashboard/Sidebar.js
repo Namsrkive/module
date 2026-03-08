@@ -1,27 +1,59 @@
-import { useContext } from "react";
-import { ThemeContext } from "../../context/ThemeContext";
+import { useState } from "react";
 
 export default function Sidebar() {
-  const { toggleTheme } = useContext(ThemeContext);
+
+  const [active,setActive] = useState("dashboard");
+
+  const menu = [
+  {id:"dashboard",label:"Dashboard",icon:"📊"},
+  {id:"modules",label:"Module Tests",icon:"🧠"},
+  {id:"company",label:"Company Mocks",icon:"🏢"},
+  {id:"leaderboard",label:"Leaderboard",icon:"🏆"},
+  {id:"analytics",label:"Analytics",icon:"📈"}
+  ];
 
   return (
+
     <div className="sidebar">
 
-      <h2 className="logo">Placement Portal</h2>
+      <div className="sidebar-top">
 
-      <nav>
-        <a href="/dashboard/student">Dashboard</a>
-        <a href="/tests/modules">Module Tests</a>
-        <a href="/tests/company">Company Mocks</a>
-        <a href="/leaderboard">Leaderboard</a>
-        <a href="/analytics">Analytics</a>
-      </nav>
+        <div className="sidebar-user">
+
+          <h2>Welcome</h2>
+          <p className="student-name">NAMRATA</p>
+
+        </div>
+
+        <div className="sidebar-divider">
+
+          {menu.map(item=>(
+            <div
+              key={item.id}
+              className={`menu-item ${active===item.id ? "active":""}`}
+              onClick={()=>setActive(item.id)}
+            >
+              <span className="icon">{item.icon}</span>
+              <span>{item.label}</span>
+            </div>
+          ))}
+
+        </div>
+
+      </div>
 
       <div className="sidebar-bottom">
-        <button onClick={toggleTheme}>🌗 Toggle Theme</button>
-        <button className="logout">Logout</button>
+
+        <button
+        className="logout-btn"
+        onClick={()=> window.location.href="/login/student"}
+        >
+        🚪 Logout
+        </button>
+
       </div>
 
     </div>
+
   );
 }

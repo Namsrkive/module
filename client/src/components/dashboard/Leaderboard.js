@@ -1,16 +1,44 @@
-import React from "react";
+export default function Leaderboard(){
 
-export default function Leaderboard() {
-  return (
-    <div className="leaderboard">
+  const data = [
+    {name:"Rahul",score:92},
+    {name:"Priya",score:89},
+    {name:"Amit",score:87},
+    {name:"You",score:78}
+  ];
+
+  return(
+
+    <div className="leaderboard-card">
+
       <h3>Leaderboard 🏆</h3>
 
-      <ol>
-        <li>Rahul — 92%</li>
-        <li>Priya — 89%</li>
-        <li>Amit — 87%</li>
-        <li>You — 78%</li>
-      </ol>
+      <div className="leaderboard-list">
+
+        {data.map((p,i)=>(
+
+          <div key={i} className="leaderboard-item">
+
+            <span className="rank">
+              {i+1}
+            </span>
+
+            <span className="name">
+              {p.name}
+            </span>
+
+            <span className="score">
+              {p.score}%
+            </span>
+
+          </div>
+
+        ))}
+
+      </div>
+
     </div>
+
   );
+
 }
