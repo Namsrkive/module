@@ -14,13 +14,13 @@ export default function PlacementRadar({ data }) {
 
       <h3>Skill Radar</h3>
 
-      <ResponsiveContainer width="100%" height={360}>
+      <ResponsiveContainer width="100%" height={320}>
 
-        <RadarChart outerRadius={120} data={data}>
+        <RadarChart outerRadius={130} data={data}>
 
           <PolarGrid />
 
-          <PolarAngleAxis dataKey="subject" tick={{fontSize:13}} />
+          <PolarAngleAxis dataKey="subject" tick={{fontSize:9}} />
 
           <Radar
             name="Skill"

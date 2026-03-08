@@ -125,10 +125,10 @@ const modulePerformance = [
 ];
 
 const radarData = [
-{subject:"Aptitude",score:75},
-{subject:"DSA",score:68},
-{subject:"DBMS",score:55},
-{subject:"Programming",score:72}
+{subject:"Programming",score:50},
+{subject:"DBMS",score:68},
+{subject:"Aptitude",score:55},
+{subject:"DSA",score:72}
 ];
 
 const weakAreas = [
