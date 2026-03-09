@@ -4,6 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 function AdminLogin() {
+
   const navigate = useNavigate();
 
   /* ================= SYSTEM ADMINS ================= */
@@ -21,59 +22,107 @@ function AdminLogin() {
 
   /* ================= STATES ================= */
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
-  const [showOTP, setShowOTP] = useState(false);
-  const [otp, setOtp] = useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [showPassword,setShowPassword] = useState(false);
+  const [remember,setRemember] = useState(false);
+  const [showOTP,setShowOTP] = useState(false);
 
-  /* ================= LOGIN STEP ================= */
+  const [otp,setOtp] = useState(["","","","","",""]);
+
+  /* ================= LOGIN ================= */
 
   const handleLogin = () => {
-    if (!email || !password) {
+
+    if(!email || !password){
       toast.error("Please enter admin credentials");
       return;
     }
 
     const admin = SYSTEM_ADMINS.find(
-      (a) => a.email === email && a.password === password
+      (a)=> a.email === email && a.password === password
     );
 
-    if (!admin) {
+    if(!admin){
       toast.error("Invalid admin credentials");
       return;
     }
 
     toast.success("Admin verification code sent 🔐");
     setShowOTP(true);
+
   };
 
-  /* ================= OTP STEP ================= */
+  /* ================= OTP VERIFY ================= */
 
   const handleVerifyOTP = () => {
-    if (otp === "999999") {
+
+    if(otp.join("") === "999999"){
+
       toast.success("Admin Access Granted 🛡️");
 
-      if (remember) {
-        localStorage.setItem("adminRemembered", email);
+      if(remember){
+        localStorage.setItem("adminRemembered",email);
       }
 
-      /* IMPORTANT FOR ProtectedRoute */
-
-      localStorage.setItem("role", "admin");
+      localStorage.setItem("role","admin");
 
       navigate("/dashboard/admin");
+
     } else {
+
       toast.error("Invalid verification code");
+
     }
+
   };
 
   const resendOTP = () => {
+
     toast.success("Verification code resent 🔁");
+
+  };
+
+  /* ================= OTP INPUT HANDLING ================= */
+
+  const handleOtpChange = (e,index) => {
+
+    const value = e.target.value;
+
+    if(!/^[0-9]?$/.test(value)) return;
+
+    const newOtp = [...otp];
+    newOtp[index] = value;
+
+    setOtp(newOtp);
+
+    if(value && index < 5){
+      e.target.nextElementSibling?.focus();
+    }
+
+  };
+
+  const handleOtpKeyDown = (e,index) => {
+
+    if(e.key === "Backspace" && !otp[index] && index > 0){
+      e.target.previousElementSibling?.focus();
+    }
+
+  };
+
+  const handleOtpPaste = (e) => {
+
+    const paste = e.clipboardData.getData("text").trim();
+
+    if(!/^\d{6}$/.test(paste)) return;
+
+    const newOtp = paste.split("");
+    setOtp(newOtp);
+
   };
 
   return (
+
     <div className="auth-wrapper admin-auth">
 
       {/* LEFT PANEL */}
@@ -90,96 +139,115 @@ function AdminLogin() {
 
       </div>
 
+
       {/* RIGHT PANEL */}
 
       <motion.div
         className="auth-card glass-card"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        initial={{opacity:0,y:40}}
+        animate={{opacity:1,y:0}}
+        transition={{duration:.4}}
       >
 
         <h2>Admin Login</h2>
 
         {!showOTP ? (
+
           <>
 
-            <div className="input-group">
+          <div className="input-group">
+
+            <input
+              type="email"
+              placeholder="Admin Email"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
+            />
+
+            <div className="password-wrapper">
 
               <input
-                type="email"
-                placeholder="Admin Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type={showPassword ? "text":"password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
               />
 
-              <div className="password-wrapper">
-
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <span
-                  className="toggle-eye"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </span>
-
-              </div>
+              <span
+                className="toggle-eye"
+                onClick={()=>setShowPassword(!showPassword)}
+              >
+                {showPassword ? "👁️" : "👁️‍🗨️"}
+              </span>
 
             </div>
 
-            <div className="auth-options">
+          </div>
 
-              <label>
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={() => setRemember(!remember)}
-                />
-                Remember Me
-              </label>
+          <div className="auth-options">
 
-            </div>
+            <label className="remember-box">
 
-            <button
-              className="primary-btn admin-btn large"
-              onClick={handleLogin}
-            >
-              Continue
-            </button>
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={()=>setRemember(!remember)}
+              />
+
+              Remember Me
+
+            </label>
+
+          </div>
+
+          <button
+            className="primary-btn admin-btn large"
+            onClick={handleLogin}
+          >
+            Continue
+          </button>
 
           </>
+
         ) : (
+
           <>
 
-            <div className="input-group">
+          <div
+            className="otp-container"
+            onPaste={handleOtpPaste}
+          >
 
+            {otp.map((digit,index)=>(
               <input
+                key={index}
                 type="text"
-                placeholder="Enter 6-digit Admin OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
+                maxLength="1"
+                className="otp-box"
+                value={digit}
+                onChange={(e)=>handleOtpChange(e,index)}
+                onKeyDown={(e)=>handleOtpKeyDown(e,index)}
               />
+            ))}
 
-            </div>
+          </div>
 
-            <button
-              className="primary-btn admin-btn large"
-              onClick={handleVerifyOTP}
-            >
-              Verify & Login
-            </button>
+          <button
+            className="primary-btn admin-btn large"
+            onClick={handleVerifyOTP}
+          >
+            Verify & Login
+          </button>
 
-            <p className="resend-link" onClick={resendOTP}>
-              Resend Verification Code
-            </p>
+          <p
+            className="resend-link"
+            onClick={resendOTP}
+          >
+            Resend Verification Code
+          </p>
 
           </>
+
         )}
 
         <p className="auth-footer secure-note">
@@ -187,8 +255,11 @@ function AdminLogin() {
         </p>
 
       </motion.div>
+
     </div>
+
   );
+
 }
 
 export default AdminLogin;

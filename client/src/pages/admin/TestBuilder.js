@@ -1,6 +1,6 @@
 import { useState } from "react"
 import AdminSidebar from "../../components/admin/AdminSidebar"
-import { getTests, generateTest, getQuestions } from "../../data/testStore"
+import { getTests, generateTest } from "../../data/testStore"
 
 function TestBuilder(){
 
