@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 export default function ProgressRing({ score }) {
 
   const radius = 40;

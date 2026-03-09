@@ -4,7 +4,49 @@ import "../../styles/dashboard.css";
 
 function QuestionBuilder(){
 
+const modules = {
+  Aptitude:["Quant Basics","Probability","Number Series","Logical Reasoning"],
+  DSA:["Arrays","Trees","Graphs","Dynamic Programming"],
+  DBMS:["Normalization","SQL Queries","Transactions"],
+  Programming:["OOP","Operating Systems","Computer Networks"]
+}
+
 const [questionType,setQuestionType] = useState("mcq");
+const [module,setModule] = useState("");
+const [topic,setTopic] = useState("");
+
+const [form,setForm] = useState({
+question:"",
+optionA:"",
+optionB:"",
+optionC:"",
+optionD:"",
+correctAnswer:"",
+starterCode:"",
+expectedOutput:""
+})
+
+function handleChange(e){
+setForm({
+...form,
+[e.target.name]:e.target.value
+})
+}
+
+function handleSave(){
+
+const newQuestion = {
+module,
+topic,
+questionType,
+...form
+}
+
+console.log("Saved Question:",newQuestion)
+
+alert("Question Saved")
+
+}
 
 return(
 
@@ -17,6 +59,55 @@ return(
 <h1 className="page-title">Add Question</h1>
 
 <div className="create-test-form">
+
+{/* Module */}
+
+<div className="form-group">
+
+<label>Module</label>
+
+<select
+value={module}
+onChange={(e)=>{
+setModule(e.target.value)
+setTopic("")
+}}
+>
+
+<option value="">Select Module</option>
+
+{Object.keys(modules).map((m)=>(
+<option key={m} value={m}>{m}</option>
+))}
+
+</select>
+
+</div>
+
+
+{/* Topic */}
+
+<div className="form-group">
+
+<label>Topic</label>
+
+<select
+value={topic}
+onChange={(e)=>setTopic(e.target.value)}
+>
+
+<option value="">Select Topic</option>
+
+{module && modules[module].map((t)=>(
+<option key={t} value={t}>{t}</option>
+))}
+
+</select>
+
+</div>
+
+
+{/* Question Type */}
 
 <div className="form-group">
 
@@ -34,13 +125,23 @@ onChange={(e)=>setQuestionType(e.target.value)}
 
 </div>
 
+
+{/* Question */}
+
 <div className="form-group">
 
 <label>Question</label>
 
-<textarea placeholder="Enter question"/>
+<textarea
+name="question"
+placeholder="Enter question"
+onChange={handleChange}
+/>
 
 </div>
+
+
+{/* MCQ Section */}
 
 {questionType==="mcq" && (
 
@@ -48,32 +149,55 @@ onChange={(e)=>setQuestionType(e.target.value)}
 
 <div className="form-group">
 <label>Option A</label>
-<input type="text"/>
+<input
+type="text"
+name="optionA"
+onChange={handleChange}
+/>
 </div>
 
 <div className="form-group">
 <label>Option B</label>
-<input type="text"/>
+<input
+type="text"
+name="optionB"
+onChange={handleChange}
+/>
 </div>
 
 <div className="form-group">
 <label>Option C</label>
-<input type="text"/>
+<input
+type="text"
+name="optionC"
+onChange={handleChange}
+/>
 </div>
 
 <div className="form-group">
 <label>Option D</label>
-<input type="text"/>
+<input
+type="text"
+name="optionD"
+onChange={handleChange}
+/>
 </div>
 
 <div className="form-group">
+
 <label>Correct Answer</label>
 
-<select>
-<option>A</option>
-<option>B</option>
-<option>C</option>
-<option>D</option>
+<select
+name="correctAnswer"
+onChange={handleChange}
+>
+
+<option value="">Select</option>
+<option value="A">A</option>
+<option value="B">B</option>
+<option value="C">C</option>
+<option value="D">D</option>
+
 </select>
 
 </div>
@@ -81,6 +205,9 @@ onChange={(e)=>setQuestionType(e.target.value)}
 </>
 
 )}
+
+
+{/* Coding Section */}
 
 {questionType==="coding" && (
 
@@ -105,7 +232,11 @@ onChange={(e)=>setQuestionType(e.target.value)}
 
 <label>Starter Code</label>
 
-<textarea placeholder="Provide starter code"/>
+<textarea
+name="starterCode"
+placeholder="Provide starter code"
+onChange={handleChange}
+/>
 
 </div>
 
@@ -113,7 +244,11 @@ onChange={(e)=>setQuestionType(e.target.value)}
 
 <label>Expected Output</label>
 
-<textarea placeholder="Enter expected output"/>
+<textarea
+name="expectedOutput"
+placeholder="Enter expected output"
+onChange={handleChange}
+/>
 
 </div>
 
@@ -121,8 +256,13 @@ onChange={(e)=>setQuestionType(e.target.value)}
 
 )}
 
-<button className="create-test-btn">
+<button
+className="create-test-btn"
+onClick={handleSave}
+>
+
 Save Question
+
 </button>
 
 </div>

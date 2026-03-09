@@ -1,88 +1,90 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
-import Webcam from "react-webcam";
 
-function FaceMonitor(){
+function FaceMonitor({ addViolation }) {
 
-const webcamRef = useRef(null);
+  const videoRef = useRef(null);
+  const intervalRef = useRef(null);
 
-const [faceStatus,setFaceStatus] = useState("Detecting...");
-const [warnings,setWarnings] = useState(0);
+  useEffect(() => {
 
-useEffect(()=>{
+    const loadModels = async () => {
+      try {
+        await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
+        startVideo();
+      } catch (err) {
+        console.error("Model loading error:", err);
+      }
+    };
 
-const loadModels = async ()=>{
+    loadModels();
 
-await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      stopVideo();
+    };
 
-};
+  }, []);
 
-loadModels();
+  const startVideo = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
-},[]);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
 
-useEffect(()=>{
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current.play();
+          startDetection();
+        };
+      }
 
-const interval = setInterval(async ()=>{
+    } catch (err) {
+      console.error("Camera access denied:", err);
+    }
+  };
 
-if(!webcamRef.current) return;
+  const stopVideo = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+    }
+  };
 
-const video = webcamRef.current.video;
+  const startDetection = () => {
 
-if(!video) return;
+    intervalRef.current = setInterval(async () => {
 
-const detections = await faceapi.detectAllFaces(
-video,
-new faceapi.TinyFaceDetectorOptions()
-);
+      if (!videoRef.current) return;
 
-if(detections.length === 0){
+      const detections = await faceapi.detectAllFaces(
+        videoRef.current,
+        new faceapi.TinyFaceDetectorOptions()
+      );
 
-setFaceStatus("No Face Detected");
-setWarnings(prev=>prev+1);
+      if (detections.length === 0) {
+        console.log("No face detected");
+        addViolation("No face detected");
+      }
 
-}
+      if (detections.length > 1) {
+        console.log("Multiple faces detected");
+        addViolation("Multiple faces detected");
+      }
 
-else if(detections.length > 1){
+    }, 5000);
 
-setFaceStatus("Multiple Faces Detected");
-setWarnings(prev=>prev+1);
+  };
 
-}
-
-else{
-
-setFaceStatus("Face Detected");
-
-}
-
-},3000);
-
-return ()=>clearInterval(interval);
-
-},[]);
-
-return(
-
-<div className="face-monitor">
-
-<Webcam
-ref={webcamRef}
-audio={false}
-width="100%"
-/>
-
-<div className="face-status">
-
-<p>Status: {faceStatus}</p>
-
-<p>Warnings: {warnings}</p>
-
-</div>
-
-</div>
-
-);
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      playsInline
+      className="proctor-video"
+    />
+  );
 
 }
 

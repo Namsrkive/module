@@ -8,11 +8,13 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
+    "cross-env": "^10.1.0",
     "face-api.js": "^0.22.2",
     "framer-motion": "^12.35.0",
     "lucide-react": "^0.575.0",
     "nprogress": "^0.2.0",
     "react": "^19.2.4",
+    "react-app-rewired": "^2.2.1",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.4",
     "react-hot-toast": "^2.6.0",
@@ -24,8 +26,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

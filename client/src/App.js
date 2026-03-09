@@ -36,6 +36,9 @@ import QuestionBank from "./pages/admin/QuestionBank";
 import ManageTests from "./pages/admin/ManageTests";
 import TestBuilder from "./pages/admin/TestBuilder";
 
+import TestPage from "./pages/TestPage";
+import TestStart from "./pages/TestStart";
+
 /* ================= NAV ITEMS ================= */
 
 const NAV_ITEMS = [
@@ -215,6 +218,9 @@ function Layout() {
             }
             />
             
+            <Route path="/test/:module/:topic" element={<TestStart/>}/>
+            <Route path="/test/:module/:topic/attempt" element={<TestPage/>}/>
+
             <Route path="/dashboard/modules" element={<ModuleTests />} />
             <Route path="/dashboard/company" element={<CompanyMocks />} />
             <Route path="/about" element={<About />} />

@@ -11,16 +11,17 @@ const [difficulty,setDifficulty] = useState("medium")
 
 const handleCreate = () => {
 
-const newTest = {
-id: Date.now(),
-title,
-duration,
-type,
-difficulty,
-questions:[]
+if(!title || !duration){
+alert("Please fill all fields")
+return
 }
 
-createTest(newTest)
+createTest({
+name: title,
+duration: Number(duration),
+type,
+difficulty
+})
 
 alert("Test created successfully")
 
@@ -37,28 +38,35 @@ return(
 
 <div className="dashboard-main">
 
-<h1>Create New Test</h1>
+<h1 className="page-title">Create New Test</h1>
 
 <div className="builder-card">
 
 <div className="form-row">
 
 <div className="form-group">
+
 <label>Test Name</label>
+
 <input
 value={title}
 onChange={(e)=>setTitle(e.target.value)}
 placeholder="Example: TCS Mock Test"
 />
+
 </div>
 
 <div className="form-group">
+
 <label>Duration (minutes)</label>
+
 <input
+type="number"
 value={duration}
 onChange={(e)=>setDuration(e.target.value)}
 placeholder="90"
 />
+
 </div>
 
 </div>
@@ -66,6 +74,7 @@ placeholder="90"
 <div className="form-row">
 
 <div className="form-group">
+
 <label>Test Type</label>
 
 <select
@@ -89,9 +98,9 @@ value={difficulty}
 onChange={(e)=>setDifficulty(e.target.value)}
 >
 
-<option>Easy</option>
-<option>Medium</option>
-<option>Hard</option>
+<option value="easy">Easy</option>
+<option value="medium">Medium</option>
+<option value="hard">Hard</option>
 
 </select>
 
@@ -103,7 +112,9 @@ onChange={(e)=>setDifficulty(e.target.value)}
 className="primary-btn"
 onClick={handleCreate}
 >
+
 Create Test
+
 </button>
 
 </div>
@@ -116,4 +127,4 @@ Create Test
 
 }
 
-export default CreateTest;
+export default CreateTest

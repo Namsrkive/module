@@ -96,18 +96,23 @@ function StudentLogin() {
 
             {/* Remember + Forgot */}
             <div className="auth-options">
-              <label>
+              <div className="remember-box">
                 <input
                   type="checkbox"
+                  id="remember"
                   checked={remember}
                   onChange={() => setRemember(!remember)}
                 />
-                Remember Me
-              </label>
+                <label htmlFor="remember">Remember Me</label>
+              </div>
 
-              <span className="forgot-link" onClick={forgotPassword}>
+              <button
+                type="button"
+                className="forgot-link"
+                onClick={forgotPassword}
+              >
                 Forgot Password?
-              </span>
+              </button>
             </div>
 
             <button className="primary-btn large" onClick={handleLogin}>

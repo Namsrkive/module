@@ -34,10 +34,6 @@ box-shadow:0 6px 18px rgba(0,0,0,0.05);
 
 /* module header */
 
-.module-header{
-margin-bottom:15px;
-}
-
 .module-header h2{
 font-size:20px;
 margin-bottom:3px;
@@ -207,16 +203,7 @@ border-radius:6px;
 cursor:pointer;
 }
 
-/* proctor panel */
-
 /* ================= PROCTOR PANEL ================= */
-
-.proctor-panel{
-background:white;
-padding:15px;
-border-radius:12px;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
-}
 
 .webcam-box{
 margin-bottom:10px;
@@ -248,75 +235,159 @@ background:#f3f4f6;
 }
 
 .tcs-header{
+
 display:flex;
 justify-content:space-between;
-padding:14px 20px;
+align-items:center;
+padding:15px 25px;
 background:white;
-border-bottom:1px solid #e5e7eb;
+border-bottom:1px solid #eee;
+
 }
 
+.timer{
+
+font-weight:bold;
+color:#6b63ff;
+
+}
 .tcs-body{
-flex:1;
+
 display:grid;
 grid-template-columns:2fr 1fr;
-gap:20px;
-padding:20px;
-}
+gap:30px;
 
+}
 .tcs-left{
+
+flex:2;
 background:white;
 padding:20px;
 border-radius:10px;
+
+}
+
+.tcs-right{
+
+flex:1;
+background:white;
+padding:20px;
+border-radius:10px;
+
 }
 
 .options{
-margin-top:15px;
+
+margin-top:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+
 }
 
 .option{
+
 padding:10px;
-border:1px solid #e5e7eb;
-border-radius:6px;
-margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:8px;
 cursor:pointer;
+
+}
+
+.option:hover{
+
+background:#f4f4ff;
+
 }
 
 .option.selected{
-background:#6366f1;
+
+background:#6b63ff;
 color:white;
+
 }
 
 .palette-grid{
+
 display:grid;
 grid-template-columns:repeat(5,1fr);
-gap:8px;
+gap:10px;
+margin-bottom:20px;
+
 }
 
 .palette-btn{
+
 padding:8px;
+border:none;
+background:#eee;
 border-radius:6px;
-border:1px solid #d1d5db;
+cursor:pointer;
+
 }
 
 .palette-current{
-background:#6366f1;
+
+background:#6b63ff;
 color:white;
+
 }
 
 .test-nav{
+
 display:flex;
-justify-content:space-between;
-padding:12px;
-background:white;
+justify-content:center;
+gap:20px;
+margin-top:20px;
+
 }
 
 .submit-btn{
-background:#10b981;
+
+background:#ff4d4f;
 color:white;
-padding:8px 14px;
 border:none;
-border-radius:6px;
+padding:10px 20px;
+border-radius:8px;
+
 }
+
+.proctor-panel{
+
+margin-top:20px;
+padding:15px;
+border:1px solid #eee;
+border-radius:10px;
+
+}
+
+.proctor-status p{
+
+font-size:13px;
+margin:5px 0;
+
+}
+
+.violation{
+
+color:red;
+font-weight:bold;
+
+}
+
+.proctor-video{
+
+position:fixed;
+bottom:20px;
+right:20px;
+width:180px;
+height:130px;
+border-radius:10px;
+border:2px solid #6b63ff;
+box-shadow:0 5px 20px rgba(0,0,0,0.25);
+
+}
+
 
 /* NAVBAR */
 
