@@ -128,3 +128,22 @@ test.questions.push(...selected)
 localStorage.setItem("tests",JSON.stringify(tests))
 
 }
+
+// RESULT STORE
+let results = [];
+
+export function saveResult(result) {
+  results.push(result);
+}
+
+export function getResults() {
+  return results;
+}
+
+export function getResultsByStudent(studentId) {
+  return results.filter(r => r.studentId === studentId);
+}
+
+export function getResultsByTest(testId) {
+  return results.filter(r => r.testId === testId);
+}

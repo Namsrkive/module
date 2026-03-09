@@ -32,6 +32,10 @@ export default function Sidebar() {
             🏢 Company Mocks
           </NavLink>
 
+          <NavLink to="/dashboard/results" className="menu-item">
+            📝 Results
+          </NavLink>
+
           <NavLink to="/dashboard/leaderboard" className="menu-item">
             🏆 Leaderboard
           </NavLink>

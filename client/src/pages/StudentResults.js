@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import "../../styles/results.css";
+import "../styles/results.css";
 
 function StudentResults() {
 
@@ -19,12 +19,12 @@ return(
 
 <div className="dashboard-page">
 
-<h2 className="page-title">Student Test Results</h2>
+<h2 className="page-title">My Test Results</h2>
 
 {history.length === 0 ? (
 
 <div className="empty-state">
-No student attempts yet.
+No tests attempted yet.
 </div>
 
 ) : (
@@ -34,7 +34,6 @@ No student attempts yet.
 <thead>
 
 <tr>
-<th>Student</th>
 <th>Test</th>
 <th>Score</th>
 <th>Accuracy</th>
@@ -53,8 +52,6 @@ const accuracy =
 return(
 
 <tr key={test.id}>
-
-<td>Namrata</td>
 
 <td>{test.title}</td>
 

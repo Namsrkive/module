@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { getQuestionsByModuleTopic } from "../data/testStore";
+import { submitTest as submitTestEngine } from "../services/testEngine";
 
 import TestLayout from "../components/test/TestLayout";
 import CodeEditor from "../components/test/CodeEditor";
@@ -47,9 +48,27 @@ setAnswers({
 
 const submitTest=()=>{
 
-alert("Test Submitted");
+// prepare answers array
+const answerArray = questions.map((q,i)=>answers[i] || null);
 
-navigate("/dashboard/modules");
+// create a test object
+const test = {
+id: `${module}-${topic}`,
+title: `${module} ${topic}`,
+questions
+};
+
+// call test engine
+const result = submitTestEngine({
+studentId: "student1",
+test,
+answers: answerArray,
+violations: 0,
+timeTaken: 1200
+});
+
+// navigate to results page
+navigate("/test-result", { state: result });
 
 };
 

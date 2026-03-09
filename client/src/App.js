@@ -38,7 +38,9 @@ import TestBuilder from "./pages/admin/TestBuilder";
 
 import TestPage from "./pages/TestPage";
 import TestStart from "./pages/TestStart";
-
+import TestResult from "./pages/TestResult";
+import AdminStudentResults from "./pages/admin/StudentResults";
+import StudentResults from "./pages/StudentResults";
 /* ================= NAV ITEMS ================= */
 
 const NAV_ITEMS = [
@@ -54,7 +56,8 @@ function Layout() {
   const location = useLocation();
   const isDashboard =
     location.pathname.startsWith("/dashboard") ||
-    location.pathname.startsWith("/admin");
+    location.pathname.startsWith("/admin") ||
+    location.pathname.startsWith("/test");
 
   /* ---------- Dark Mode ---------- */
   const [darkMode, setDarkMode] = useState(() => {
@@ -156,12 +159,14 @@ function Layout() {
             />
 
             <Route
-              path="/dashboard/leaderboard"
-              element={
-                <ProtectedRoute allowedRole="student">
-                  <LeaderboardPage />
-                </ProtectedRoute>
-              }
+            path="/dashboard/leaderboard"
+            element={
+            <ProtectedRoute allowedRole="student">
+            <StudentDashboard>
+            <LeaderboardPage />
+            </StudentDashboard>
+            </ProtectedRoute>
+            }
             />
 
             <Route
@@ -217,12 +222,31 @@ function Layout() {
             </ProtectedRoute>
             }
             />
-            
+
+            <Route
+            path="/admin/student-results"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <AdminStudentResults/>
+            </ProtectedRoute>
+            }
+            />
+
+            <Route
+            path="/dashboard/results"
+            element={
+            <ProtectedRoute allowedRole="student">
+            <StudentDashboard>
+            <StudentResults />
+            </StudentDashboard>
+            </ProtectedRoute>
+            }
+            />
+
             <Route path="/test/:module/:topic" element={<TestStart/>}/>
             <Route path="/test/:module/:topic/attempt" element={<TestPage/>}/>
-
-            <Route path="/dashboard/modules" element={<ModuleTests />} />
-            <Route path="/dashboard/company" element={<CompanyMocks />} />
+ 
+            <Route path="/test-result" element={<TestResult />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/register/student" element={<StudentRegister />} />

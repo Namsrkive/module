@@ -1,28 +1,54 @@
 import { useState } from "react";
-
 import Sidebar from "../components/dashboard/Sidebar";
+
 import ThemeToggle from "../components/dashboard/ThemeToggle";
 import StatCard from "../components/dashboard/StatCard";
 import ModuleTestCard from "../components/dashboard/ModuleTestCard";
 import CompanyTestCard from "../components/dashboard/CompanyTestCard";
 import TestInfoModal from "../components/dashboard/TestInfoModal";
+
 import ScoreTrendChart from "../components/dashboard/ScoreTrendChart";
 import ModulePerformanceChart from "../components/dashboard/ModulePerformanceChart";
 import PlacementRadar from "../components/dashboard/PlacementRadar";
+
 import WeakAreasCard from "../components/dashboard/WeakAreasCard";
 import Leaderboard from "../components/dashboard/Leaderboard";
 import ProgressRing from "../components/dashboard/ProgressRing";
 
 import "../styles/dashboard.css";
 
-export default function StudentDashboard() {
+export default function StudentDashboard({ children }) {
 
 const [darkMode,setDarkMode] = useState(false);
 const [selectedTest,setSelectedTest] = useState(null);
 
 const toggleTheme = () => setDarkMode(!darkMode);
 
-/* MODULE DATA */
+/* ================= CHILD PAGE MODE ================= */
+/* If a child page (Results / Leaderboard / Analytics) is passed,
+   render layout with sidebar only */
+
+if(children){
+
+return(
+
+<div className={`dashboard-layout ${darkMode?"dark":"light"}`}>
+
+<Sidebar/>
+
+<div className="dashboard-main">
+
+{children}
+
+</div>
+
+</div>
+
+);
+
+}
+
+/* ================= DASHBOARD DATA ================= */
 
 const modules = [
 
@@ -68,8 +94,6 @@ syllabus:["OOP","OS","CN","Coding"]
 
 ];
 
-/* COMPANY MOCKS */
-
 const companies = [
 
 {
@@ -109,8 +133,6 @@ level:"Hard"
 
 ];
 
-/* ANALYTICS DATA */
-
 const scoreTrend = [
 {test:"TEST 1",score:50},
 {test:"TEST 2",score:65},
@@ -140,7 +162,7 @@ const weakAreas = [
 
 const readinessScore = 73;
 
-/* UI */
+/* ================= MAIN DASHBOARD UI ================= */
 
 return(
 
@@ -161,22 +183,17 @@ return(
 
 <div className="readiness-card">
 
-  <h4>Placement Readiness</h4>
+<h4>Placement Readiness</h4>
 
-  <ProgressRing score={readinessScore} />
+<ProgressRing score={readinessScore}/>
 
 </div>
 
-<ThemeToggle
-darkMode={darkMode}
-toggleTheme={toggleTheme}
-/>
+<ThemeToggle darkMode={darkMode} toggleTheme={toggleTheme}/>
 
 </div>
 
 </div>
-
-{/* STATS */}
 
 <div className="stats-grid">
 
@@ -187,8 +204,6 @@ toggleTheme={toggleTheme}
 
 </div>
 
-{/* ANALYTICS */}
-
 <div className="charts-grid">
 
 <ScoreTrendChart data={scoreTrend}/>
@@ -197,40 +212,38 @@ toggleTheme={toggleTheme}
 
 </div>
 
-{/* MODULE TESTS */}
-
 <h2 className="section-title">Module Practice</h2>
 
 <div className="test-grid">
 
 {modules.map(m=>(
+
 <ModuleTestCard
 key={m.name}
 module={m}
 syllabus={m.syllabus}
 openModal={()=>setSelectedTest(m)}
 />
+
 ))}
 
 </div>
-
-{/* COMPANY MOCKS */}
 
 <h2 className="section-title">Company Mock Tests</h2>
 
 <div className="test-grid">
 
 {companies.map(c=>(
+
 <CompanyTestCard
 key={c.name}
 company={c}
 openModal={()=>setSelectedTest(c)}
 />
+
 ))}
 
 </div>
-
-{/* BOTTOM */}
 
 <div className="bottom-grid">
 

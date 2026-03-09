@@ -1,0 +1,35 @@
+.leaderboard-page{
+
+padding:30px;
+
+}
+
+.leaderboard-table{
+
+width:100%;
+border-collapse:collapse;
+background:white;
+
+}
+
+.leaderboard-table th{
+
+background:#1f2937;
+color:white;
+padding:12px;
+text-align:left;
+
+}
+
+.leaderboard-table td{
+
+padding:12px;
+border-bottom:1px solid #eee;
+
+}
+
+.leaderboard-table tr:hover{
+
+background:#f9fafb;
+
+}

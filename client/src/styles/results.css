@@ -1,0 +1,57 @@
+.dashboard-page{
+
+padding:30px;
+width:100%;
+
+}
+
+.page-title{
+
+font-size:24px;
+margin-bottom:20px;
+font-weight:600;
+
+}
+
+.results-table{
+
+width:100%;
+border-collapse:collapse;
+background:white;
+box-shadow:0 2px 8px rgba(0,0,0,0.05);
+
+}
+
+.results-table th{
+
+background:#1f2937;
+color:white;
+padding:12px;
+text-align:left;
+font-size:14px;
+
+}
+
+.results-table td{
+
+padding:12px;
+border-bottom:1px solid #eee;
+font-size:14px;
+
+}
+
+.results-table tr:hover{
+
+background:#f9fafb;
+
+}
+
+.empty-state{
+
+padding:40px;
+background:white;
+border-radius:8px;
+text-align:center;
+color:#777;
+
+}

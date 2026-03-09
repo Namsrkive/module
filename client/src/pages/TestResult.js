@@ -1,127 +1,160 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import "../styles/test.css";
 function TestResult() {
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const { totalScore = 0, sectionScores = [] } =
-    location.state || {};
+const location = useLocation();
+const navigate = useNavigate();
 
-  const totalQuestions = sectionScores.reduce(
-    (sum, sec) => sum + sec.total,
-    0
-  );
+/* ================= GET RESULT DATA ================= */
 
-  const accuracy =
-    totalQuestions > 0
-      ? ((totalScore / totalQuestions) * 100).toFixed(1)
-      : 0;
+const result = location.state || {};
 
-  /* ================= PERFORMANCE LABEL ================= */
-  const getPerformanceLabel = () => {
-    if (accuracy >= 85) return "Excellent";
-    if (accuracy >= 70) return "Good";
-    if (accuracy >= 50) return "Average";
-    return "Needs Improvement";
-  };
+const totalScore = result.score ?? result.totalScore ?? 0;
+const totalQuestions = result.total ?? 0;
 
-  const performance = getPerformanceLabel();
+const accuracy =
+totalQuestions > 0
+? ((totalScore / totalQuestions) * 100).toFixed(1)
+: result.accuracy ?? 0;
 
-  const readinessScore = Math.round(
-    (accuracy / 100) * 10
-  );
+const sectionScores = result.sectionScores || [];
+const testTitle = result.testTitle || "Mock Test";
 
-  /* ================= SAVE ATTEMPT (IMPORTANT PART) ================= */
-  useEffect(() => {
-    if (!location.state) return; 
-    // Prevent saving if page refreshed without test
+/* ================= PERFORMANCE LABEL ================= */
 
-    const existing =
-      JSON.parse(localStorage.getItem("testHistory")) || [];
+const getPerformanceLabel = () => {
+if (accuracy >= 85) return "Excellent";
+if (accuracy >= 70) return "Good";
+if (accuracy >= 50) return "Average";
+return "Needs Improvement";
+};
 
-    const newAttempt = {
-      id: Date.now(),
-      title: "TCS Mock Test 1",
-      totalScore,
-      totalQuestions,
-      accuracy,
-      sectionScores,
-      date: new Date().toLocaleString(),
-    };
+const performance = getPerformanceLabel();
+const readinessScore = Math.round((accuracy / 100) * 10);
 
-    localStorage.setItem(
-      "testHistory",
-      JSON.stringify([newAttempt, ...existing])
-    );
-  }, []); // empty dependency → runs only once
+/* ================= SAVE ATTEMPT ================= */
+useEffect(() => {
 
-  return (
-    <div className="result-container">
-      <h2>Test Result Summary</h2>
+if (!location.state) return;
 
-      <div className="result-overview">
-        <div className="result-card">
-          <h3>Total Score</h3>
-          <p>
-            {totalScore} / {totalQuestions}
-          </p>
-        </div>
+/* prevent duplicate save */
 
-        <div className="result-card">
-          <h3>Accuracy</h3>
-          <p>{accuracy}%</p>
-        </div>
+const existing =
+JSON.parse(localStorage.getItem("testHistory")) || [];
 
-        <div className="result-card">
-          <h3>Readiness Score</h3>
-          <p>{readinessScore} / 10</p>
-        </div>
+const alreadySaved = existing.some(
+test => test.id === result.id 
+);
 
-        <div className="result-card">
-          <h3>Performance</h3>
-          <p>{performance}</p>
-        </div>
-      </div>
+if(alreadySaved) return;
 
-      <h3>Section-wise Breakdown</h3>
+const newAttempt = {
+id: Date.now(),
+title: testTitle,
+totalScore,
+totalQuestions,
+accuracy,
+sectionScores,
+date: new Date().toLocaleString()
+};
 
-      <div className="section-breakdown">
-        {sectionScores.map((sec, index) => {
-          const secAccuracy = (
-            (sec.score / sec.total) *
-            100
-          ).toFixed(1);
+localStorage.setItem(
+"testHistory",
+JSON.stringify([newAttempt, ...existing])
+);
 
-          return (
-            <div key={index} className="section-card">
-              <h4>{sec.section}</h4>
-              <p>
-                Score: {sec.score} / {sec.total}
-              </p>
-              <p>Accuracy: {secAccuracy}%</p>
-            </div>
-          );
-        })}
-      </div>
+// eslint-disable-next-line
+}, []);
+/* ================= UI ================= */
 
-      <div className="result-actions">
-        <button
-          className="secondary-btn"
-          onClick={() => navigate("/dashboard/student")}
-        >
-          Back to Dashboard
-        </button>
+return (
 
-        <button
-          className="primary-btn"
-          onClick={() => navigate("/test")}
-        >
-          Retake Test
-        </button>
-      </div>
-    </div>
-  );
+<div className="result-container">
+
+<h2>Test Result Summary</h2>
+
+<div className="result-overview">
+
+<div className="result-card">
+<h3>Total Score</h3>
+<p>{totalScore} / {totalQuestions}</p>
+</div>
+
+<div className="result-card">
+<h3>Accuracy</h3>
+<p>{accuracy}%</p>
+</div>
+
+<div className="result-card">
+<h3>Readiness Score</h3>
+<p>{readinessScore} / 10</p>
+</div>
+
+<div className="result-card">
+<h3>Performance</h3>
+<p>{performance}</p>
+</div>
+
+</div>
+
+{sectionScores.length > 0 && (
+
+<>
+
+<h3>Section-wise Breakdown</h3>
+
+<div className="section-breakdown">
+
+{sectionScores.map((sec, index) => {
+
+const secAccuracy =
+((sec.score / sec.total) * 100).toFixed(1);
+
+return (
+
+<div key={index} className="section-card">
+
+<h4>{sec.section}</h4>
+
+<p>Score: {sec.score} / {sec.total}</p>
+
+<p>Accuracy: {secAccuracy}%</p>
+
+</div>
+
+);
+
+})}
+
+</div>
+
+</>
+
+)}
+
+<div className="result-actions">
+
+<button
+className="secondary-btn"
+onClick={() => navigate("/dashboard/modules")}
+>
+Back to Modules
+</button>
+
+<button
+className="primary-btn"
+onClick={() => navigate("/dashboard/student")}
+>
+Go to Dashboard
+</button>
+
+</div>
+
+</div>
+
+);
+
 }
 
 export default TestResult;
