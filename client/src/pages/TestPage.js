@@ -1,168 +1,246 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { getQuestionsByModuleTopic } from "../data/testStore";
+import {
+  getQuestionsByModuleTopic,
+  getTests
+} from "../data/testStore";
+
 import { submitTest as submitTestEngine } from "../services/testEngine";
 
 import TestLayout from "../components/test/TestLayout";
 import CodeEditor from "../components/test/CodeEditor";
 import ProctorPanel from "../components/test/ProctorPanel";
+import Timer from "../components/test/Timer";
 
 import "../styles/test.css";
 
-function TestPage(){
+function TestPage() {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { module, topic } = useParams();
 
-const {module,topic} = useParams();
+  const questions = getQuestionsByModuleTopic(module, topic);
+  const tests = getTests();
 
-const questions = getQuestionsByModuleTopic(module,topic);
+  const currentTest = tests.find(
+    t =>
+      t.module?.toLowerCase() === module &&
+      t.topic?.toLowerCase() === topic
+  );
 
-const [questionIndex,setQuestionIndex] = useState(0);
-const [answers,setAnswers] = useState({});
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
 
-if(!questions || questions.length===0){
+  /* ================= SAFETY ================= */
 
-return(
+  useEffect(() => {
+    const disableRightClick = (e) => e.preventDefault();
+    document.addEventListener("contextmenu", disableRightClick);
 
-<TestLayout>
+    return () => {
+      document.removeEventListener("contextmenu", disableRightClick);
+    };
+  }, []);
 
-<h2>No Questions Found</h2>
+  /* ================= STOP CAMERA ================= */
 
-</TestLayout>
+  const stopCamera = () => {
+    const videos = document.querySelectorAll("video");
+    videos.forEach(video => {
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+      }
+    });
+  };
 
-);
+  /* ================= EXIT FULLSCREEN ================= */
 
-}
+  const exitFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
 
-const question = questions[questionIndex];
+  /* ================= SELECT OPTION ================= */
 
-const selectOption=(option)=>{
+  const selectOption = (option) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionIndex]: option
+    }));
+  };
 
-setAnswers({
-...answers,
-[questionIndex]:option
-});
+  /* ================= SUBMIT ================= */
 
-};
+  const submitTest = () => {
 
-const submitTest=()=>{
+    if (submitted) return;
+    setSubmitted(true);
 
-// prepare answers array
-const answerArray = questions.map((q,i)=>answers[i] || null);
+    const answerArray = questions.map((q, i) => answers[i] || null);
 
-// create a test object
-const test = {
-id: `${module}-${topic}`,
-title: `${module} ${topic}`,
-questions
-};
+    const test = {
+      id: currentTest?.id || `${module}-${topic}`,
+      title: currentTest?.name || `${module} ${topic}`,
+      questions
+    };
 
-// call test engine
-const result = submitTestEngine({
-studentId: "student1",
-test,
-answers: answerArray,
-violations: 0,
-timeTaken: 1200
-});
+    const resultEngine = submitTestEngine({
+      studentId: "student1",
+      test,
+      answers: answerArray,
+      violations: 0,
+      timeTaken: 1200
+    });
 
-// navigate to results page
-navigate("/test-result", { state: result });
+    const result = {
+      studentId: "student1",
+      testId: test.id,
+      testTitle: test.title,
+      module,
+      topic,
+      score: resultEngine.score,
+      total: resultEngine.total,
+      percentage:
+        resultEngine.total > 0
+          ? Math.round((resultEngine.score / resultEngine.total) * 100)
+          : 0,
+      date: new Date().toLocaleString()
+    };
 
-};
+    /* ✅ STORE RESULTS (IMPORTANT FOR ANALYTICS) */
+    const existingResults =
+      JSON.parse(localStorage.getItem("results")) || [];
 
-return(
+    existingResults.push(result);
 
-<TestLayout>
+    localStorage.setItem("results", JSON.stringify(existingResults));
+    localStorage.setItem("latestResult", JSON.stringify(result));
 
-<div className="tcs-header">
+    /* ✅ STOP PROCTORING */
+    stopCamera();
+    exitFullscreen();
 
-<h3>{module} - {topic}</h3>
+    navigate("/test-result", { state: result });
+  };
 
-<div className="timer">20:00</div>
+  /* ================= AUTO SUBMIT ================= */
 
-</div>
+  const handleAutoSubmit = () => {
+    submitTest();
+  };
 
-<div className="tcs-body">
+  /* ================= TIMER ================= */
 
-<div className="tcs-left">
+  const handleTimeUp = () => {
+    alert("Time is up! Submitting test...");
+    submitTest();
+  };
 
-<h4>
-Q{questionIndex+1}. {question.question}
-</h4>
+  /* ================= EMPTY ================= */
 
-{question.type==="mcq" && (
+  if (!questions || questions.length === 0) {
+    return (
+      <TestLayout>
+        <h2>No Questions Found</h2>
+      </TestLayout>
+    );
+  }
 
-<div className="options">
+  const question = questions[questionIndex];
 
-{question.options.map((opt,i)=>(
-<div
-key={i}
-className={`option ${answers[questionIndex]===opt?"selected":""}`}
-onClick={()=>selectOption(opt)}
->
-{opt}
-</div>
-))}
+  return (
+    <TestLayout>
 
-</div>
+      {/* HEADER */}
+      <div className="tcs-header">
+        <h3>{module} - {topic}</h3>
+        <Timer duration={20} onTimeUp={handleTimeUp} />
+      </div>
 
-)}
+      {/* BODY */}
+      <div className="tcs-body">
 
-{question.type==="coding" && <CodeEditor/>}
+        {/* LEFT */}
+        <div className="tcs-left">
 
-</div>
+          <h4>
+            Q{questionIndex + 1}. {question.question}
+          </h4>
 
-<div className="tcs-right">
+          {question.type === "mcq" && (
+            <div className="options">
+              {question.options.map((opt, i) => (
+                <div
+                  key={i}
+                  className={`option ${
+                    answers[questionIndex] === opt ? "selected" : ""
+                  }`}
+                  onClick={() => selectOption(opt)}
+                >
+                  {opt}
+                </div>
+              ))}
+            </div>
+          )}
 
-<div className="palette-grid">
+          {question.type === "coding" && <CodeEditor />}
 
-{questions.map((q,i)=>(
-<button
-key={i}
-className={`palette-btn ${questionIndex===i?"palette-current":""}`}
-onClick={()=>setQuestionIndex(i)}
->
-{i+1}
-</button>
-))}
+        </div>
 
-</div>
+        {/* RIGHT */}
+        <div className="tcs-right">
 
-<ProctorPanel/>
+          {/* PALETTE */}
+          <div className="palette-grid">
+            {questions.map((q, i) => {
+              let className = "palette-btn";
 
-</div>
+              if (answers[i]) className += " answered";
+              if (questionIndex === i) className += " palette-current";
 
-</div>
+              return (
+                <button
+                  key={i}
+                  className={className}
+                  onClick={() => setQuestionIndex(i)}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
+          </div>
 
-<div className="test-nav">
+          {/* PROCTOR */}
+          <ProctorPanel onAutoSubmit={handleAutoSubmit} />
 
-<button
-onClick={()=>setQuestionIndex(p=>Math.max(p-1,0))}
->
-Previous
-</button>
+        </div>
 
-<button
-onClick={()=>setQuestionIndex(p=>Math.min(p+1,questions.length-1))}
->
-Next
-</button>
+      </div>
 
-<button
-className="submit-btn"
-onClick={submitTest}
->
-Submit Test
-</button>
+      {/* NAV */}
+      <div className="test-nav">
 
-</div>
+        <button onClick={() => setQuestionIndex(p => Math.max(p - 1, 0))}>
+          Previous
+        </button>
 
-</TestLayout>
+        <button onClick={() =>
+          setQuestionIndex(p => Math.min(p + 1, questions.length - 1))
+        }>
+          Next
+        </button>
 
-);
+        <button className="submit-btn" onClick={submitTest}>
+          Submit Test
+        </button>
 
+      </div>
+
+    </TestLayout>
+  );
 }
 
 export default TestPage;

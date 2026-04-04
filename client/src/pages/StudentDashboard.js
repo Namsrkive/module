@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/dashboard/Sidebar";
 
 import ThemeToggle from "../components/dashboard/ThemeToggle";
 import StatCard from "../components/dashboard/StatCard";
-import ModuleTestCard from "../components/dashboard/ModuleTestCard";
-import CompanyTestCard from "../components/dashboard/CompanyTestCard";
 import TestInfoModal from "../components/dashboard/TestInfoModal";
 
 import ScoreTrendChart from "../components/dashboard/ScoreTrendChart";
@@ -15,123 +13,42 @@ import WeakAreasCard from "../components/dashboard/WeakAreasCard";
 import Leaderboard from "../components/dashboard/Leaderboard";
 import ProgressRing from "../components/dashboard/ProgressRing";
 
+import { getPublishedTests } from "../data/testStore";
+import { useNavigate } from "react-router-dom";
+
 import "../styles/dashboard.css";
 
 export default function StudentDashboard({ children }) {
 
 const [darkMode,setDarkMode] = useState(false);
 const [selectedTest,setSelectedTest] = useState(null);
+const [tests,setTests] = useState([]);
+
+const navigate = useNavigate();
 
 const toggleTheme = () => setDarkMode(!darkMode);
 
+/* ================= LOAD TESTS ================= */
+
+useEffect(() => {
+  const data = getPublishedTests();
+  setTests(data);
+}, []);
+
 /* ================= CHILD PAGE MODE ================= */
-/* If a child page (Results / Leaderboard / Analytics) is passed,
-   render layout with sidebar only */
 
 if(children){
-
 return(
-
 <div className={`dashboard-layout ${darkMode?"dark":"light"}`}>
-
 <Sidebar/>
-
 <div className="dashboard-main">
-
 {children}
-
 </div>
-
 </div>
-
 );
-
 }
 
-/* ================= DASHBOARD DATA ================= */
-
-const modules = [
-
-{
-name:"Aptitude",
-description:"Quantitative aptitude and reasoning",
-route:"aptitude",
-questions:25,
-duration:"20 min",
-level:"Medium",
-syllabus:["Quant","Probability","Series","Reasoning"]
-},
-
-{
-name:"DSA",
-description:"Data structures and algorithms",
-route:"dsa",
-questions:20,
-duration:"30 min",
-level:"Hard",
-syllabus:["Arrays","Trees","Graphs","DP"]
-},
-
-{
-name:"DBMS",
-description:"Database and SQL concepts",
-route:"dbms",
-questions:20,
-duration:"25 min",
-level:"Medium",
-syllabus:["SQL","Normalization","Transactions","ER"]
-},
-
-{
-name:"Programming",
-description:"Coding and core CS fundamentals",
-route:"programming",
-questions:15,
-duration:"30 min",
-level:"Hard",
-syllabus:["OOP","OS","CN","Coding"]
-}
-
-];
-
-const companies = [
-
-{
-name:"TCS Mock",
-focus:"Aptitude + Verbal + Basic Coding",
-route:"tcs",
-level:"Medium"
-},
-
-{
-name:"IBM Mock",
-focus:"Logical + DSA",
-route:"ibm",
-level:"Hard"
-},
-
-{
-name:"Accenture Mock",
-focus:"Mixed aptitude + technical",
-route:"accenture",
-level:"Medium"
-},
-
-{
-name:"Wipro Mock",
-focus:"Aptitude + OS + DBMS",
-route:"wipro",
-level:"Medium"
-},
-
-{
-name:"Deloitte Mock",
-focus:"Business Logic + Technical",
-route:"deloitte",
-level:"Hard"
-}
-
-];
+/* ================= STATIC DATA (UNCHANGED) ================= */
 
 const scoreTrend = [
 {test:"TEST 1",score:50},
@@ -162,7 +79,7 @@ const weakAreas = [
 
 const readinessScore = 73;
 
-/* ================= MAIN DASHBOARD UI ================= */
+/* ================= UI ================= */
 
 return(
 
@@ -182,11 +99,8 @@ return(
 <div className="header-right">
 
 <div className="readiness-card">
-
 <h4>Placement Readiness</h4>
-
 <ProgressRing score={readinessScore}/>
-
 </div>
 
 <ThemeToggle darkMode={darkMode} toggleTheme={toggleTheme}/>
@@ -196,60 +110,71 @@ return(
 </div>
 
 <div className="stats-grid">
-
 <StatCard title="Tests Taken" value="14" icon="📘"/>
 <StatCard title="Accuracy" value="78%" icon="🎯"/>
 <StatCard title="Strongest" value="DSA" icon="🔥"/>
 <StatCard title="Weak Area" value="DBMS" icon="⚠️"/>
-
 </div>
 
 <div className="charts-grid">
-
 <ScoreTrendChart data={scoreTrend}/>
 <ModulePerformanceChart data={modulePerformance}/>
 <PlacementRadar data={radarData}/>
-
 </div>
 
-<h2 className="section-title">Module Practice</h2>
+{/* ================= NEW SECTION ================= */}
+
+<h2 className="section-title">Available Tests</h2>
 
 <div className="test-grid">
 
-{modules.map(m=>(
+{tests.length === 0 ? (
 
-<ModuleTestCard
-key={m.name}
-module={m}
-syllabus={m.syllabus}
-openModal={()=>setSelectedTest(m)}
-/>
+<div className="empty-state">
+<h3>No Tests Available</h3>
+<p>Admin has not published any tests yet.</p>
+</div>
 
-))}
+) : (
+
+tests.map((test) => (
+
+<div className="test-card" key={test.id}>
+
+<div className="test-card-header">
+<h3>{test.name}</h3>
+<span className="difficulty">{test.difficulty}</span>
+</div>
+
+<div className="test-meta">
+<p>📘 Module: {test.module}</p>
+<p>📂 Topic: {test.topic}</p>
+<p>⏱ Duration: {test.duration} mins</p>
+<p>📝 Questions: {test.questions?.length || 0}</p>
+</div>
+
+<button
+className="start-btn"
+onClick={() =>
+navigate(`/test/${test.module}/${test.topic}`)
+}
+>
+Start Test
+</button>
 
 </div>
 
-<h2 className="section-title">Company Mock Tests</h2>
+))
 
-<div className="test-grid">
-
-{companies.map(c=>(
-
-<CompanyTestCard
-key={c.name}
-company={c}
-openModal={()=>setSelectedTest(c)}
-/>
-
-))}
+)}
 
 </div>
+
+{/* ================= BOTTOM ================= */}
 
 <div className="bottom-grid">
-
 <WeakAreasCard weakAreas={weakAreas}/>
 <Leaderboard/>
-
 </div>
 
 </div>
@@ -262,5 +187,4 @@ close={()=>setSelectedTest(null)}
 </div>
 
 );
-
 }

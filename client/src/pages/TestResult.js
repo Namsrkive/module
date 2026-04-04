@@ -1,160 +1,72 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import "../styles/test.css";
+import "../styles/result.css";
+
 function TestResult() {
 
-const location = useLocation();
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-/* ================= GET RESULT DATA ================= */
+  // 🔥 Get result (fallback from localStorage)
+  const result =
+    location.state ||
+    JSON.parse(localStorage.getItem("latestResult"));
 
-const result = location.state || {};
+  if (!result) {
+    return <h2>No Result Found</h2>;
+  }
 
-const totalScore = result.score ?? result.totalScore ?? 0;
-const totalQuestions = result.total ?? 0;
+  const { score, total, percentage, testTitle, date } = result;
 
-const accuracy =
-totalQuestions > 0
-? ((totalScore / totalQuestions) * 100).toFixed(1)
-: result.accuracy ?? 0;
+  const passed = percentage >= 60;
 
-const sectionScores = result.sectionScores || [];
-const testTitle = result.testTitle || "Mock Test";
+  return (
+    <div className="result-container">
 
-/* ================= PERFORMANCE LABEL ================= */
+      <div className="result-card">
 
-const getPerformanceLabel = () => {
-if (accuracy >= 85) return "Excellent";
-if (accuracy >= 70) return "Good";
-if (accuracy >= 50) return "Average";
-return "Needs Improvement";
-};
+        <h2>{testTitle}</h2>
 
-const performance = getPerformanceLabel();
-const readinessScore = Math.round((accuracy / 100) * 10);
+        <p className="date">{date}</p>
 
-/* ================= SAVE ATTEMPT ================= */
-useEffect(() => {
+        {/* SCORE */}
+        <div className="score-section">
+          <h1>{score} / {total}</h1>
+          <h3 className={passed ? "pass" : "fail"}>
+            {passed ? "PASS ✅" : "FAIL ❌"}
+          </h3>
+        </div>
 
-if (!location.state) return;
+        {/* PROGRESS BAR */}
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${percentage}%` }}
+          ></div>
+        </div>
 
-/* prevent duplicate save */
+        <p className="percentage">{percentage}%</p>
 
-const existing =
-JSON.parse(localStorage.getItem("testHistory")) || [];
+        {/* ACTIONS */}
+        <div className="result-actions">
 
-const alreadySaved = existing.some(
-test => test.id === result.id 
-);
+          <button onClick={() => navigate("/dashboard/student")}>
+            Go to Dashboard
+          </button>
 
-if(alreadySaved) return;
+          <button
+            onClick={() =>
+              navigate(`/test/${testTitle.toLowerCase()}`)
+            }
+          >
+            Retake Test
+          </button>
 
-const newAttempt = {
-id: Date.now(),
-title: testTitle,
-totalScore,
-totalQuestions,
-accuracy,
-sectionScores,
-date: new Date().toLocaleString()
-};
+        </div>
 
-localStorage.setItem(
-"testHistory",
-JSON.stringify([newAttempt, ...existing])
-);
+      </div>
 
-// eslint-disable-next-line
-}, []);
-/* ================= UI ================= */
-
-return (
-
-<div className="result-container">
-
-<h2>Test Result Summary</h2>
-
-<div className="result-overview">
-
-<div className="result-card">
-<h3>Total Score</h3>
-<p>{totalScore} / {totalQuestions}</p>
-</div>
-
-<div className="result-card">
-<h3>Accuracy</h3>
-<p>{accuracy}%</p>
-</div>
-
-<div className="result-card">
-<h3>Readiness Score</h3>
-<p>{readinessScore} / 10</p>
-</div>
-
-<div className="result-card">
-<h3>Performance</h3>
-<p>{performance}</p>
-</div>
-
-</div>
-
-{sectionScores.length > 0 && (
-
-<>
-
-<h3>Section-wise Breakdown</h3>
-
-<div className="section-breakdown">
-
-{sectionScores.map((sec, index) => {
-
-const secAccuracy =
-((sec.score / sec.total) * 100).toFixed(1);
-
-return (
-
-<div key={index} className="section-card">
-
-<h4>{sec.section}</h4>
-
-<p>Score: {sec.score} / {sec.total}</p>
-
-<p>Accuracy: {secAccuracy}%</p>
-
-</div>
-
-);
-
-})}
-
-</div>
-
-</>
-
-)}
-
-<div className="result-actions">
-
-<button
-className="secondary-btn"
-onClick={() => navigate("/dashboard/modules")}
->
-Back to Modules
-</button>
-
-<button
-className="primary-btn"
-onClick={() => navigate("/dashboard/student")}
->
-Go to Dashboard
-</button>
-
-</div>
-
-</div>
-
-);
-
+    </div>
+  );
 }
 
 export default TestResult;

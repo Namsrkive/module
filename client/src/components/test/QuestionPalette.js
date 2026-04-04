@@ -18,7 +18,7 @@ function QuestionPalette({
 
           if (answers[key]) className = "answered";
           if (marked.includes(key)) className = "marked";
-          if (index === current) className = "current";
+          if (index === current) className = "current"; // 🔥 highest priority
 
           return (
             <button
@@ -32,19 +32,12 @@ function QuestionPalette({
         })}
       </div>
 
+      {/* 🔥 CLEAN LEGEND */}
       <div className="palette-legend">
-        <div>
-          <span className="legend answered"></span> Answered
-        </div>
-        <div>
-          <span className="legend not-answered"></span> Not Answered
-        </div>
-        <div>
-          <span className="legend marked"></span> Marked
-        </div>
-        <div>
-          <span className="legend current"></span> Current
-        </div>
+        <span><span className="legend answered"></span> Answered</span>
+        <span><span className="legend not-answered"></span> Not Answered</span>
+        <span><span className="legend marked"></span> Marked</span>
+        <span><span className="legend current"></span> Current</span>
       </div>
     </div>
   );

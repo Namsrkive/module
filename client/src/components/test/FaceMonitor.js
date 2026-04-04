@@ -1,92 +1,118 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import * as faceapi from "face-api.js";
 
-function FaceMonitor({ addViolation }) {
+const FaceMonitor = forwardRef(({ addViolation }, ref) => {
 
   const videoRef = useRef(null);
   const intervalRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // 🔥 CONTROL VARIABLES
+  const noFaceCountRef = useRef(0);
+  const startTimeRef = useRef(Date.now());
+
+  /* ================= STOP CAMERA ================= */
+
+  const stopCamera = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    stopCamera
+  }));
+
+  /* ================= MAIN ================= */
 
   useEffect(() => {
 
     const startDetection = () => {
-
       intervalRef.current = setInterval(async () => {
 
         if (!videoRef.current) return;
 
+        // 🔥 WAIT FIRST 5 SECONDS (NO VIOLATIONS)
+        if (Date.now() - startTimeRef.current < 5000) return;
+
         const detections = await faceapi.detectAllFaces(
           videoRef.current,
-          new faceapi.TinyFaceDetectorOptions()
+          new faceapi.TinyFaceDetectorOptions({
+            inputSize: 320,
+            scoreThreshold: 0.5
+          })
         );
 
+        console.log("Faces detected:", detections.length);
+
+        /* ================= NO FACE ================= */
+
         if (detections.length === 0) {
-          console.log("No face detected");
-          addViolation("No face detected");
+          noFaceCountRef.current++;
+
+          if (noFaceCountRef.current >= 3) {
+            addViolation("No face detected");
+            noFaceCountRef.current = 0;
+          }
+        } else {
+          noFaceCountRef.current = 0;
         }
 
+        /* ================= MULTIPLE FACES ================= */
+
         if (detections.length > 1) {
-          console.log("Multiple faces detected");
           addViolation("Multiple faces detected");
         }
 
       }, 2000);
-
     };
 
     const startVideo = async () => {
-
       try {
 
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            width: 320,
+            height: 240
+          }
+        });
+
+        streamRef.current = stream;
 
         if (videoRef.current) {
-
           videoRef.current.srcObject = stream;
 
           videoRef.current.onloadedmetadata = () => {
             videoRef.current.play();
-            startDetection();
-          };
 
+            // 🔥 DELAY DETECTION (IMPORTANT)
+            setTimeout(() => {
+              startDetection();
+            }, 2000);
+          };
         }
 
       } catch (err) {
-        console.error("Camera access denied:", err);
+        console.error("Camera error:", err);
       }
-
-    };
-
-    const stopVideo = () => {
-
-      if (videoRef.current && videoRef.current.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach(track => track.stop());
-      }
-
     };
 
     const loadModels = async () => {
-
       try {
-
         await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
-
         startVideo();
-
       } catch (err) {
         console.error("Model loading error:", err);
       }
-
     };
 
     loadModels();
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      stopVideo();
-    };
+    return () => stopCamera();
 
-  }, [addViolation]);
+  }, []);
 
   return (
     <video
@@ -94,10 +120,11 @@ function FaceMonitor({ addViolation }) {
       autoPlay
       muted
       playsInline
+      width="320"
+      height="240"
       className="proctor-video"
     />
   );
-
-}
+});
 
 export default FaceMonitor;

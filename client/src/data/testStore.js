@@ -38,6 +38,11 @@ export const createTest = (test) => {
     duration: test.duration,
     type: test.type,
     difficulty: test.difficulty,
+
+    // ✅ ADD THESE (IMPORTANT)
+    module: test.module || "general",
+    topic: test.topic || "mixed",
+
     isPublished: false,
     questions: []
   }
@@ -45,10 +50,14 @@ export const createTest = (test) => {
   tests.push(newTest)
   saveTests()
 }
-
+                     
 export const getTests = () => {
   tests = loadTests()   // 🔥 important fix
   return tests
+}
+
+export const getPublishedTests = () => {
+  return getTests().filter(t => t.isPublished);
 }
 
 export const deleteTest = (id) => {

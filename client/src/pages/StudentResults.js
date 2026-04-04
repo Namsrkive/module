@@ -1,84 +1,114 @@
 import { useEffect, useState } from "react";
-
-import "../styles/results.css";
+import { useNavigate } from "react-router-dom";
+import "../styles/result.css";
 
 function StudentResults() {
 
-const [history,setHistory] = useState([]);
+  const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
-useEffect(()=>{
+  useEffect(() => {
+    const storedResults =
+      JSON.parse(localStorage.getItem("results")) || [];
 
-const stored =
-JSON.parse(localStorage.getItem("testHistory")) || [];
+    // 🔥 REMOVE DUPLICATES (important)
+    const seen = new Set();
+    const uniqueResults = [];
 
-setHistory(stored);
+    storedResults.forEach((r) => {
+      const key = r.testId + r.date;
 
-},[]);
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueResults.push(r);
+      }
+    });
 
-return(
+    // 🔥 LATEST FIRST
+    uniqueResults.reverse();
 
-<div className="dashboard-page">
+    setResults(uniqueResults);
+  }, []);
 
-<h2 className="page-title">My Test Results</h2>
+  if (results.length === 0) {
+    return (
+      <div className="result-page">
+        <h2>No Results Found</h2>
+      </div>
+    );
+  }
 
-{history.length === 0 ? (
+  return (
+    <div className="result-page">
 
-<div className="empty-state">
-No tests attempted yet.
-</div>
+      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+        
+        <div className="result-header">
+          <h2>My Test Results</h2>
+          <p>Track your performance across all tests</p>
+        </div>
 
-) : (
+        <div className="result-card">
+          {/* table */}
+        </div>
 
-<table className="results-table">
+        <table className="result-table">
 
-<thead>
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Score</th>
+              <th>Percentage</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-<tr>
-<th>Test</th>
-<th>Score</th>
-<th>Accuracy</th>
-<th>Date</th>
-</tr>
+          <tbody>
+            {results.map((res, index) => (
+              <tr key={index} className="result-row">
 
-</thead>
+                <td className="test-name">
+                  {res.testTitle}
+                </td>
 
-<tbody>
+                <td className="score">
+                  {res.score}/{res.total}
+                </td>
 
-{history.map((test)=>{
+                <td
+                  className={`percentage ${
+                    res.percentage >= 60 ? "good" : "bad"
+                  }`}
+                >
+                  {res.percentage}%
+                </td>
 
-const accuracy =
-((test.totalScore / test.totalQuestions) * 100).toFixed(1);
+                <td className="date">
+                  {new Date(res.date).toLocaleString()}
+                </td>
 
-return(
+                <td>
+                  <button
+                    className="retake-btn"
+                    onClick={() =>
+                      navigate(`/test/${res.module}/${res.topic}`)
+                    }
+                  >
+                    Retake
+                  </button>
+                </td>
 
-<tr key={test.id}>
+              </tr>
+            ))}
+          </tbody>
 
-<td>{test.title}</td>
+        </table>
 
-<td>
-{test.totalScore} / {test.totalQuestions}
-</td>
+      </div>
 
-<td>{accuracy}%</td>
-
-<td>{test.date}</td>
-
-</tr>
-
-);
-
-})}
-
-</tbody>
-
-</table>
-
-)}
-
-</div>
-
-);
-
+    </div>
+  );
 }
 
 export default StudentResults;
