@@ -1,87 +1,57 @@
 import { useEffect, useState } from "react";
-
-import "../../styles/results.css";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import "../../styles/adminPages.css";
+import { getResults } from "../../data/testStore";
 
 function StudentResults() {
 
-const [history,setHistory] = useState([]);
+  const [results, setResults] = useState([]);
 
-useEffect(()=>{
+  useEffect(() => {
+    setResults(getResults());
+  }, []);
 
-const stored =
-JSON.parse(localStorage.getItem("testHistory")) || [];
+  return (
+    <div className="admin-container">
 
-setHistory(stored);
+      <AdminSidebar />
 
-},[]);
+      <div className="admin-content">
+        <h2>Student Results</h2>
 
-return(
+        {results.length === 0 ? (
+          <p>No results available yet.</p>
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Test</th>
+                <th>Score</th>
+                <th>Accuracy</th>
+                <th>Status</th>
+              </tr>
+            </thead>
 
-<div className="dashboard-page">
+            <tbody>
+              {results.map((r) => (
+                <tr key={r.id}>
+                  <td>{r.studentName}</td>
+                  <td>{r.testName}</td>
+                  <td>{r.score}</td>
+                  <td>{r.accuracy}%</td>
+                  <td className={r.score > 50 ? "pass" : "fail"}>
+                    {r.score > 50 ? "Pass" : "Fail"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
-<h2 className="page-title">Student Test Results</h2>
-
-{history.length === 0 ? (
-
-<div className="empty-state">
-No student attempts yet.
-</div>
-
-) : (
-
-<table className="results-table">
-
-<thead>
-
-<tr>
-<th>Student</th>
-<th>Test</th>
-<th>Score</th>
-<th>Accuracy</th>
-<th>Date</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-{history.map((test)=>{
-
-const accuracy =
-((test.totalScore / test.totalQuestions) * 100).toFixed(1);
-
-return(
-
-<tr key={test.id}>
-
-<td>Namrata</td>
-
-<td>{test.title}</td>
-
-<td>
-{test.totalScore} / {test.totalQuestions}
-</td>
-
-<td>{accuracy}%</td>
-
-<td>{test.date}</td>
-
-</tr>
-
-);
-
-})}
-
-</tbody>
-
-</table>
-
-)}
-
-</div>
-
-);
-
+      </div>
+    </div>
+  );
 }
 
 export default StudentResults;

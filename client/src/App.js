@@ -40,6 +40,7 @@ import TestPage from "./pages/TestPage";
 import TestStart from "./pages/TestStart";
 import TestResult from "./pages/TestResult";
 import AdminStudentResults from "./pages/admin/StudentResults";
+import Analytics from "./pages/admin/Analytics";
 import StudentResults from "./pages/StudentResults";
 /* ================= NAV ITEMS ================= */
 
@@ -224,14 +225,21 @@ function Layout() {
             />
 
             <Route
-            path="/admin/student-results"
+            path="/admin/results"
             element={
             <ProtectedRoute allowedRole="admin">
             <AdminStudentResults/>
             </ProtectedRoute>
             }
             />
-
+            <Route
+            path="/admin/analytics"
+            element={
+            <ProtectedRoute allowedRole="admin">
+            <Analytics/>
+            </ProtectedRoute>
+            }
+            />
             <Route
             path="/dashboard/results"
             element={

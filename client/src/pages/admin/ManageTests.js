@@ -1,90 +1,104 @@
-import AdminSidebar from "../../components/admin/AdminSidebar"
-import { getTests, deleteTest } from "../../data/testStore"
-import { useState } from "react"
+import { useEffect, useState } from "react";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import "../../styles/adminPages.css";
 
-function ManageTests(){
+import {
+  getTests,
+  deleteTest,
+  togglePublish
+} from "../../data/testStore";
 
-const [refresh,setRefresh] = useState(false)
+function ManageTests() {
 
-const tests = getTests()
+  const [tests, setTests] = useState([]);
 
-function handleDelete(id){
+  // Load tests
+  useEffect(() => {
+    setTests(getTests());
+  }, []);
 
-deleteTest(id)
+  // Delete test
+  const handleDelete = (id) => {
+    deleteTest(id);
+    setTests(getTests()); // refresh
+  };
 
-setRefresh(!refresh)
+  // Publish toggle
+  const handleToggle = (id) => {
+    togglePublish(id);
+    setTests(getTests()); // refresh
+  };
 
+  return (
+    <div className="admin-container">
+
+      {/* Sidebar */}
+      <AdminSidebar />
+
+      {/* Main Content */}
+      <div className="admin-content">
+
+        <h2>Manage Tests</h2>
+
+        {tests.length === 0 ? (
+          <p>No tests created yet.</p>
+        ) : (
+
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Difficulty</th>
+                <th>Duration</th>
+                <th>Questions</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {tests.map((t) => (
+                <tr key={t.id}>
+                  <td>{t.name}</td>
+                  <td>{t.type}</td>
+                  <td>{t.difficulty}</td>
+                  <td>{t.duration} min</td>
+                  <td>{t.questions?.length || 0}</td>
+
+                  <td>
+                    {t.isPublished ? (
+                      <span className="published">Published</span>
+                    ) : (
+                      <span className="draft">Draft</span>
+                    )}
+                  </td>
+
+                  <td>
+                    <button
+                      className="btn delete"
+                      onClick={() => handleDelete(t.id)}
+                    >
+                      Delete
+                    </button>
+
+                    <button
+                      className="btn publish"
+                      onClick={() => handleToggle(t.id)}
+                    >
+                      {t.isPublished ? "Unpublish" : "Publish"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+        )}
+
+      </div>
+    </div>
+  );
 }
 
-return(
-
-<div className="dashboard-layout">
-
-<AdminSidebar/>
-
-<div className="dashboard-main">
-
-<h1 className="page-title">Manage Tests</h1>
-
-<div className="tests-grid">
-
-{tests.map(t=>(
-
-<div key={t.id} className="test-card">
-
-<h3>{t.name}</h3>
-
-<p>
-
-Duration: {t.duration} min
-
-</p>
-
-<p>
-
-Difficulty: {t.difficulty}
-
-</p>
-
-<p>
-
-Questions: {t.questions?.length || 0}
-
-</p>
-
-<div className="test-actions">
-
-<button className="secondary-btn">
-Open Builder
-</button>
-
-<button className="secondary-btn">
-Preview
-</button>
-
-<button
-className="danger-btn"
-onClick={()=>handleDelete(t.id)}
->
-
-Delete
-
-</button>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-</div>
-
-</div>
-
-)
-
-}
-
-export default ManageTests
+export default ManageTests;

@@ -940,3 +940,28 @@ box-shadow:0 5px 15px rgba(0,0,0,0.1);
 z-index:1000;
 
 }
+
+.test-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.test-table th, .test-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.test-table th {
+  background: #111827;
+  color: white;
+}
+
+.test-table button {
+  margin-right: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}

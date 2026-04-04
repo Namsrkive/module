@@ -1,10 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AdminSidebar from "../../components/admin/AdminSidebar"
 import { getTests, generateTest } from "../../data/testStore"
 
 function TestBuilder(){
 
-const tests = getTests()
+const [tests, setTests] = useState([])
+
+useEffect(()=>{
+  setTests(getTests())
+},[])
 
 const modules = {
 Aptitude:["Quant Basics","Probability","Number Series","Logical Reasoning"],
@@ -20,26 +24,19 @@ const [sections,setSections] = useState([
 ])
 
 function handleSectionChange(index,key,value){
-
 const updated=[...sections]
 updated[index][key]=value
 setSections(updated)
-
 }
 
 function addSection(){
-
 setSections([...sections,{module:"",topic:"",count:5}])
-
 }
 
 function removeSection(index){
-
 const updated = sections.filter((_,i)=>i!==index)
 setSections(updated)
-
 }
-
 
 function handleGenerate(){
 
@@ -53,8 +50,9 @@ testId:selectedTest,
 sections
 })
 
-alert("Test Generated")
+setTests(getTests()) // 🔥 refresh data
 
+alert("Test Generated Successfully")
 }
 
 return(
@@ -68,8 +66,6 @@ return(
 <h1 className="page-title">Test Builder</h1>
 
 <div className="builder-card">
-
-{/* SELECT TEST */}
 
 <div className="form-group">
 
@@ -99,7 +95,6 @@ onChange={(e)=>setSelectedTest(Number(e.target.value))}
 <div key={index} className="section-card">
 
 <div className="section-header">
-
 <h4>Section {index+1}</h4>
 
 <button
@@ -108,7 +103,6 @@ onClick={()=>removeSection(index)}
 >
 ✕
 </button>
-
 </div>
 
 <div className="section-grid">
@@ -151,22 +145,12 @@ onChange={(e)=>handleSectionChange(index,"count",Number(e.target.value))}
 
 ))}
 
-<button
-className="secondary-btn"
-onClick={addSection}
->
-
+<button className="secondary-btn" onClick={addSection}>
 Add Section
-
 </button>
 
-<button
-className="primary-btn"
-onClick={handleGenerate}
->
-
+<button className="primary-btn" onClick={handleGenerate}>
 Generate Test
-
 </button>
 
 </div>

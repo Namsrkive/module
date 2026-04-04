@@ -2,8 +2,29 @@
 PERSISTENCE
 ========================= */
 
-let tests = JSON.parse(localStorage.getItem("tests")) || []
-let questions = JSON.parse(localStorage.getItem("questions")) || []
+const loadTests = () => JSON.parse(localStorage.getItem("tests")) || []
+const loadQuestions = () => JSON.parse(localStorage.getItem("questions")) || []
+const loadResults = () => JSON.parse(localStorage.getItem("results")) || []
+
+let tests = loadTests()
+let questions = loadQuestions()
+let results = loadResults()
+
+/* =========================
+HELPERS
+========================= */
+
+const saveTests = () => {
+  localStorage.setItem("tests", JSON.stringify(tests))
+}
+
+const saveQuestions = () => {
+  localStorage.setItem("questions", JSON.stringify(questions))
+}
+
+const saveResults = () => {
+  localStorage.setItem("results", JSON.stringify(results))
+}
 
 /* =========================
 TEST MANAGEMENT
@@ -11,31 +32,36 @@ TEST MANAGEMENT
 
 export const createTest = (test) => {
 
-const newTest = {
-id: Date.now(),
-name: test.name,
-duration: test.duration,
-type: test.type,
-difficulty: test.difficulty,
-questions:[]
+  const newTest = {
+    id: Date.now(),
+    name: test.name,
+    duration: test.duration,
+    type: test.type,
+    difficulty: test.difficulty,
+    isPublished: false,
+    questions: []
+  }
+
+  tests.push(newTest)
+  saveTests()
 }
 
-tests.push(newTest)
-
-localStorage.setItem("tests", JSON.stringify(tests))
-
+export const getTests = () => {
+  tests = loadTests()   // 🔥 important fix
+  return tests
 }
 
-export const getTests = () => tests
-
-export const deleteTest = (id)=>{
-
-tests = tests.filter(t=>t.id!==id)
-
-localStorage.setItem("tests", JSON.stringify(tests))
-
+export const deleteTest = (id) => {
+  tests = tests.filter(t => t.id !== id)
+  saveTests()
 }
 
+export const togglePublish = (id) => {
+  tests = tests.map(t =>
+    t.id === id ? { ...t, isPublished: !t.isPublished } : t
+  )
+  saveTests()
+}
 
 /* =========================
 QUESTION MANAGEMENT
@@ -43,32 +69,29 @@ QUESTION MANAGEMENT
 
 export const addQuestion = (question) => {
 
-const newQuestion = {
-id: Date.now(),
-module: question.module,
-topic: question.topic,
-type: question.type,
-question: question.question,
-options: question.options,
-answer: question.answer
+  const newQuestion = {
+    id: Date.now(),
+    module: question.module,
+    topic: question.topic,
+    type: question.type,
+    question: question.question,
+    options: question.options,
+    answer: question.answer
+  }
+
+  questions.push(newQuestion)
+  saveQuestions()
 }
 
-questions.push(newQuestion)
-
-localStorage.setItem("questions", JSON.stringify(questions))
-
+export const getQuestions = () => {
+  questions = loadQuestions()
+  return questions
 }
 
-export const getQuestions = () => questions
-
-export const deleteQuestion = (id)=>{
-
-questions = questions.filter(q=>q.id!==id)
-
-localStorage.setItem("questions", JSON.stringify(questions))
-
+export const deleteQuestion = (id) => {
+  questions = questions.filter(q => q.id !== id)
+  saveQuestions()
 }
-
 
 /* =========================
 FILTER QUESTIONS
@@ -76,11 +99,10 @@ FILTER QUESTIONS
 
 export const getQuestionsByModuleTopic = (module, topic) => {
 
-return questions.filter(q => 
-q.module?.toLowerCase() === module?.toLowerCase() &&
-q.topic?.toLowerCase() === topic?.toLowerCase()
-)
-
+  return getQuestions().filter(q =>
+    q.module?.toLowerCase() === module?.toLowerCase() &&
+    q.topic?.toLowerCase() === topic?.toLowerCase()
+  )
 }
 
 /* =========================
@@ -89,61 +111,60 @@ ATTACH QUESTION TO TEST
 
 export const attachQuestionToTest = (testId, questionId) => {
 
-const test = tests.find(t=>t.id===testId)
-const question = questions.find(q=>q.id===questionId)
+  const test = tests.find(t => t.id === testId)
+  const question = questions.find(q => q.id === questionId)
 
-if(!test || !question) return
+  if (!test || !question) return
 
-test.questions.push(question)
-
-localStorage.setItem("tests", JSON.stringify(tests))
-
+  test.questions.push(question)
+  saveTests()
 }
-
 
 /* =========================
 AUTO GENERATE TEST
 ========================= */
 
-export const generateTest = ({testId,sections})=>{
+export const generateTest = ({ testId, sections }) => {
 
-const test = tests.find(t=>t.id===testId)
+  const test = tests.find(t => t.id === testId)
 
-if(!test) return
+  if (!test) return
 
-test.questions = []
+  test.questions = []
 
-sections.forEach(sec=>{
+  sections.forEach(sec => {
 
-const filtered = questions.filter(
-q => q.module === sec.module && q.topic === sec.topic
-)
+    const filtered = questions.filter(
+      q => q.module === sec.module && q.topic === sec.topic
+    )
 
-const selected = filtered.slice(0,sec.count)
+    const selected = filtered.slice(0, sec.count)
 
-test.questions.push(...selected)
+    test.questions.push(...selected)
 
-})
+  })
 
-localStorage.setItem("tests",JSON.stringify(tests))
-
+  saveTests()
 }
 
-// RESULT STORE
-let results = [];
+/* =========================
+RESULT STORE (FIXED)
+========================= */
 
-export function saveResult(result) {
-  results.push(result);
+export const saveResult = (result) => {
+  results.push({ ...result, id: Date.now() })
+  saveResults()
 }
 
-export function getResults() {
-  return results;
+export const getResults = () => {
+  results = loadResults()
+  return results
 }
 
-export function getResultsByStudent(studentId) {
-  return results.filter(r => r.studentId === studentId);
+export const getResultsByStudent = (studentId) => {
+  return getResults().filter(r => r.studentId === studentId)
 }
 
-export function getResultsByTest(testId) {
-  return results.filter(r => r.testId === testId);
+export const getResultsByTest = (testId) => {
+  return getResults().filter(r => r.testId === testId)
 }
