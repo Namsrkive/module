@@ -31,7 +31,7 @@ function StudentRegister() {
     });
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!form.name || !form.email || !form.password) {
       toast.error("All fields are required");
       return;
@@ -42,10 +42,32 @@ function StudentRegister() {
       return;
     }
 
-    toast.success("Registration Successful 🎉");
-    setTimeout(() => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.msg);
+        return;
+      }
+
+      toast.success("Registration Successful 🎉");
       navigate("/login/student");
-    }, 1200);
+
+    } catch (err) {
+      toast.error("Server error");
+    }
   };
 
   return (

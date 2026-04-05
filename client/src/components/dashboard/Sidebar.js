@@ -1,19 +1,21 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-      const navigate = useNavigate();
-      
-  return (
+  const navigate = useNavigate();
 
+  // ✅ GET USER FROM LOCALSTORAGE
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  return (
     <div className="sidebar">
 
       <div>
 
         <div className="sidebar-user">
-
           <h2>Welcome</h2>
-          <p className="student-name">NAMRATA</p>
-
+          <p className="student-name">
+            {user?.name || "Student"}
+          </p>
         </div>
 
         <div className="sidebar-divider"></div>
@@ -49,17 +51,16 @@ export default function Sidebar() {
       </div>
 
       <button
-      className="logout-btn"
-      onClick={()=>{
-      localStorage.removeItem("token");
-      navigate("/login/student");
-      }}
+        className="logout-btn"
+        onClick={() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user"); // ✅ IMPORTANT
+          navigate("/login/student");
+        }}
       >
-      Logout
+        Logout
       </button>
 
     </div>
-
   );
-
 }
