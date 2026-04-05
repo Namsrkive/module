@@ -19,7 +19,6 @@ function TestPage() {
   const navigate = useNavigate();
   const { module, topic } = useParams();
 
-  // Memoize data fetching to prevent recalculation on every state change
   const questions = useMemo(() => getQuestionsByModuleTopic(module, topic), [module, topic]);
   const tests = useMemo(() => getTests(), []);
 
@@ -33,7 +32,6 @@ function TestPage() {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
-  /* ================= SAFETY ================= */
   useEffect(() => {
     const disableRightClick = (e) => e.preventDefault();
     document.addEventListener("contextmenu", disableRightClick);
@@ -42,7 +40,6 @@ function TestPage() {
     };
   }, []);
 
-  /* ================= UTILS ================= */
   const stopCamera = () => {
     const videos = document.querySelectorAll("video");
     videos.forEach(video => {
@@ -66,6 +63,7 @@ function TestPage() {
   };
 
   /* ================= SUBMIT ================= */
+
   const submitTest = async () => {
     if (submitted) return;
     setSubmitted(true);
@@ -94,31 +92,45 @@ function TestPage() {
       topic,
       score: resultEngine.score,
       total: resultEngine.total,
-      percentage: resultEngine.total > 0
+      percentage:
+        resultEngine.total > 0
           ? Math.round((resultEngine.score / resultEngine.total) * 100)
           : 0,
       date: new Date().toLocaleString()
     };
 
-    // Save to LocalStorage
+    /* ===== LOCAL STORAGE ===== */
     const existingResults = JSON.parse(localStorage.getItem("results")) || [];
     existingResults.push(result);
     localStorage.setItem("results", JSON.stringify(existingResults));
     localStorage.setItem("latestResult", JSON.stringify(result));
 
-    // Save to DB
+    /* ===== SAVE TO DATABASE ===== */
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      await fetch("http://localhost:5000/api/results/save", {
+
+      if (!user || !user._id) {
+        console.error("User not found in localStorage");
+        return;
+      }
+
+      const res = await fetch("http://localhost:5000/api/results/save", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          userId: user?.id,
-          score: result.score,
-          total: result.total,
-          module: result.module
+          userId: user._id,
+          score: resultEngine.score,
+          totalQuestions: resultEngine.total,
+          correctAnswers: resultEngine.score,
+          module: module
         })
       });
+
+      const data = await res.json();
+      console.log("Saved result:", data);
+
     } catch (err) {
       console.error("DB save failed", err);
     }
@@ -145,7 +157,6 @@ function TestPage() {
 
   return (
     <TestLayout>
-      {/* FIX: Use a React Fragment to wrap multiple children */}
       <>
         <div className="tcs-header">
           <h3>{module.toUpperCase()} - {topic.replace("-", " ")}</h3>
@@ -200,16 +211,18 @@ function TestPage() {
         </div>
 
         <div className="test-nav">
-          <button 
+          <button
             disabled={questionIndex === 0}
             onClick={() => setQuestionIndex(p => Math.max(p - 1, 0))}
           >
             Previous
           </button>
 
-          <button 
+          <button
             disabled={questionIndex === questions.length - 1}
-            onClick={() => setQuestionIndex(p => Math.min(p + 1, questions.length - 1))}
+            onClick={() =>
+              setQuestionIndex(p => Math.min(p + 1, questions.length - 1))
+            }
           >
             Next
           </button>
