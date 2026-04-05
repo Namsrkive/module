@@ -5,261 +5,150 @@ import toast from "react-hot-toast";
 
 function AdminLogin() {
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  /* ================= SYSTEM ADMINS ================= */
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [showPassword, setShowPassword] = useState(false);
+const [remember, setRemember] = useState(false);
+const [loading, setLoading] = useState(false);
 
-  const SYSTEM_ADMINS = [
-    {
-      email: "admin@institution.edu",
-      password: "Admin@123",
+/* ================= LOGIN ================= */
+
+const handleLogin = async () => {
+
+if (!email || !password) {
+  toast.error("Please enter admin credentials");
+  return;
+}
+
+try {
+  setLoading(true);
+
+  const res = await fetch("http://localhost:5000/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     },
-    {
-      email: "placement@college.edu",
-      password: "Secure@456",
-    },
-  ];
+    body: JSON.stringify({ email, password })
+  });
 
-  /* ================= STATES ================= */
+  const data = await res.json();
 
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
-  const [showPassword,setShowPassword] = useState(false);
-  const [remember,setRemember] = useState(false);
-  const [showOTP,setShowOTP] = useState(false);
+  if (!res.ok) {
+    toast.error(data.msg);
+    return;
+  }
 
-  const [otp,setOtp] = useState(["","","","","",""]);
+  /* 🔥 ROLE CHECK */
+  if (data.user.role !== "admin") {
+    toast.error("Access denied. Not an admin account.");
+    return;
+  }
 
-  /* ================= LOGIN ================= */
+  /* ✅ SAVE SESSION */
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("user", JSON.stringify(data.user));
 
-  const handleLogin = () => {
+  if (remember) {
+    localStorage.setItem("rememberAdmin", email);
+  }
 
-    if(!email || !password){
-      toast.error("Please enter admin credentials");
-      return;
-    }
+  toast.success("Admin Login Successful 🛡️");
 
-    const admin = SYSTEM_ADMINS.find(
-      (a)=> a.email === email && a.password === password
-    );
+  navigate("/dashboard/admin");
 
-    if(!admin){
-      toast.error("Invalid admin credentials");
-      return;
-    }
+} catch (err) {
+  toast.error("Server error");
+} finally {
+  setLoading(false);
+}
 
-    toast.success("Admin verification code sent 🔐");
-    setShowOTP(true);
+};
 
-  };
+return (
 
-  /* ================= OTP VERIFY ================= */
+<div className="auth-wrapper admin-auth">
 
-  const handleVerifyOTP = () => {
+  {/* LEFT PANEL */}
+  <div className="auth-left">
+    <h1>Institution Control Center</h1>
+    <p>
+      Secure access for authorized institutional administrators.
+      Manage assessments, monitor integrity logs, and analyze
+      placement readiness analytics.
+    </p>
+  </div>
 
-    if(otp.join("") === "999999"){
+  {/* RIGHT PANEL */}
+  <motion.div
+    className="auth-card glass-card"
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: .4 }}
+  >
 
-      toast.success("Admin Access Granted 🛡️");
+    <h2>Admin Login</h2>
 
-      if(remember){
-        localStorage.setItem("adminRemembered",email);
-      }
+    <div className="input-group">
 
-      localStorage.setItem("role","admin");
+      <input
+        type="email"
+        placeholder="Admin Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-      navigate("/dashboard/admin");
+      <div className="password-wrapper">
 
-    } else {
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      toast.error("Invalid verification code");
-
-    }
-
-  };
-
-  const resendOTP = () => {
-
-    toast.success("Verification code resent 🔁");
-
-  };
-
-  /* ================= OTP INPUT HANDLING ================= */
-
-  const handleOtpChange = (e,index) => {
-
-    const value = e.target.value;
-
-    if(!/^[0-9]?$/.test(value)) return;
-
-    const newOtp = [...otp];
-    newOtp[index] = value;
-
-    setOtp(newOtp);
-
-    if(value && index < 5){
-      e.target.nextElementSibling?.focus();
-    }
-
-  };
-
-  const handleOtpKeyDown = (e,index) => {
-
-    if(e.key === "Backspace" && !otp[index] && index > 0){
-      e.target.previousElementSibling?.focus();
-    }
-
-  };
-
-  const handleOtpPaste = (e) => {
-
-    const paste = e.clipboardData.getData("text").trim();
-
-    if(!/^\d{6}$/.test(paste)) return;
-
-    const newOtp = paste.split("");
-    setOtp(newOtp);
-
-  };
-
-  return (
-
-    <div className="auth-wrapper admin-auth">
-
-      {/* LEFT PANEL */}
-
-      <div className="auth-left">
-
-        <h1>Institution Control Center</h1>
-
-        <p>
-          Secure access for authorized institutional administrators.
-          Manage assessments, monitor integrity logs, and analyze
-          placement readiness analytics.
-        </p>
+        <span
+          className="toggle-eye"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? "👁️" : "👁️‍🗨️"}
+        </span>
 
       </div>
 
+    </div>
 
-      {/* RIGHT PANEL */}
+    <div className="auth-options">
 
-      <motion.div
-        className="auth-card glass-card"
-        initial={{opacity:0,y:40}}
-        animate={{opacity:1,y:0}}
-        transition={{duration:.4}}
-      >
-
-        <h2>Admin Login</h2>
-
-        {!showOTP ? (
-
-          <>
-
-          <div className="input-group">
-
-            <input
-              type="email"
-              placeholder="Admin Email"
-              value={email}
-              onChange={(e)=>setEmail(e.target.value)}
-            />
-
-            <div className="password-wrapper">
-
-              <input
-                type={showPassword ? "text":"password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e)=>setPassword(e.target.value)}
-              />
-
-              <span
-                className="toggle-eye"
-                onClick={()=>setShowPassword(!showPassword)}
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </span>
-
-            </div>
-
-          </div>
-
-          <div className="auth-options">
-
-            <label className="remember-box">
-
-              <input
-                type="checkbox"
-                checked={remember}
-                onChange={()=>setRemember(!remember)}
-              />
-
-              Remember Me
-
-            </label>
-
-          </div>
-
-          <button
-            className="primary-btn admin-btn large"
-            onClick={handleLogin}
-          >
-            Continue
-          </button>
-
-          </>
-
-        ) : (
-
-          <>
-
-          <div
-            className="otp-container"
-            onPaste={handleOtpPaste}
-          >
-
-            {otp.map((digit,index)=>(
-              <input
-                key={index}
-                type="text"
-                maxLength="1"
-                className="otp-box"
-                value={digit}
-                onChange={(e)=>handleOtpChange(e,index)}
-                onKeyDown={(e)=>handleOtpKeyDown(e,index)}
-              />
-            ))}
-
-          </div>
-
-          <button
-            className="primary-btn admin-btn large"
-            onClick={handleVerifyOTP}
-          >
-            Verify & Login
-          </button>
-
-          <p
-            className="resend-link"
-            onClick={resendOTP}
-          >
-            Resend Verification Code
-          </p>
-
-          </>
-
-        )}
-
-        <p className="auth-footer secure-note">
-          Admin accounts are provisioned internally by the system.
-        </p>
-
-      </motion.div>
+      <label className="remember-box">
+        <input
+          type="checkbox"
+          checked={remember}
+          onChange={() => setRemember(!remember)}
+        />
+        Remember Me
+      </label>
 
     </div>
 
-  );
+    <button
+      className="primary-btn admin-btn large"
+      onClick={handleLogin}
+      disabled={loading}
+    >
+      {loading ? "Logging in..." : "Login"}
+    </button>
 
+    <p className="auth-footer secure-note">
+      Admin accounts are managed securely in the system.
+    </p>
+
+  </motion.div>
+
+</div>
+
+);
 }
 
 export default AdminLogin;
