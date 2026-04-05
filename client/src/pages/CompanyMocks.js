@@ -1,91 +1,59 @@
 import Sidebar from "../components/dashboard/Sidebar";
 import { useNavigate } from "react-router-dom";
+import { getCompanyTests } from "../data/testStore";
 import "../styles/test.css";
 
-const companies = [
-  {
-    name: "TCS",
-    duration: "90 Minutes",
-    sections: ["Aptitude", "Verbal", "Programming"],
-  },
+export default function CompanyMocks(){
 
-  {
-    name: "IBM",
-    duration: "75 Minutes",
-    sections: ["Logical Reasoning", "DSA", "DBMS"],
-  },
+const navigate = useNavigate();
+const tests = getCompanyTests();
 
-  {
-    name: "Accenture",
-    duration: "80 Minutes",
-    sections: ["Aptitude", "Programming", "Logical"],
-  },
+return(
 
-  {
-    name: "Wipro",
-    duration: "85 Minutes",
-    sections: ["Aptitude", "DBMS", "Operating Systems"],
-  },
+<div className="dashboard-layout">
 
-  {
-    name: "Deloitte",
-    duration: "70 Minutes",
-    sections: ["Business Logic", "Programming", "Aptitude"],
-  },
-];
+<Sidebar/>
 
-export default function CompanyMocks() {
-  const navigate = useNavigate();
+<div className="dashboard-main">
 
-  return (
-    <div className="dashboard-layout">
+<div className="test-page-header">
+<h1>Company Mock Exams</h1>
+<p>Attempt real company pattern tests</p>
+</div>
 
-      <Sidebar />
+<div className="company-mock-grid">
 
-      <div className="dashboard-main">
+{tests.length === 0 && <p>No company tests available</p>}
 
-        <div className="test-page-header">
-          <h1>Company Mock Exams</h1>
-          <p>
-            Attempt full-length mock exams designed based on real company
-            recruitment patterns.
-          </p>
-        </div>
+{tests.map(test => (
 
-        <div className="company-mock-grid">
+<div key={test.id} className="company-mock-card">
 
-          {companies.map((company) => (
-            <div key={company.name} className="company-mock-card">
+<div className="company-header">
+<h2>{test.company} Mock Test</h2>
+<span>{test.duration} min</span>
+</div>
 
-              <div className="company-header">
-                <h2>{company.name} Mock Exam</h2>
-                <span className="mock-duration">{company.duration}</span>
-              </div>
+<p>Questions: {test.questions.length}</p>
+<p>Total Marks: {test.totalMarks}</p>
+<p>Difficulty: {test.difficulty}</p>
 
-              <div className="mock-sections">
+<button
+className="start-mock-btn"
+onClick={()=>navigate(`/test/start/${test.id}`)}
+>
+Start Mock Exam
+</button>
 
-                {company.sections.map((section) => (
-                  <span key={section} className="mock-section">
-                    {section}
-                  </span>
-                ))}
+</div>
 
-              </div>
+))}
 
-              <button
-                className="start-mock-btn"
-                onClick={() => navigate("/test")}
-              >
-                Start Mock Exam
-              </button>
+</div>
 
-            </div>
-          ))}
+</div>
 
-        </div>
+</div>
 
-      </div>
-
-    </div>
-  );
+);
 }

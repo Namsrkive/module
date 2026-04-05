@@ -3,18 +3,47 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import "../../styles/dashboard.css";
 
 function AdminDashboard() {
-  const [data, setData] = useState(null);
+
+  const [data, setData] = useState({
+    totalTests: 0,
+    totalStudents: 0,
+    avgScore: 0,
+    totalViolations: 0,
+    students: [],
+    recentResults: []
+  });
+
+  const [loading, setLoading] = useState(true);
 
   /* ================= FETCH ADMIN DATA ================= */
 
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/analytics/admin");
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:5000/api/analytics/admin", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
         const result = await res.json();
-        setData(result);
+
+        // 🔥 SAFE FALLBACK (IMPORTANT)
+        setData({
+          totalTests: result.totalTests || 0,
+          totalStudents: result.totalStudents || 0,
+          avgScore: result.avgScore || 0,
+          totalViolations: result.totalViolations || 0,
+          students: result.students || [],
+          recentResults: result.recentResults || []
+        });
+
       } catch (err) {
         console.error("Error fetching admin data:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -23,7 +52,7 @@ function AdminDashboard() {
 
   /* ================= LOADING ================= */
 
-  if (!data) {
+  if (loading) {
     return <div style={{ padding: "20px" }}>Loading admin dashboard...</div>;
   }
 
@@ -129,7 +158,9 @@ function AdminDashboard() {
                     <td>{r.score}</td>
                     <td>{r.module}</td>
                     <td>
-                      {new Date(r.createdAt).toLocaleDateString()}
+                      {r.createdAt
+                        ? new Date(r.createdAt).toLocaleDateString()
+                        : "-"}
                     </td>
                   </tr>
                 ))
@@ -137,6 +168,7 @@ function AdminDashboard() {
             </tbody>
           </table>
         </div>
+
       </div>
     </div>
   );

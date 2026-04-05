@@ -1,6 +1,6 @@
 import Sidebar from "../components/dashboard/Sidebar";
 import { useNavigate } from "react-router-dom";
-import { getQuestionsByModuleTopic } from "../data/testStore";
+import { getTestsByModuleTopic } from "../data/testStore";
 import "../styles/test.css";
 
 const modules = [
@@ -88,27 +88,24 @@ Practice individual topics before attempting full company mock exams.
 
 {module.tests.map((topic)=>{
 
-/* Count questions dynamically */
-
-const questions = getQuestionsByModuleTopic(module.name,topic);
-
-const questionCount = questions.length;
+// ✅ NEW LOGIC
+const tests = getTestsByModuleTopic(module.name, topic);
 
 return(
 
 <div
 key={topic}
 className="topic-card"
-onClick={()=>navigate(`/test/${module.name}/${topic}`)}
+onClick={()=>navigate(`/tests/${module.name}/${topic}`)}
 >
 
 <h4>{topic}</h4>
 
 <p className="topic-info">
 
-{questionCount > 0
-? `${questionCount} Questions • 20 Minutes`
-: "No Questions Added Yet"}
+{tests.length > 0
+? `${tests.length} Tests Available`
+: "No Tests Available"}
 
 </p>
 
@@ -116,11 +113,16 @@ onClick={()=>navigate(`/test/${module.name}/${topic}`)}
 className="start-test-btn"
 onClick={(e)=>{
 e.stopPropagation();
-navigate(`/test/${module.name}/${topic}`);
+
+if(tests.length > 0){
+  navigate(`/tests/${module.name}/${topic}`);
+} else {
+  alert("No tests available");
+}
 }}
 >
 
-Start Test
+View Tests
 
 </button>
 
@@ -143,5 +145,4 @@ Start Test
 </div>
 
 );
-
 }

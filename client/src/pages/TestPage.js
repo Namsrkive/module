@@ -1,238 +1,217 @@
-import { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-
-import {
-  getQuestionsByModuleTopic,
-  getTests
-} from "../data/testStore";
-
-import { submitTest as submitTestEngine } from "../services/testEngine";
-
-import TestLayout from "../components/test/TestLayout";
-import CodeEditor from "../components/test/CodeEditor";
-import ProctorPanel from "../components/test/ProctorPanel";
-import Timer from "../components/test/Timer";
-
-import "../styles/test.css";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getGeneratedTest } from "../data/testStore";
+import "../styles/testLayout.css";
 
 function TestPage() {
   const navigate = useNavigate();
-  const { module, topic } = useParams();
+  const test = getGeneratedTest();
 
-  const questions = useMemo(() => getQuestionsByModuleTopic(module, topic), [module, topic]);
-  const tests = useMemo(() => getTests(), []);
-
-  const currentTest = tests.find(
-    t =>
-      t.module?.toLowerCase() === module?.toLowerCase() &&
-      t.topic?.toLowerCase() === topic?.toLowerCase()
-  );
-
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState({});
+  const [timeLeft, setTimeLeft] = useState(3600);
+  const [submitting, setSubmitting] = useState(false);
 
+  const questions = test?.questions || [];
+  const q = questions[current];
+
+  /* ⏱ TIMER */
   useEffect(() => {
-    const disableRightClick = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", disableRightClick);
-    return () => {
-      document.removeEventListener("contextmenu", disableRightClick);
-    };
-  }, []);
-
-  const stopCamera = () => {
-    const videos = document.querySelectorAll("video");
-    videos.forEach(video => {
-      if (video.srcObject) {
-        video.srcObject.getTracks().forEach(track => track.stop());
-      }
-    });
-  };
-
-  const exitFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
+    if (timeLeft <= 0) {
+      handleSubmit(true); // auto submit
+      return;
     }
+
+    const timer = setInterval(() => {
+      setTimeLeft(t => t - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
+
+  const formatTime = (t) => {
+    const m = Math.floor(t / 60);
+    const s = t % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  const selectOption = (option) => {
-    setAnswers(prev => ({
-      ...prev,
-      [questionIndex]: option
-    }));
+  /* ANSWER */
+  const handleAnswer = (val) => {
+    setAnswers(prev => ({ ...prev, [q.id]: val }));
+    setStatus(prev => ({ ...prev, [q.id]: "answered" }));
   };
 
-  /* ================= SUBMIT ================= */
+  /* NAVIGATION */
+  const goNext = () => {
+    if (!answers[q.id]) {
+      setStatus(prev => ({ ...prev, [q.id]: "visited" }));
+    }
+    if (current < questions.length - 1) setCurrent(current + 1);
+  };
 
-  const submitTest = async () => {
-    if (submitted) return;
-    setSubmitted(true);
+  const goPrev = () => {
+    if (current > 0) setCurrent(current - 1);
+  };
 
-    const answerArray = questions.map((q, i) => answers[i] || null);
+  const markReview = () => {
+    setStatus(prev => ({ ...prev, [q.id]: "review" }));
+    goNext();
+  };
 
-    const testData = {
-      id: currentTest?.id || `${module}-${topic}`,
-      title: currentTest?.name || `${module} ${topic}`,
-      questions
-    };
+  const clearAnswer = () => {
+    const updated = { ...answers };
+    delete updated[q.id];
+    setAnswers(updated);
+    setStatus(prev => ({ ...prev, [q.id]: "visited" }));
+  };
 
-    const resultEngine = submitTestEngine({
-      studentId: "student1",
-      test: testData,
-      answers: answerArray,
-      violations: 0,
-      timeTaken: 1200
+  /* SUBMIT */
+  const handleSubmit = async (auto = false) => {
+    if (submitting) return;
+
+    if (!auto && !window.confirm("Are you sure you want to submit?")) return;
+
+    setSubmitting(true);
+
+    let score = 0;
+    let correct = 0;
+    let wrong = 0;
+
+    questions.forEach(q => {
+      const userAns = answers[q.id];
+
+      if (!userAns) return;
+
+      if (userAns === q.correctAnswer) {
+        score += q.marks;
+        correct++;
+      } else {
+        score -= q.negativeMarks || 0;
+        wrong++;
+      }
     });
 
-    const result = {
-      studentId: "student1",
-      testId: testData.id,
-      testTitle: testData.title,
-      module,
-      topic,
-      score: resultEngine.score,
-      total: resultEngine.total,
-      percentage:
-        resultEngine.total > 0
-          ? Math.round((resultEngine.score / resultEngine.total) * 100)
-          : 0,
-      date: new Date().toLocaleString()
-    };
-
-    /* ===== LOCAL STORAGE ===== */
-    const existingResults = JSON.parse(localStorage.getItem("results")) || [];
-    existingResults.push(result);
-    localStorage.setItem("results", JSON.stringify(existingResults));
-    localStorage.setItem("latestResult", JSON.stringify(result));
-
-    /* ===== SAVE TO DATABASE ===== */
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-
-      if (!user || !user._id) {
-        console.error("User not found in localStorage");
-        return;
-      }
-
-      const res = await fetch("http://localhost:5000/api/results/save", {
+      await fetch("http://localhost:5000/api/results", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({
-          userId: user._id,
-          score: resultEngine.score,
-          totalQuestions: resultEngine.total,
-          correctAnswers: resultEngine.score,
-          module: module
+          testId: test.id,
+          answers,
+          questions,
+          score,
+          total: questions.reduce((sum, q) => sum + q.marks, 0),
+          correct,
+          wrong,
+          attempted: Object.keys(answers).length,
+          timeTaken: 3600 - timeLeft
         })
       });
 
-      const data = await res.json();
-      console.log("Saved result:", data);
+      navigate("/test-result");
 
     } catch (err) {
-      console.error("DB save failed", err);
+      console.error("Error submitting test:", err);
+      alert("Submission failed");
+      setSubmitting(false);
     }
-
-    stopCamera();
-    exitFullscreen();
-    navigate("/test-result", { state: result });
   };
 
-  const handleTimeUp = () => {
-    alert("Time is up! Submitting test...");
-    submitTest();
-  };
-
-  if (!questions || questions.length === 0) {
-    return (
-      <TestLayout>
-        <div className="error-state">No Questions Found</div>
-      </TestLayout>
-    );
+  if (!test || questions.length === 0) {
+    return <h2 style={{ padding: "20px" }}>No test available</h2>;
   }
 
-  const question = questions[questionIndex];
-
   return (
-    <TestLayout>
-      <>
-        <div className="tcs-header">
-          <h3>{module.toUpperCase()} - {topic.replace("-", " ")}</h3>
-          <Timer duration={20} onTimeUp={handleTimeUp} />
-        </div>
+    <div className="test-container">
 
-        <div className="tcs-body">
-          <div className="tcs-left">
-            <h4>
-              Q{questionIndex + 1}. {question.question}
-            </h4>
+      {/* HEADER */}
+      <div className="test-header">
+        <h2>{test.name}</h2>
+        <div className="timer">⏱ {formatTime(timeLeft)}</div>
+      </div>
 
-            {question.type === "mcq" && (
-              <div className="options">
-                {question.options.map((opt, i) => (
-                  <div
-                    key={i}
-                    className={`option ${
-                      answers[questionIndex] === opt ? "selected" : ""
-                    }`}
-                    onClick={() => selectOption(opt)}
-                  >
-                    {opt}
-                  </div>
-                ))}
-              </div>
-            )}
+      <div className="test-body">
 
-            {question.type === "coding" && <CodeEditor />}
-          </div>
+        {/* QUESTION AREA */}
+        <div className="question-area">
+          <h3>Q{current + 1}. {q.question}</h3>
 
-          <div className="tcs-right">
-            <div className="palette-grid">
-              {questions.map((q, i) => {
-                let className = "palette-btn";
-                if (answers[i]) className += " answered";
-                if (questionIndex === i) className += " palette-current";
-
-                return (
-                  <button
-                    key={i}
-                    className={className}
-                    onClick={() => setQuestionIndex(i)}
-                  >
-                    {i + 1}
-                  </button>
-                );
-              })}
+          {q.type === "mcq" && (
+            <div className="options">
+              {q.options.map((opt, i) => (
+                <label key={i} className={answers[q.id] === opt ? "selected" : ""}>
+                  <input
+                    type="radio"
+                    name={`q-${q.id}`}
+                    checked={answers[q.id] === opt}
+                    onChange={() => handleAnswer(opt)}
+                  />
+                  {opt}
+                </label>
+              ))}
             </div>
-            <ProctorPanel onAutoSubmit={submitTest} />
+          )}
+
+          {q.type === "short" && (
+            <input
+              type="text"
+              placeholder="Type your answer..."
+              value={answers[q.id] || ""}
+              onChange={(e) => handleAnswer(e.target.value)}
+            />
+          )}
+
+          {/* ACTIONS */}
+          <div className="actions">
+            <button onClick={markReview}>Mark for Review</button>
+            <button onClick={clearAnswer}>Clear</button>
+            <button onClick={goPrev}>Prev</button>
+            <button onClick={goNext}>Save & Next</button>
           </div>
         </div>
 
-        <div className="test-nav">
-          <button
-            disabled={questionIndex === 0}
-            onClick={() => setQuestionIndex(p => Math.max(p - 1, 0))}
-          >
-            Previous
-          </button>
+        {/* PALETTE */}
+        <div className="palette">
+          <h4>Questions</h4>
+
+          <div className="palette-grid">
+            {questions.map((qq, i) => {
+              let cls = "";
+
+              if (status[qq.id] === "review") cls = "review";
+              else if (answers[qq.id]) cls = "answered";
+              else if (status[qq.id] === "visited") cls = "visited";
+
+              if (i === current) cls += " current";
+
+              return (
+                <div
+                  key={i}
+                  className={`box ${cls}`}
+                  onClick={() => setCurrent(i)}
+                >
+                  {i + 1}
+                </div>
+              );
+            })}
+          </div>
 
           <button
-            disabled={questionIndex === questions.length - 1}
-            onClick={() =>
-              setQuestionIndex(p => Math.min(p + 1, questions.length - 1))
-            }
+            className="submit-btn"
+            onClick={() => handleSubmit(false)}
+            disabled={submitting}
           >
-            Next
-          </button>
-
-          <button className="submit-btn" onClick={submitTest}>
-            Submit Test
+            {submitting ? "Submitting..." : "Submit Test"}
           </button>
         </div>
-      </>
-    </TestLayout>
+      </div>
+    </div>
   );
 }
 

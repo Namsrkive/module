@@ -40,11 +40,18 @@ function StudentLogin() {
       // Store Auth Data
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("role", "student");
+      localStorage.setItem("role", data.user.role);
 
       if (remember) {
         localStorage.setItem("rememberUser", email);
       }
+
+      // ✅ ROLE CHECK (extra safety)
+      if (data.user.role !== "student") {
+        toast.error("This is not a student account");
+        return;
+      }
+
 
       toast.success("Login Successful 🚀");
       navigate("/dashboard/student");

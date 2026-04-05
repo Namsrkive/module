@@ -42,6 +42,8 @@ import TestResult from "./pages/TestResult";
 import AdminStudentResults from "./pages/admin/StudentResults";
 import Analytics from "./pages/admin/Analytics";
 import StudentResults from "./pages/StudentResults";
+import TopicTestList from "./pages/TopicTestList";
+
 /* ================= NAV ITEMS ================= */
 
 const NAV_ITEMS = [
@@ -251,8 +253,9 @@ function Layout() {
             }
             />
 
-            <Route path="/test/:module/:topic" element={<TestStart/>}/>
-            <Route path="/test/:module/:topic/attempt" element={<TestPage/>}/>
+            <Route path="/tests/:module/:topic" element={<TopicTestList />} />
+            <Route path="/test/start/:testId" element={<TestStart />} />
+            <Route path="/test/:testId" element={<TestPage />} />
  
             <Route path="/test-result" element={<TestResult />} />
             <Route path="/about" element={<About />} />

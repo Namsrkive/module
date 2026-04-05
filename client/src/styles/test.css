@@ -667,3 +667,45 @@ cursor:pointer;
 .timer.danger {
   color: red;
 }
+
+.result-container{
+padding:40px;
+background:#f4f6fb;
+min-height:100vh;
+text-align:center;
+}
+
+.result-card{
+background:white;
+padding:30px;
+border-radius:12px;
+max-width:400px;
+margin:auto;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.result-card h2{
+font-size:32px;
+margin-bottom:20px;
+}
+
+.result-stats p{
+margin:8px 0;
+font-size:16px;
+}
+
+.result-actions{
+margin-top:20px;
+display:flex;
+gap:10px;
+justify-content:center;
+}
+
+.result-actions button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#6366f1;
+color:white;
+}

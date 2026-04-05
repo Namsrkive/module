@@ -36,12 +36,12 @@ try {
   const data = await res.json();
 
   if (!res.ok) {
-    toast.error(data.msg);
+    toast.error(data.msg || "Login failed");
     return;
   }
 
-  /* 🔥 ROLE CHECK */
-  if (data.user.role !== "admin") {
+  // 🔥 STRICT ADMIN CHECK
+  if (!data.user || data.user.role !== "admin") {
     toast.error("Access denied. Not an admin account.");
     return;
   }
@@ -49,6 +49,7 @@ try {
   /* ✅ SAVE SESSION */
   localStorage.setItem("token", data.token);
   localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("role", "admin");
 
   if (remember) {
     localStorage.setItem("rememberAdmin", email);
@@ -59,6 +60,7 @@ try {
   navigate("/dashboard/admin");
 
 } catch (err) {
+  console.error(err);
   toast.error("Server error");
 } finally {
   setLoading(false);
@@ -141,7 +143,7 @@ return (
     </button>
 
     <p className="auth-footer secure-note">
-      Admin accounts are managed securely in the system.
+      Admin access only.
     </p>
 
   </motion.div>
