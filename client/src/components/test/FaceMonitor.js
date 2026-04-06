@@ -57,12 +57,13 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
         }
 
       }, 2000);
+      
     };
 
     const startVideo = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true   // ✅ REMOVE fixed dimensions
+          video: true  
         });
 
         streamRef.current = stream;
@@ -96,7 +97,7 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
     loadModels();
 
     return () => stopCamera();
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

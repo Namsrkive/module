@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../components/dashboard/Sidebar";
-import { Trophy, Medal, Crown, Star } from "lucide-react"; // npm install lucide-react
+import { Medal, Crown, Star } from "lucide-react"; 
 import "../styles/result.css";
 
 export default function Leaderboard() {

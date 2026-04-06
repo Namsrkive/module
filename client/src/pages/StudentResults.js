@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/dashboard/Sidebar";
-import { FileText, Award, Calendar } from "lucide-react"; // npm install lucide-react
+import { FileText, Award, Calendar } from "lucide-react";
 import "../styles/result.css";
 
 export default function StudentResults() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
-import { Users, FileText, TrendingUp, Search, UserCheck } from "lucide-react"; 
+import { Users, FileText, TrendingUp, Search } from "lucide-react"; 
 import "../../styles/result.css";
 
 function StudentResults() {
