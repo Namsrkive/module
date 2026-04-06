@@ -26,7 +26,7 @@ The platform evaluates a student's placement readiness across multiple domains w
 
 It bridges the gap between **academic preparation and real recruitment processes** by simulating the hiring assessments of companies such as:
 
-- **TC**
+- **TCS**
 - **IBM**
 - **Accenture**
 - **Wipro**
