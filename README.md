@@ -21,6 +21,8 @@
 # 📌 About The Project
 
 App Link : https://placement-portal-8ea3g4kjq-namratas-projects-433e6955.vercel.app/
+
+
 The **Proctored Placement Readiness Assessment Portal** is a full-stack web platform designed to simulate **real company recruitment exams** under a **secure and proctored environment**.
 
 The platform evaluates a student's placement readiness across multiple domains while ensuring exam integrity through **AI-based monitoring and proctoring mechanisms**.
