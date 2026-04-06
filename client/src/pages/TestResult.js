@@ -1,66 +1,74 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/test.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../styles/testLayout.css";
 
-function TestResult() {
-  const [result, setResult] = useState(null);
+export default function TestResult() {
+  const { state } = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchResult = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/results/latest", {
-          headers: {
-            Authorization: localStorage.getItem("token")
-          }
-        });
+  if (!state) return <h2 style={{ padding: "20px" }}>No result found</h2>;
 
-        const data = await res.json();
-        setResult(data);
-      } catch (err) {
-        console.error("Error fetching result:", err);
-      }
-    };
+  const { test, answers } = state;
 
-    fetchResult();
-  }, []);
+  let score = 0;
 
-  if (!result) {
-    return <div style={{ padding: "20px" }}>Loading result...</div>;
-  }
-
-  const accuracy = Math.round(
-    (result.correct / (result.attempted || 1)) * 100
-  );
+  test.questions.forEach((q, i) => {
+    if (answers[i] === q.answer) score++;
+  });
 
   return (
     <div className="result-container">
-      <h1>Test Result</h1>
 
-      <div className="result-card">
-        <h2>
-          {result.score} / {result.total}
-        </h2>
+      <div className="result-card-main">
 
-        <div className="result-stats">
-          <p>✅ Correct: {result.correct}</p>
-          <p>❌ Wrong: {result.wrong}</p>
-          <p>📝 Attempted: {result.attempted}</p>
-          <p>🎯 Accuracy: {accuracy}%</p>
+        <h1>{test.name} Result</h1>
+
+        <div className="score-box">
+          <h2>Score: {score} / {test.questions.length}</h2>
+          <p>
+            Accuracy: {((score / test.questions.length) * 100).toFixed(1)}%
+          </p>
         </div>
 
-        <div className="result-actions">
-          <button onClick={() => navigate("/dashboard/student")}>
-            Go to Dashboard
-          </button>
+        {/* QUESTIONS */}
+        <div className="result-list">
+          {test.questions.map((q, i) => {
+            const userAnswer = answers[i];
+            const isCorrect = userAnswer === q.answer;
 
-          <button onClick={() => navigate("/tests")}>
-            Take Another Test
-          </button>
+            return (
+              <div
+                key={i}
+                className={`result-item ${isCorrect ? "correct" : "wrong"}`}
+              >
+                <p><b>Q{i + 1}:</b> {q.question}</p>
+
+                <p>
+                  Your Answer:{" "}
+                  <span className={isCorrect ? "correct-text" : "wrong-text"}>
+                    {userAnswer || "Not Attempted"}
+                  </span>
+                </p>
+
+                {!isCorrect && (
+                  <p>
+                    Correct Answer:{" "}
+                    <span className="correct-text">{q.answer}</span>
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
+
+        <button
+          className="back-btn"
+          onClick={() => navigate("/dashboard/student")}
+        >
+          Back to Dashboard
+        </button>
+
       </div>
+
     </div>
   );
 }
-
-export default TestResult;

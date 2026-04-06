@@ -21,7 +21,7 @@ function ProctorPanel({ onAutoSubmit }) {
     ]);
   };
 
-  // TAB SWITCH
+  /* ================= TAB SWITCH ================= */
   useEffect(() => {
     const handleVisibility = () => {
       if (document.hidden) {
@@ -34,7 +34,7 @@ function ProctorPanel({ onAutoSubmit }) {
     return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, []);
 
-  // COPY / PASTE
+  /* ================= COPY / PASTE ================= */
   useEffect(() => {
     const block = (e) => {
       e.preventDefault();
@@ -51,7 +51,7 @@ function ProctorPanel({ onAutoSubmit }) {
     };
   }, []);
 
-  // FULLSCREEN
+  /* ================= FULLSCREEN ================= */
   useEffect(() => {
 
     const enterFullscreen = async () => {
@@ -84,7 +84,7 @@ function ProctorPanel({ onAutoSubmit }) {
 
   }, []);
 
-  // AUTO SUBMIT
+  /* ================= AUTO SUBMIT ================= */
   useEffect(() => {
 
     if (submitted) return;
@@ -104,7 +104,7 @@ function ProctorPanel({ onAutoSubmit }) {
 
   }, [violations]);
 
-  // PREVENT REFRESH
+  /* ================= CLEANUP ================= */
   useEffect(() => {
     window.onbeforeunload = () => "Test is running!";
 
@@ -115,33 +115,37 @@ function ProctorPanel({ onAutoSubmit }) {
   }, []);
 
   return (
-    <div className="proctor-panel">
+    <>
+      {/* ===== PANEL ===== */}
+      <div className="proctor-panel">
+        <h4>Proctor Monitor</h4>
 
-      <h4>Proctor Monitor</h4>
-
-      <div className="warning-box">
-        {warnings.map(w => (
-          <p key={w.id} className="warning-text">⚠️ {w.text}</p>
-        ))}
-      </div>
-
-      {violations >= 4 && (
-        <div className="danger-banner">
-          ⚠️ Final Warning: Next violation = Auto Submit
+        <div className="warning-box">
+          {warnings.map(w => (
+            <p key={w.id} className="warning-text">⚠️ {w.text}</p>
+          ))}
         </div>
-      )}
 
-      <FaceMonitor ref={faceRef} addViolation={addViolation} />
+        {violations >= 4 && (
+          <div className="danger-banner">
+            ⚠️ Final Warning: Next violation = Auto Submit
+          </div>
+        )}
 
-      <div className="proctor-status">
-        <p>Camera: Active</p>
-        <p>Fullscreen: {fullscreen ? "Enabled" : "Disabled"}</p>
-        <p>Tab Switch: {tabSwitch}</p>
-        <p>Copy Attempts: {copyAttempts}</p>
-        <p className="violation">Violations: {violations}/5</p>
+        <div className="proctor-status">
+          <p>Camera: Active</p>
+          <p>Fullscreen: {fullscreen ? "Enabled" : "Disabled"}</p>
+          <p>Tab Switch: {tabSwitch}</p>
+          <p>Copy Attempts: {copyAttempts}</p>
+          <p className="violation">Violations: {violations}/5</p>
+        </div>
       </div>
 
-    </div>
+      {/* ===== FLOATING CAMERA ===== */}
+      <div className="camera-container">
+        <FaceMonitor ref={faceRef} addViolation={addViolation} />
+      </div>
+    </>
   );
 }
 

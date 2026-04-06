@@ -7,12 +7,10 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
   const intervalRef = useRef(null);
   const streamRef = useRef(null);
 
-  // 🔥 CONTROL VARIABLES
   const noFaceCountRef = useRef(0);
   const startTimeRef = useRef(Date.now());
 
   /* ================= STOP CAMERA ================= */
-
   const stopCamera = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
 
@@ -26,7 +24,6 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
   }));
 
   /* ================= MAIN ================= */
-
   useEffect(() => {
 
     const startDetection = () => {
@@ -34,7 +31,6 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
 
         if (!videoRef.current) return;
 
-        // 🔥 WAIT FIRST 5 SECONDS (NO VIOLATIONS)
         if (Date.now() - startTimeRef.current < 5000) return;
 
         const detections = await faceapi.detectAllFaces(
@@ -44,10 +40,6 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
             scoreThreshold: 0.5
           })
         );
-
-        console.log("Faces detected:", detections.length);
-
-        /* ================= NO FACE ================= */
 
         if (detections.length === 0) {
           noFaceCountRef.current++;
@@ -60,8 +52,6 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
           noFaceCountRef.current = 0;
         }
 
-        /* ================= MULTIPLE FACES ================= */
-
         if (detections.length > 1) {
           addViolation("Multiple faces detected");
         }
@@ -71,12 +61,8 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
 
     const startVideo = async () => {
       try {
-
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: 320,
-            height: 240
-          }
+          video: true   // ✅ REMOVE fixed dimensions
         });
 
         streamRef.current = stream;
@@ -87,7 +73,6 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
           videoRef.current.onloadedmetadata = () => {
             videoRef.current.play();
 
-            // 🔥 DELAY DETECTION (IMPORTANT)
             setTimeout(() => {
               startDetection();
             }, 2000);
@@ -120,9 +105,7 @@ const FaceMonitor = forwardRef(({ addViolation }, ref) => {
       autoPlay
       muted
       playsInline
-      width="320"
-      height="240"
-      className="proctor-video"
+      className="face-video"
     />
   );
 });

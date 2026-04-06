@@ -709,3 +709,28 @@ cursor:pointer;
 background:#6366f1;
 color:white;
 }
+
+.start-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+.start-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.start-btn {
+  width: 100%;
+  padding: 12px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+}

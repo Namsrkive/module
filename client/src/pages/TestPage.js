@@ -1,36 +1,46 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getGeneratedTest } from "../data/testStore";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import ProctorPanel from "../components/test/ProctorPanel";
+import CodeEditor from "../components/test/CodeEditor";
+import QuestionPalette from "../components/test/QuestionPalette";
 import "../styles/testLayout.css";
 
 function TestPage() {
+  const { testId } = useParams();
   const navigate = useNavigate();
-  const test = getGeneratedTest();
 
+  const [test, setTest] = useState(null);
   const [current, setCurrent] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [status, setStatus] = useState({});
-  const [timeLeft, setTimeLeft] = useState(3600);
-  const [submitting, setSubmitting] = useState(false);
+  const [testEnded, setTestEnded] = useState(false);
+
+  /* ================= LOAD TEST ================= */
+  useEffect(() => {
+    const fetchTest = async () => {
+      const res = await fetch(`/api/tests/${testId}`);
+      const data = await res.json();
+      setTest(data);
+      setTimeLeft((data.duration || 30) * 60);
+    };
+    fetchTest();
+  }, [testId]);
 
   const questions = test?.questions || [];
   const q = questions[current];
 
-  /* ⏱ TIMER */
+  /* ================= TIMER ================= */
   useEffect(() => {
+    if (!test) return;
+
     if (timeLeft <= 0) {
-      handleSubmit(true); // auto submit
+      autoSubmit(); // ✅ FIXED (was handleSubmit)
       return;
     }
 
-    const timer = setInterval(() => {
-      setTimeLeft(t => t - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft]);
+    const t = setInterval(() => setTimeLeft((t) => t - 1), 1000);
+    return () => clearInterval(t);
+  }, [timeLeft, test]);
 
   const formatTime = (t) => {
     const m = Math.floor(t / 60);
@@ -38,178 +48,170 @@ function TestPage() {
     return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  /* ANSWER */
-  const handleAnswer = (val) => {
-    setAnswers(prev => ({ ...prev, [q.id]: val }));
-    setStatus(prev => ({ ...prev, [q.id]: "answered" }));
+  /* ================= ANSWERS ================= */
+  const handleAnswer = (opt) => {
+    setAnswers((prev) => ({ ...prev, [current]: opt }));
   };
 
-  /* NAVIGATION */
-  const goNext = () => {
-    if (!answers[q.id]) {
-      setStatus(prev => ({ ...prev, [q.id]: "visited" }));
-    }
-    if (current < questions.length - 1) setCurrent(current + 1);
-  };
+  /* ================= AUTO SUBMIT ================= */
+  const autoSubmit = async () => {
+    if (testEnded) return;
 
-  const goPrev = () => {
-    if (current > 0) setCurrent(current - 1);
-  };
-
-  const markReview = () => {
-    setStatus(prev => ({ ...prev, [q.id]: "review" }));
-    goNext();
-  };
-
-  const clearAnswer = () => {
-    const updated = { ...answers };
-    delete updated[q.id];
-    setAnswers(updated);
-    setStatus(prev => ({ ...prev, [q.id]: "visited" }));
-  };
-
-  /* SUBMIT */
-  const handleSubmit = async (auto = false) => {
-    if (submitting) return;
-
-    if (!auto && !window.confirm("Are you sure you want to submit?")) return;
-
-    setSubmitting(true);
+    setTestEnded(true);
 
     let score = 0;
-    let correct = 0;
-    let wrong = 0;
-
-    questions.forEach(q => {
-      const userAns = answers[q.id];
-
-      if (!userAns) return;
-
-      if (userAns === q.correctAnswer) {
-        score += q.marks;
-        correct++;
-      } else {
-        score -= q.negativeMarks || 0;
-        wrong++;
-      }
+    test.questions.forEach((q, i) => {
+      if (answers[i] === q.answer) score++;
     });
 
-    try {
-      await fetch("http://localhost:5000/api/results", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify({
-          testId: test.id,
-          answers,
-          questions,
-          score,
-          total: questions.reduce((sum, q) => sum + q.marks, 0),
-          correct,
-          wrong,
-          attempted: Object.keys(answers).length,
-          timeTaken: 3600 - timeLeft
-        })
-      });
+    const percent = Math.round((score / test.questions.length) * 100);
 
-      navigate("/test-result");
+    await fetch("/api/results", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        testId,
+        score: percent,
+        answers: Object.keys(answers).map((i) => ({
+          questionId: test.questions[i]._id,
+          selectedOption: answers[i],
+        })),
+      }),
+    });
 
-    } catch (err) {
-      console.error("Error submitting test:", err);
-      alert("Submission failed");
-      setSubmitting(false);
-    }
+    navigate("/test-result", { state: { test, answers } });
   };
 
-  if (!test || questions.length === 0) {
-    return <h2 style={{ padding: "20px" }}>No test available</h2>;
-  }
+  /* ================= MANUAL SUBMIT ================= */
+  const handleSubmit = useCallback(async () => {
+    if (testEnded) return;
+
+    if (!window.confirm("Are you sure you want to submit the test?")) return;
+
+    setTestEnded(true);
+
+    let score = 0;
+    test.questions.forEach((q, i) => {
+      if (answers[i] === q.answer) score++;
+    });
+
+    const percent = Math.round((score / test.questions.length) * 100);
+
+    await fetch("/api/results", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        testId,
+        score: percent,
+        answers: Object.keys(answers).map((i) => ({
+          questionId: test.questions[i]._id,
+          selectedOption: answers[i],
+        })),
+      }),
+    });
+
+    navigate("/test-result", { state: { test, answers } });
+  }, [answers, testId, navigate, test, testEnded]);
+
+  if (!test)
+    return (
+      <div className="loading-screen">
+        <h2>Loading assessment...</h2>
+      </div>
+    );
 
   return (
-    <div className="test-container">
+    <div className="test-page-wrapper">
+      {/* NAVBAR */}
+      <nav className="test-navbar">
+        <div className="nav-left">
+          <span className="test-badge">Live Exam</span>
+          <h2>{test.name}</h2>
+        </div>
+        <div className={`timer-display ${timeLeft < 300 ? "timer-low" : ""}`}>
+          ⏱ {formatTime(timeLeft)}
+        </div>
+      </nav>
 
-      {/* HEADER */}
-      <div className="test-header">
-        <h2>{test.name}</h2>
-        <div className="timer">⏱ {formatTime(timeLeft)}</div>
-      </div>
+      <div className="test-layout">
+        {/* MAIN */}
+        <main className="test-main">
+          <div className="question-card">
+            <div className="question-header">
+              <span>
+                Question {current + 1} of {questions.length}
+              </span>
+            </div>
 
-      <div className="test-body">
+            <h3>{q?.question}</h3>
 
-        {/* QUESTION AREA */}
-        <div className="question-area">
-          <h3>Q{current + 1}. {q.question}</h3>
+            {/* OPTIONS */}
+            {q?.options && (
+              <div className="options-grid">
+                {q.options.map((opt, i) => (
+                  <button
+                    key={i}
+                    className={`option-btn ${
+                      answers[current] === opt ? "selected" : ""
+                    }`}
+                    onClick={() => handleAnswer(opt)}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            )}
 
-          {q.type === "mcq" && (
-            <div className="options">
-              {q.options.map((opt, i) => (
-                <label key={i} className={answers[q.id] === opt ? "selected" : ""}>
-                  <input
-                    type="radio"
-                    name={`q-${q.id}`}
-                    checked={answers[q.id] === opt}
-                    onChange={() => handleAnswer(opt)}
-                  />
-                  {opt}
-                </label>
-              ))}
+            {/* CODING */}
+            {q?.type === "coding" && <CodeEditor />}
+
+            {/* ACTIONS */}
+            <div className="test-footer-actions">
+              <button
+                disabled={current === 0}
+                onClick={() => setCurrent((c) => c - 1)}
+              >
+                ← Previous
+              </button>
+
+              <button
+                disabled={current === questions.length - 1}
+                onClick={() => setCurrent((c) => c + 1)}
+              >
+                Next →
+              </button>
+
+              <button className="btn-submit" onClick={handleSubmit}>
+                Final Submit
+              </button>
+            </div>
+          </div>
+        </main>
+
+        {/* SIDEBAR */}
+        <aside className="test-sidebar">
+          {/* ✅ REMOVE CAMERA AFTER SUBMIT */}
+          {!testEnded && (
+            <div className="sidebar-section">
+              <ProctorPanel onAutoSubmit={autoSubmit} />
             </div>
           )}
 
-          {q.type === "short" && (
-            <input
-              type="text"
-              placeholder="Type your answer..."
-              value={answers[q.id] || ""}
-              onChange={(e) => handleAnswer(e.target.value)}
+          <div className="sidebar-section">
+            <QuestionPalette
+              questions={questions}
+              answers={answers}
+              current={current}
+              setCurrent={setCurrent}
             />
-          )}
-
-          {/* ACTIONS */}
-          <div className="actions">
-            <button onClick={markReview}>Mark for Review</button>
-            <button onClick={clearAnswer}>Clear</button>
-            <button onClick={goPrev}>Prev</button>
-            <button onClick={goNext}>Save & Next</button>
           </div>
-        </div>
-
-        {/* PALETTE */}
-        <div className="palette">
-          <h4>Questions</h4>
-
-          <div className="palette-grid">
-            {questions.map((qq, i) => {
-              let cls = "";
-
-              if (status[qq.id] === "review") cls = "review";
-              else if (answers[qq.id]) cls = "answered";
-              else if (status[qq.id] === "visited") cls = "visited";
-
-              if (i === current) cls += " current";
-
-              return (
-                <div
-                  key={i}
-                  className={`box ${cls}`}
-                  onClick={() => setCurrent(i)}
-                >
-                  {i + 1}
-                </div>
-              );
-            })}
-          </div>
-
-          <button
-            className="submit-btn"
-            onClick={() => handleSubmit(false)}
-            disabled={submitting}
-          >
-            {submitting ? "Submitting..." : "Submit Test"}
-          </button>
-        </div>
+        </aside>
       </div>
     </div>
   );

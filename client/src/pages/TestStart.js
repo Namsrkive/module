@@ -1,58 +1,65 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { getTestById } from "../data/testStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function TestStart(){
-
+export default function TestStart() {
   const { testId } = useParams();
   const navigate = useNavigate();
 
-  const test = getTestById(testId);
+  const [test, setTest] = useState(null);
 
   useEffect(() => {
+    const fetchTest = async () => {
+      const res = await fetch(`/api/tests/${testId}`);
+      const data = await res.json();
+      setTest(data);
+    };
+    fetchTest();
+  }, [testId]);
 
-    if(!test){
-      alert("Test not found");
-      navigate("/dashboard");
-      return;
-    }
+  if (!test) return <h2>Loading...</h2>;
 
-    if(!test.questions || test.questions.length === 0){
-      alert("Test has no questions");
-      navigate("/dashboard");
-      return;
-    }
+// TestStart.js
+return (
+  <div className="start-container">
+    <div className="start-card">
+      <header className="start-header">
+        <h1>{test.name}</h1>
+        <div className="proctor-badge">
+          <span className="pulse-icon"></span> Proctoring Active
+        </div>
+      </header>
 
-  }, [test, navigate]);
+      <div className="info-grid">
+        <div className="info-item">
+          <span className="label">Duration</span>
+          <span className="value">{test.duration} mins</span>
+        </div>
+        <div className="info-item">
+          <span className="label">Questions</span>
+          <span className="value">{test.questions.length}</span>
+        </div>
+      </div>
 
-  if(!test) return null;
+      <div className="rules-section">
+        <h3>Exam Instructions</h3>
+        <ul className="rules-list">
+          <li>Do not switch tabs or minimize the window</li>
+          <li>Ensure your face is clearly visible in the camera</li>
+          <li>System copy/paste functions are disabled</li>
+          <li>The test will launch in Fullscreen mode</li>
+        </ul>
+      </div>
 
-  return(
-
-    <div style={{ padding: "40px" }}>
-
-      <h1>{test.name}</h1>
-
-      <p><b>Duration:</b> {test.duration} minutes</p>
-      <p><b>Total Questions:</b> {test.questions.length}</p>
-      <p><b>Total Marks:</b> {test.totalMarks}</p>
-      <p><b>Difficulty:</b> {test.difficulty}</p>
-
-      <button
-        style={{
-          padding: "12px 20px",
-          marginTop: "20px",
-          background: "#4CAF50",
-          color: "#fff",
-          border: "none",
-          cursor: "pointer"
-        }}
-        onClick={() => navigate(`/test/${test.id}`)}
-      >
-        Start Test
-      </button>
-
+      <div className="action-area">
+        <button
+          className="start-btn"
+          onClick={() => navigate(`/test/${test._id}`)}
+        >
+          Begin Examination
+        </button>
+        <p className="footer-note">By clicking start, you agree to the proctoring terms.</p>
+      </div>
     </div>
-
-  );
+  </div>
+);
 }

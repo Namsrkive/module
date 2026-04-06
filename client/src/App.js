@@ -26,8 +26,7 @@ import "./styles/auth.css";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import ModuleTests from "./pages/ModuleTests";
 import CompanyMocks from "./pages/CompanyMocks";
-import LeaderboardPage from "./pages/LeaderboardPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
+import Leaderboard from "./pages/Leaderboard";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreateTest from "./pages/admin/CreateTest";
@@ -40,9 +39,9 @@ import TestPage from "./pages/TestPage";
 import TestStart from "./pages/TestStart";
 import TestResult from "./pages/TestResult";
 import AdminStudentResults from "./pages/admin/StudentResults";
-import Analytics from "./pages/admin/Analytics";
 import StudentResults from "./pages/StudentResults";
 import TopicTestList from "./pages/TopicTestList";
+import Analytics from "./pages/Analytics"; // student analytics
 
 /* ================= NAV ITEMS ================= */
 
@@ -162,26 +161,6 @@ function Layout() {
             />
 
             <Route
-            path="/dashboard/leaderboard"
-            element={
-            <ProtectedRoute allowedRole="student">
-            <StudentDashboard>
-            <LeaderboardPage />
-            </StudentDashboard>
-            </ProtectedRoute>
-            }
-            />
-
-            <Route
-              path="/dashboard/analytics"
-              element={
-                <ProtectedRoute allowedRole="student">
-                  <AnalyticsPage />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
             path="/dashboard/admin"
             element={
             <ProtectedRoute allowedRole="admin">
@@ -243,15 +222,31 @@ function Layout() {
             }
             />
             <Route
-            path="/dashboard/results"
-            element={
-            <ProtectedRoute allowedRole="student">
-            <StudentDashboard>
-            <StudentResults />
-            </StudentDashboard>
-            </ProtectedRoute>
-            }
-            />
+  path="/dashboard/results"
+  element={
+    <ProtectedRoute allowedRole="student">
+      <StudentResults />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/dashboard/analytics"
+  element={
+    <ProtectedRoute allowedRole="student">
+      <Analytics />   {/* ✅ THIS ONE (pages/Analytics.js) */}
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/dashboard/leaderboard"
+  element={
+    <ProtectedRoute allowedRole="student">
+      <Leaderboard />
+    </ProtectedRoute>
+  }
+/>
 
             <Route path="/tests/:module/:topic" element={<TopicTestList />} />
             <Route path="/test/start/:testId" element={<TestStart />} />

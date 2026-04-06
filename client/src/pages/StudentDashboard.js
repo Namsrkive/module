@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../components/dashboard/Sidebar";
 import { useNavigate } from "react-router-dom";
-
 import "../styles/dashboard.css";
 
 export default function StudentDashboard() {
@@ -10,6 +9,17 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
+
+  const fetchTests = async () => {
+    try {
+      const res = await fetch("/api/tests");
+      const data = await res.json();
+      console.log("TESTS:", data); 
+      setTests(data);
+    } catch (err) {
+      console.error("Error fetching tests", err);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,10 +43,7 @@ export default function StudentDashboard() {
     };
 
     fetchData();
-
-    // keep your existing tests
-    const storedTests = JSON.parse(localStorage.getItem("tests")) || [];
-    setTests(storedTests);
+    fetchTests(); 
   }, []);
 
   if (loading) {
@@ -65,7 +72,7 @@ export default function StudentDashboard() {
         {/* STATS */}
         <div className="stats">
           <div className="card">
-            <h3>Total Tests</h3>
+            <h3>Total Tests Taken</h3>
             <p>{analytics.totalTests}</p>
           </div>
 
@@ -148,14 +155,16 @@ export default function StudentDashboard() {
             {tests.length === 0 ? (
               <p className="empty">No tests available</p>
             ) : (
-              tests.map((t, i) => (
-                <div className="test-card" key={i}>
+              tests.map((t) => (
+                <div className="test-card" key={t._id}>
                   <h3>{t.name}</h3>
-                  <p>{t.module}</p>
+
+                  <p>📘 {t.module}</p>
+                  <p>⏱ {t.duration} mins</p>
+                  <p>📝 {t.questions.length} Questions</p>
+
                   <button
-                    onClick={() =>
-                      navigate(`/test/${t.module}/${t.topic}`)
-                    }
+                    onClick={() => navigate(`/test/start/${t._id}`)}
                   >
                     Start Test
                   </button>

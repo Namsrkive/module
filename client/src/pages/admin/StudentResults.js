@@ -1,57 +1,52 @@
 import { useEffect, useState } from "react";
-import AdminSidebar from "../../components/admin/AdminSidebar";
-import "../../styles/adminPages.css";
-import { getResults } from "../../data/testStore";
 
-function StudentResults() {
-
-  const [results, setResults] = useState([]);
+export default function AdminResults() {
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    setResults(getResults());
+    fetch("/api/analytics/admin", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+      .then(res => res.json())
+      .then(setData);
   }, []);
 
+  if (!data) return <p>Loading...</p>;
+
   return (
-    <div className="admin-container">
+    <div className="page">
+      <h2>Admin Results Dashboard</h2>
 
-      <AdminSidebar />
-
-      <div className="admin-content">
-        <h2>Student Results</h2>
-
-        {results.length === 0 ? (
-          <p>No results available yet.</p>
-        ) : (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Test</th>
-                <th>Score</th>
-                <th>Accuracy</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {results.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.studentName}</td>
-                  <td>{r.testName}</td>
-                  <td>{r.score}</td>
-                  <td>{r.accuracy}%</td>
-                  <td className={r.score > 50 ? "pass" : "fail"}>
-                    {r.score > 50 ? "Pass" : "Fail"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-
+      <div className="stats">
+        <div>Total Tests: {data.totalTests}</div>
+        <div>Total Students: {data.totalStudents}</div>
+        <div>Avg Score: {Math.round(data.avgScore)}%</div>
       </div>
+
+      <h3>Student Performance</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Tests</th>
+            <th>Avg Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.students.map((s, i) => (
+            <tr key={i}>
+              <td>{s.name}</td>
+              <td>{s.email}</td>
+              <td>{s.tests}</td>
+              <td>{s.avgScore}%</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
-
-export default StudentResults;
