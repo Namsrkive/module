@@ -1,12 +1,39 @@
 import Sidebar from "../components/dashboard/Sidebar";
 import { useNavigate } from "react-router-dom";
-import { getCompanyTests } from "../data/testStore";
+import { useEffect, useState } from "react";
 import "../styles/test.css";
 
 export default function CompanyMocks(){
 
 const navigate = useNavigate();
-const tests = getCompanyTests();
+
+/* 🔥 NEW STATE */
+const [companies, setCompanies] = useState([]);
+const [testsMap, setTestsMap] = useState({});
+
+/* 🔥 LOAD DATA */
+useEffect(() => {
+  const loadData = async () => {
+
+    const res = await fetch("/api/companies");
+    const companiesData = await res.json();
+
+    setCompanies(companiesData);
+
+    let map = {};
+
+    for (let company of companiesData) {
+      const testsRes = await fetch(`/api/tests/company/${company._id}`);
+      const tests = await testsRes.json();
+
+      map[company._id] = tests;
+    }
+
+    setTestsMap(map);
+  };
+
+  loadData();
+}, []);
 
 return(
 
@@ -23,31 +50,49 @@ return(
 
 <div className="company-mock-grid">
 
-{tests.length === 0 && <p>No company tests available</p>}
+{companies.length === 0 && <p>No company tests available</p>}
 
-{tests.map(test => (
+{companies.map(company => {
 
-<div key={test.id} className="company-mock-card">
+const tests = testsMap[company._id] || [];
+
+return(
+
+<div key={company._id} className="company-mock-card">
 
 <div className="company-header">
-<h2>{test.company} Mock Test</h2>
-<span>{test.duration} min</span>
+<h2>{company.name} Mock Test</h2>
+<span>
+{tests.length > 0 ? `${tests[0]?.duration || 30} min` : "--"}
+</span>
 </div>
 
-<p>Questions: {test.questions.length}</p>
-<p>Total Marks: {test.totalMarks}</p>
-<p>Difficulty: {test.difficulty}</p>
+<p>Tests Available: {tests.length}</p>
+
+<p>
+{tests.length > 0
+? "Click to view tests"
+: "No Tests Available"}
+</p>
 
 <button
 className="start-mock-btn"
-onClick={()=>navigate(`/test/start/${test.id}`)}
+onClick={()=>{
+  if(tests.length > 0){
+    navigate(`/tests/company/${company._id}`);
+  } else {
+    alert("No tests available");
+  }
+}}
 >
-Start Mock Exam
+View Mocks
 </button>
 
 </div>
 
-))}
+);
+
+})}
 
 </div>
 

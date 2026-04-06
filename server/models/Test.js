@@ -1,36 +1,25 @@
 import mongoose from "mongoose";
 
-const testSchema = new mongoose.Schema({
-  title: String,
+const testSchema = new mongoose.Schema(
+  {
+    name: String,
+    duration: Number,
+    type: String, // module | company
+    difficulty: String,
 
-  type: {
-    type: String,
-    enum: ["module", "company"]
+    module: String,
+    topic: String,
+    company: String,
+
+    questions: [
+      {
+        question: String,
+        options: [String],
+        answer: String
+      }
+    ]
   },
-
-  module: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Module"
-  },
-
-  topic: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Topic"
-  },
-
-  company: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Company"
-  },
-
-  duration: Number,
-
-  questions: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Question"
-    }
-  ]
-});
+  { timestamps: true }
+);
 
 export default mongoose.model("Test", testSchema);

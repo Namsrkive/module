@@ -15,10 +15,10 @@ export const getStudentAnalytics = async (req, res) => {
             results.reduce((sum, r) => sum + r.score, 0) / totalTests
           );
 
-    /* ✅ FIX MODULE STATS */
+    /* MODULE STATS */
     const moduleStats = {};
 
-    results.forEach(r => {
+    results.forEach((r) => {
       if (!r.module) return;
 
       if (!moduleStats[r.module]) {
@@ -28,27 +28,26 @@ export const getStudentAnalytics = async (req, res) => {
       moduleStats[r.module].push(r.score);
     });
 
-    // convert to %
-    Object.keys(moduleStats).forEach(module => {
+    Object.keys(moduleStats).forEach((module) => {
       const arr = moduleStats[module];
-      moduleStats[module] =
-        Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
+      moduleStats[module] = Math.round(
+        arr.reduce((a, b) => a + b, 0) / arr.length
+      );
     });
 
     res.json({
       totalTests,
       avgScore,
       recentResults: results
-        .slice(-5)
-        .reverse()
-        .map(r => ({
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 5)
+        .map((r) => ({
           testName: r.testName,
           score: r.score,
-          date: r.createdAt
+          date: r.createdAt,
         })),
-      moduleStats
+      moduleStats,
     });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -57,11 +56,12 @@ export const getStudentAnalytics = async (req, res) => {
 /* ================= ADMIN ANALYTICS ================= */
 export const getAdminAnalytics = async (req, res) => {
   try {
-    // 🔐 ONLY ADMIN
+    /* 🔐 ADMIN CHECK */
     if (req.user.role !== "admin") {
       return res.status(403).json({ msg: "Access denied" });
     }
 
+    /* FETCH RESULTS */
     const results = await Result.find().populate("user", "name email");
 
     const totalTests = results.length;
@@ -69,54 +69,70 @@ export const getAdminAnalytics = async (req, res) => {
     const avgScore =
       totalTests === 0
         ? 0
-        : results.reduce((sum, r) => sum + r.score, 0) / totalTests;
+        : Math.round(
+            results.reduce((sum, r) => sum + r.score, 0) / totalTests
+          );
 
     const totalStudents = await User.countDocuments({ role: "student" });
 
-    /* ---------- STUDENT STATS ---------- */
-    const users = await User.find({ role: "student" });
+    /* OPTIMIZED STUDENT STATS */
+    const studentMap = {};
 
-    const students = await Promise.all(
-      users.map(async (u) => {
-        const userResults = await Result.find({ user: u._id });
+    results.forEach((r) => {
+      if (!r.user) return;
 
-        const tests = userResults.length;
+      const id = r.user._id;
 
-        const avg =
-          tests === 0
-            ? 0
-            : userResults.reduce((sum, r) => sum + r.score, 0) / tests;
-
-        return {
-          name: u.name,
-          email: u.email,
-          tests,
-          avgScore: Math.round(avg)
+      if (!studentMap[id]) {
+        studentMap[id] = {
+          name: r.user.name,
+          email: r.user.email,
+          tests: 0,
+          totalScore: 0,
         };
-      })
-    );
+      }
+
+      studentMap[id].tests += 1;
+      studentMap[id].totalScore += r.score;
+    });
+
+    const students = Object.values(studentMap).map((s) => ({
+      name: s.name,
+      email: s.email,
+      tests: s.tests,
+      avgScore: Math.round(s.totalScore / s.tests),
+    }));
+
+    /* RECENT RESULTS */
+    const recentResults = await Result.find()
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate("user", "name");
 
     res.json({
       totalTests,
       totalStudents,
       avgScore,
-      totalViolations: 0,
+      totalViolations: 0, // can extend later
       students,
-      recentResults: results.slice(-10)
+      recentResults,
     });
-
   } catch (err) {
+    console.error("Admin Analytics Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
+/* ================= LEADERBOARD ================= */
 export const getLeaderboard = async (req, res) => {
   try {
     const results = await Result.find().populate("user", "name");
 
     const map = {};
 
-    results.forEach(r => {
+    results.forEach((r) => {
+      if (!r.user) return;
+
       const name = r.user.name;
 
       if (!map[name]) {
@@ -128,14 +144,14 @@ export const getLeaderboard = async (req, res) => {
 
     const leaderboard = Object.entries(map).map(([name, scores]) => ({
       name,
-      avgScore:
-        Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+      avgScore: Math.round(
+        scores.reduce((a, b) => a + b, 0) / scores.length
+      ),
     }));
 
     leaderboard.sort((a, b) => b.avgScore - a.avgScore);
 
     res.json(leaderboard);
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,0 +1,282 @@
+[
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Find average of 10,20,30,40,50","options":["30","25","35","40"],"answer":"30","marks":1,"difficulty":"easy","company":"TCS"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"If CP=100 and SP=120, profit%?","options":["10%","20%","30%","40%"],"answer":"20%","marks":1,"difficulty":"easy","company":"IBM"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Speed=60km/h, time=2h, distance?","options":["120","100","90","80"],"answer":"120","marks":1,"difficulty":"easy","company":"Accenture"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Simple interest of 1000 at 10% for 1 year","options":["100","200","150","50"],"answer":"100","marks":1,"difficulty":"easy","company":"Wipro"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"What is 20% of 200?","options":["40","20","30","50"],"answer":"40","marks":1,"difficulty":"easy","company":"Deloitte"
+  },
+
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Train 120m crosses pole in 6 sec, speed?","options":["72","60","80","90"],"answer":"72","marks":2,"difficulty":"medium","company":"TCS"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"CI on 1000 at 10% for 2 years?","options":["210","200","220","230"],"answer":"210","marks":2,"difficulty":"medium","company":"IBM"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Ratio 2:3, total=50, find parts","options":["20,30","25,25","30,20","15,35"],"answer":"20,30","marks":2,"difficulty":"medium","company":"Accenture"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Time=3h, speed=40km/h, distance?","options":["120","100","80","60"],"answer":"120","marks":2,"difficulty":"medium","company":"Wipro"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Find % increase from 100 to 120","options":["20%","10%","30%","40%"],"answer":"20%","marks":2,"difficulty":"medium","company":"Deloitte"
+  },
+
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"A man invests 1000 at 10% CI for 3 years, find amount","options":["1331","1200","1300","1400"],"answer":"1331","marks":5,"difficulty":"hard","company":"TCS"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Pipe fills tank in 5h, another empties in 10h, total time?","options":["10h","7h","6.67h","8h"],"answer":"6.67h","marks":5,"difficulty":"hard","company":"IBM"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Boat upstream/downstream problem","options":["8km/h","10km/h","12km/h","14km/h"],"answer":"10km/h","marks":5,"difficulty":"hard","company":"Accenture"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Mixture problem (milk-water ratio)","options":["3:2","2:3","1:2","4:3"],"answer":"3:2","marks":5,"difficulty":"hard","company":"Wipro"
+  },
+  {
+    "module":"Aptitude","topic":"Quant Basics","type":"mcq","question":"Time & work combined efficiency","options":["4 days","5 days","6 days","7 days"],"answer":"5 days","marks":5,"difficulty":"hard","company":"Deloitte"
+  },
+
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting head in a coin toss?","options":["1/2","1/3","1/4","1"],"answer":"1/2","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting a 6 on a fair die?","options":["1/6","1/3","1/2","1"],"answer":"1/6","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting even number on dice?","options":["1/2","1/3","2/3","1"],"answer":"1/2","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of drawing a red ball from 2 red, 3 blue?","options":["2/5","3/5","1/5","4/5"],"answer":"2/5","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting tail in coin toss?","options":["1/2","1/3","1/4","1"],"answer":"1/2","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting exactly 2 heads in 2 tosses?","options":["1/4","1/2","3/4","1"],"answer":"1/4","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting at least one head in 2 tosses?","options":["1/2","3/4","1/4","1"],"answer":"3/4","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of drawing a king from 52 cards?","options":["1/13","1/4","1/52","4/13"],"answer":"1/13","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Bag has 4 red, 6 blue balls. Probability of red?","options":["2/5","3/5","1/2","4/5"],"answer":"2/5","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of getting sum 7 on two dice?","options":["1/6","1/12","1/36","6/36"],"answer":"1/6","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Two dice are thrown. Probability both numbers are even?","options":["1/4","1/2","1/3","1/6"],"answer":"1/4","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Three coins tossed. Probability of exactly 2 heads?","options":["3/8","1/8","1/2","1/4"],"answer":"3/8","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability of picking 2 red balls from 5 red, 3 blue (without replacement)?","options":["10/56","20/56","5/28","15/56"],"answer":"10/56","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"A card drawn, replaced, drawn again. Probability both are kings?","options":["1/169","1/13","1/52","1/4"],"answer":"1/169","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"Aptitude","topic":"Probability","type":"mcq","question":"Probability that a number divisible by 3 is chosen from 1–10?","options":["3/10","4/10","2/10","5/10"],"answer":"3/10","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"2, 4, 6, 8, ?","options":["10","12","14","16"],"answer":"10","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"5, 10, 15, 20, ?","options":["25","30","35","40"],"answer":"25","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"1, 2, 3, 4, ?","options":["5","6","7","8"],"answer":"5","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"10, 20, 30, 40, ?","options":["50","60","70","80"],"answer":"50","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"7, 14, 21, 28, ?","options":["30","35","40","42"],"answer":"35","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"2, 6, 12, 20, ?","options":["28","30","32","36"],"answer":"30","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"3, 9, 27, ?, 243","options":["54","72","81","90"],"answer":"81","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"1, 4, 9, 16, ?","options":["20","24","25","30"],"answer":"25","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"2, 5, 10, 17, ?","options":["24","25","26","27"],"answer":"26","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"4, 6, 9, 13, ?","options":["16","17","18","19"],"answer":"18","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"2, 3, 5, 9, 17, ?","options":["25","33","34","35"],"answer":"33","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"6, 7, 9, 13, 21, ?","options":["29","30","31","32"],"answer":"37","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"1, 1, 2, 6, 24, ?","options":["60","100","120","720"],"answer":"120","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"5, 6, 8, 11, 15, ?","options":["20","21","22","23"],"answer":"20","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"Aptitude","topic":"Number Series","type":"mcq","question":"3, 5, 9, 17, 33, ?","options":["60","65","66","70"],"answer":"65","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find the odd one: Dog, Cat, Tiger, Car","options":["Dog","Cat","Tiger","Car"],"answer":"Car","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"All apples are fruits. Apple is a fruit. Conclusion?","options":["Correct","Incorrect","Cannot say","None"],"answer":"Correct","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find next: A, C, E, G, ?","options":["H","I","J","K"],"answer":"I","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find missing number: 2, 4, 8, 16, ?","options":["20","24","30","32"],"answer":"32","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Coding: CAT → DBU. BAT → ?","options":["CBU","DBU","CBV","DCU"],"answer":"CBU","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"All dogs are animals. Some animals are cats. Conclusion?","options":["All dogs are cats","Some cats are dogs","No conclusion","All animals are dogs"],"answer":"No conclusion","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"If A > B > C, which is smallest?","options":["A","B","C","Cannot say"],"answer":"C","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find next: 2, 6, 7, 21, 22, ?","options":["44","66","50","48"],"answer":"66","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"If MONDAY is coded as 123456, DAY = ?","options":["456","345","234","156"],"answer":"456","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find odd pair: (3,9), (4,16), (5,20), (6,36)","options":["(3,9)","(4,16)","(5,20)","(6,36)"],"answer":"(5,20)","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Statements: All A are B, Some B are C. Conclusion?","options":["Some A are C","All C are B","No conclusion","All A are C"],"answer":"No conclusion","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"If P=16, Q=17, R=18, then CAT=?","options":["24","23","20","21"],"answer":"24","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find next: 1, 2, 6, 24, 120, ?","options":["240","360","720","600"],"answer":"720","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"A is taller than B, B taller than C, C taller than D. Who is shortest?","options":["A","B","C","D"],"answer":"D","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"Aptitude","topic":"Logical Reasoning","type":"mcq","question":"Find missing: 4, 6, 9, 13, 18, ?","options":["23","24","25","26"],"answer":"24","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Arrays","type":"mcq","question":"Time complexity of linear search?","options":["O(n)","O(log n)","O(1)","O(n log n)"],"answer":"O(n)","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DSA","topic":"Arrays","type":"mcq","question":"Index starts from?","options":["0","1","-1","Depends"],"answer":"0","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DSA","topic":"Arrays","type":"mcq","question":"Access time of array element?","options":["O(1)","O(n)","O(log n)","O(n^2)"],"answer":"O(1)","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DSA","topic":"Arrays","type":"mcq","question":"Array is stored in?","options":["Contiguous memory","Random","Heap only","Stack only"],"answer":"Contiguous memory","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"DSA","topic":"Arrays","type":"mcq","question":"Max elements in array defined by size n?","options":["n","n-1","n+1","Depends"],"answer":"n","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Find second largest element in array","answer":"Traverse and track max and second max","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Reverse an array","answer":"Two pointer swap","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Find duplicates in array","answer":"Use hash set","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Rotate array by k steps","answer":"Reverse approach","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Move all zeros to end","answer":"Two pointer","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Maximum subarray sum (Kadane)","answer":"Kadane algorithm O(n)","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Merge two sorted arrays","answer":"Two pointer merge","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Find subarray with given sum","answer":"Sliding window / hashmap","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Trapping rain water","answer":"Two pointer / prefix max","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DSA","topic":"Arrays","type":"coding","question":"Product of array except self","answer":"Prefix suffix product","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Trees","type":"mcq","question":"Root node has how many parents?","options":["0","1","2","Depends"],"answer":"0","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DSA","topic":"Trees","type":"mcq","question":"Max children in binary tree?","options":["2","3","1","4"],"answer":"2","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DSA","topic":"Trees","type":"mcq","question":"Leaf node has children?","options":["0","1","2","Depends"],"answer":"0","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DSA","topic":"Trees","type":"mcq","question":"Height of single node tree?","options":["0","1","2","-1"],"answer":"0","marks":1,"difficulty":"easy","company":"Wipro"},
+ 
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Inorder traversal of binary tree","answer":"Left-root-right DFS","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Height of binary tree","answer":"Recursion max depth","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Check if tree is balanced","answer":"Height difference <=1","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Level order traversal","answer":"Queue BFS","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Count nodes in tree","answer":"Recursive count","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Lowest common ancestor","answer":"Recursive search","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Diameter of binary tree","answer":"Max path using height","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Serialize & deserialize tree","answer":"DFS with null markers","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Check symmetric tree","answer":"Mirror recursion","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DSA","topic":"Trees","type":"coding","question":"Construct tree from inorder + preorder","answer":"Divide recursion","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Graphs","type":"mcq","question":"BFS uses which data structure?","options":["Stack","Queue","Heap","Tree"],"answer":"Queue","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DSA","topic":"Graphs","type":"mcq","question":"DFS uses?","options":["Stack","Queue","Heap","Array"],"answer":"Stack","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DSA","topic":"Graphs","type":"mcq","question":"Graph with no cycles is?","options":["Tree","Cycle graph","Complete graph","Null graph"],"answer":"Tree","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DSA","topic":"Graphs","type":"mcq","question":"Minimum edges in tree with n nodes?","options":["n-1","n","n+1","n-2"],"answer":"n-1","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"DSA","topic":"Graphs","type":"mcq","question":"Graph traversal starts from?","options":["Any node","Root","Leaf","End"],"answer":"Any node","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Implement BFS traversal","answer":"Queue based traversal","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Implement DFS traversal","answer":"Recursive or stack","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Detect cycle in graph","answer":"DFS with visited tracking","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Check if graph is bipartite","answer":"BFS coloring","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Shortest path in unweighted graph","answer":"BFS","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Dijkstra algorithm","answer":"Priority queue shortest path","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Topological sort (DFS)","answer":"Stack based DFS","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Detect cycle in directed graph","answer":"DFS recursion stack","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Minimum spanning tree (Kruskal)","answer":"Union find","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DSA","topic":"Graphs","type":"coding","question":"Flood fill algorithm","answer":"DFS/BFS grid","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Dynamic Programming","type":"mcq","question":"DP is used for?","options":["Sorting","Optimization","Traversal","Searching"],"answer":"Optimization","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"mcq","question":"DP solves?","options":["Overlapping subproblems","Sorting","Searching","Graphs"],"answer":"Overlapping subproblems","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"mcq","question":"Fibonacci using DP complexity?","options":["O(n)","O(n^2)","O(log n)","O(1)"],"answer":"O(n)","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"mcq","question":"DP stores results in?","options":["Array","Stack","Queue","Heap"],"answer":"Array","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"mcq","question":"Memoization is?","options":["Top-down","Bottom-up","Sorting","Searching"],"answer":"Top-down","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Fibonacci using DP","answer":"Memoization or tabulation","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Climbing stairs problem","answer":"DP relation f(n)=f(n-1)+f(n-2)","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Maximum sum of non-adjacent elements","answer":"DP include/exclude","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Coin change problem","answer":"DP combinations","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Longest common subsequence","answer":"2D DP table","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"0/1 Knapsack problem","answer":"DP table with weights","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Edit distance problem","answer":"DP matrix","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Longest increasing subsequence","answer":"DP or binary search","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Matrix chain multiplication","answer":"DP partitioning","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DSA","topic":"Dynamic Programming","type":"coding","question":"Palindrome partitioning","answer":"DP substring","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"1NF removes?","options":["Repeating groups","Partial dependency","Transitive dependency","None"],"answer":"Repeating groups","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"2NF removes?","options":["Partial dependency","Transitive dependency","None","All"],"answer":"Partial dependency","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"3NF removes?","options":["Transitive dependency","Partial dependency","None","All"],"answer":"Transitive dependency","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"BCNF is based on?","options":["Functional dependency","Keys","Indexes","Tables"],"answer":"Functional dependency","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Normalization reduces?","options":["Redundancy","Speed","Size","Security"],"answer":"Redundancy","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Which NF removes transitive dependency?","options":["1NF","2NF","3NF","BCNF"],"answer":"3NF","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Partial dependency occurs in?","options":["1NF","2NF","3NF","BCNF"],"answer":"2NF","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Candidate key is?","options":["Minimal key","Primary key","Foreign key","Super key"],"answer":"Minimal key","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Super key contains?","options":["Extra attributes","Exact attributes","No attributes","None"],"answer":"Extra attributes","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"BCNF stronger than?","options":["3NF","2NF","1NF","None"],"answer":"3NF","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Which NF eliminates all anomalies?","options":["3NF","BCNF","2NF","1NF"],"answer":"BCNF","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Functional dependency X→Y means?","options":["X determines Y","Y determines X","Both","None"],"answer":"X determines Y","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Lossless join ensures?","options":["No data loss","No redundancy","Speed","Security"],"answer":"No data loss","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Dependency preserving means?","options":["All dependencies kept","Some lost","None","Extra"],"answer":"All dependencies kept","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DBMS","topic":"Normalization","type":"mcq","question":"Decomposition should be?","options":["Lossless","Lossy","Random","None"],"answer":"Lossless","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"SQL Queries","type":"mcq","question":"Select all rows?","options":["SELECT *","SELECT ALL","GET *","FETCH"],"answer":"SELECT *","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DBMS","topic":"SQL Queries","type":"mcq","question":"Filter rows?","options":["WHERE","GROUP BY","ORDER BY","HAVING"],"answer":"WHERE","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DBMS","topic":"SQL Queries","type":"mcq","question":"Sort output?","options":["ORDER BY","GROUP BY","WHERE","HAVING"],"answer":"ORDER BY","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DBMS","topic":"SQL Queries","type":"mcq","question":"Remove duplicates?","options":["DISTINCT","UNIQUE","GROUP","FILTER"],"answer":"DISTINCT","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"DBMS","topic":"SQL Queries","type":"mcq","question":"Group rows?","options":["GROUP BY","ORDER BY","WHERE","HAVING"],"answer":"GROUP BY","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Find second highest salary","answer":"Use MAX with subquery","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Find duplicate records","answer":"GROUP BY HAVING COUNT>1","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Find top 3 salaries","answer":"ORDER BY DESC LIMIT 3","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Count employees per department","answer":"GROUP BY dept","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Find employees with salary > avg","answer":"Subquery AVG","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Nth highest salary","answer":"Dense rank / subquery","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Self join to find manager","answer":"Join same table","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Find missing numbers","answer":"Left join / sequence","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Window function ranking","answer":"ROW_NUMBER()","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DBMS","topic":"SQL Queries","type":"coding","question":"Find consecutive records","answer":"Window functions","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"ACID A stands for?","options":["Atomicity","Accuracy","Access","Action"],"answer":"Atomicity","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Commit means?","options":["Save","Delete","Undo","Rollback"],"answer":"Save","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Rollback means?","options":["Undo","Redo","Save","Delete"],"answer":"Undo","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Isolation ensures?","options":["Concurrency control","Speed","Memory","None"],"answer":"Concurrency control","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Durability means?","options":["Permanent data","Temporary","Delete","None"],"answer":"Permanent data","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Dirty read occurs in?","options":["Low isolation","High isolation","Commit","Rollback"],"answer":"Low isolation","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Lost update problem?","options":["Overwrite data","Delete data","Insert data","None"],"answer":"Overwrite data","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Phantom read means?","options":["New rows appear","Delete rows","Update rows","None"],"answer":"New rows appear","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Serializable isolation?","options":["Highest","Lowest","Medium","None"],"answer":"Highest","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Concurrency control uses?","options":["Locks","Keys","Tables","Views"],"answer":"Locks","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Two phase locking ensures?","options":["Serializability","Deadlock","Speed","None"],"answer":"Serializability","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Deadlock occurs when?","options":["Circular wait","No wait","Single process","None"],"answer":"Circular wait","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Wait-die scheme prevents?","options":["Deadlock","Starvation","Crash","None"],"answer":"Deadlock","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Timestamp ordering avoids?","options":["Deadlock","Crash","Delay","None"],"answer":"Deadlock","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"DBMS","topic":"Transactions","type":"mcq","question":"Strict 2PL ensures?","options":["Recoverability","Speed","Concurrency","None"],"answer":"Recoverability","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"Programming","topic":"OOP","type":"mcq","question":"Encapsulation means?","options":["Data hiding","Inheritance","Polymorphism","Abstraction"],"answer":"Data hiding","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"Programming","topic":"OOP","type":"mcq","question":"Inheritance provides?","options":["Code reuse","Security","Speed","Memory"],"answer":"Code reuse","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"Programming","topic":"OOP","type":"mcq","question":"Polymorphism means?","options":["Many forms","One form","No form","Two forms"],"answer":"Many forms","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"Programming","topic":"OOP","type":"mcq","question":"Class is?","options":["Blueprint","Object","Method","Variable"],"answer":"Blueprint","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"Programming","topic":"OOP","type":"mcq","question":"Object is?","options":["Instance","Class","Function","Loop"],"answer":"Instance","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Implement class with constructor","answer":"Use constructor method","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Demonstrate inheritance in Java/Python","answer":"Use extends / inheritance syntax","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Method overloading example","answer":"Same method different params","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Method overriding example","answer":"Child class override","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Create interface and implement","answer":"Interface + class implementation","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Design class hierarchy for employee system","answer":"Use inheritance + abstraction","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Implement polymorphism runtime","answer":"Method overriding","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Design Singleton pattern","answer":"Private constructor + static instance","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Factory design pattern","answer":"Factory method","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"Programming","topic":"OOP","type":"coding","question":"Abstract class implementation","answer":"Abstract methods override","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"Programming","topic":"Operating Systems","type":"mcq","question":"FCFS is?","options":["Non-preemptive","Preemptive","Both","None"],"answer":"Non-preemptive","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"Programming","topic":"Operating Systems","type":"mcq","question":"Round Robin is?","options":["Preemptive","Non-preemptive","Both","None"],"answer":"Preemptive","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"Programming","topic":"Operating Systems","type":"mcq","question":"Deadlock requires?","options":["Circular wait","Single process","No wait","None"],"answer":"Circular wait","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"Programming","topic":"Operating Systems","type":"mcq","question":"Process is?","options":["Program in execution","File","Memory","CPU"],"answer":"Program in execution","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"Programming","topic":"Operating Systems","type":"mcq","question":"Thread is?","options":["Lightweight process","Heavy process","Program","File"],"answer":"Lightweight process","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Implement Round Robin scheduling logic","answer":"Queue + time slice","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Producer-consumer problem","answer":"Semaphore solution","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Banker’s algorithm logic","answer":"Safe state check","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Page replacement FIFO","answer":"Queue replacement","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Critical section problem","answer":"Mutex/locks","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Deadlock detection algorithm","answer":"Resource allocation graph","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Implement LRU page replacement","answer":"Hash + DLL","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Dining philosophers problem","answer":"Semaphore/monitor","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Multilevel queue scheduling","answer":"Multiple queues logic","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"Programming","topic":"Operating Systems","type":"coding","question":"Memory allocation strategies","answer":"First/Best/Worst fit","marks":5,"difficulty":"hard","company":"Deloitte"},
+
+  {"module":"Programming","topic":"Computer Networks","type":"mcq","question":"OSI layers count?","options":["5","6","7","8"],"answer":"7","marks":1,"difficulty":"easy","company":"TCS"},
+  {"module":"Programming","topic":"Computer Networks","type":"mcq","question":"TCP is?","options":["Connection oriented","Connectionless","Both","None"],"answer":"Connection oriented","marks":1,"difficulty":"easy","company":"IBM"},
+  {"module":"Programming","topic":"Computer Networks","type":"mcq","question":"UDP is?","options":["Connectionless","Connection oriented","Both","None"],"answer":"Connectionless","marks":1,"difficulty":"easy","company":"Accenture"},
+  {"module":"Programming","topic":"Computer Networks","type":"mcq","question":"IP works at?","options":["Network layer","Transport","Application","Data link"],"answer":"Network layer","marks":1,"difficulty":"easy","company":"Wipro"},
+  {"module":"Programming","topic":"Computer Networks","type":"mcq","question":"HTTP is?","options":["Application protocol","Transport","Network","Physical"],"answer":"Application protocol","marks":1,"difficulty":"easy","company":"Deloitte"},
+
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Explain TCP handshake","answer":"SYN SYN-ACK ACK","marks":2,"difficulty":"medium","company":"TCS"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Subnetting calculation","answer":"IP mask division","marks":2,"difficulty":"medium","company":"IBM"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"DNS working","answer":"Domain resolution process","marks":2,"difficulty":"medium","company":"Accenture"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Difference TCP vs UDP","answer":"Connection vs no connection","marks":2,"difficulty":"medium","company":"Wipro"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Routing vs switching","answer":"Layer difference","marks":2,"difficulty":"medium","company":"Deloitte"},
+
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Sliding window protocol","answer":"Flow control window","marks":5,"difficulty":"hard","company":"TCS"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Congestion control TCP","answer":"Slow start / AIMD","marks":5,"difficulty":"hard","company":"IBM"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Distance vector routing","answer":"Bellman-Ford","marks":5,"difficulty":"hard","company":"Accenture"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"Link state routing","answer":"Dijkstra algorithm","marks":5,"difficulty":"hard","company":"Wipro"},
+  {"module":"Programming","topic":"Computer Networks","type":"coding","question":"ARP protocol working","answer":"IP to MAC mapping","marks":5,"difficulty":"hard","company":"Deloitte"}
+]

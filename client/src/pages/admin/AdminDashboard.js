@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { Users, FileText, Activity, AlertTriangle, Search, ChevronLeft, ChevronRight } from "lucide-react"; 
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import "../../styles/dashboard.css";
 
 function AdminDashboard() {
-
   const [data, setData] = useState({
     totalTests: 0,
     totalStudents: 0,
@@ -14,23 +14,20 @@ function AdminDashboard() {
   });
 
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
-  /* ================= FETCH ADMIN DATA ================= */
+  const perPage = 5;
 
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        const res = await fetch("http://localhost:5000/api/analytics/admin", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/analytics/admin`, {
+          headers: { Authorization: `Bearer ${token}` }
         });
-
         const result = await res.json();
 
-        // 🔥 SAFE FALLBACK (IMPORTANT)
         setData({
           totalTests: result.totalTests || 0,
           totalStudents: result.totalStudents || 0,
@@ -39,136 +36,184 @@ function AdminDashboard() {
           students: result.students || [],
           recentResults: result.recentResults || []
         });
-
       } catch (err) {
         console.error("Error fetching admin data:", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchAdmin();
   }, []);
 
-  /* ================= LOADING ================= */
+  const filteredStudents = data.students.filter(
+    (s) =>
+      s.name.toLowerCase().includes(search.toLowerCase()) ||
+      s.email.toLowerCase().includes(search.toLowerCase())
+  );
 
-  if (loading) {
-    return <div style={{ padding: "20px" }}>Loading admin dashboard...</div>;
-  }
+  const paginatedStudents = filteredStudents.slice((page - 1) * perPage, page * perPage);
+  const totalPages = Math.ceil(filteredStudents.length / perPage);
 
-  /* ================= UI ================= */
+  if (loading) return <div className="loading-state">Loading Command Center...</div>;
 
   return (
     <div className="dashboard-layout">
       <AdminSidebar />
 
       <div className="dashboard-main">
-        <h1 className="page-title">Admin Control Center</h1>
+        <header className="dashboard-header">
+          <div>
+            <h1 className="page-title">Admin Control Center</h1>
+            <p className="dashboard-sub">System-wide overview and student performance tracking.</p>
+          </div>
+          <div className="header-date">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+        </header>
 
-        <p className="dashboard-sub">
-          Manage tests, monitor students and analyze platform activity.
-        </p>
-
-        {/* ================= STATS ================= */}
-
-        <div className="admin-grid">
-          <div className="admin-card">
-            <h3>Total Tests</h3>
-            <p>{data.totalTests}</p>
+        {/* ================= STATS GRID ================= */}
+        <div className="stats-grid">
+          <div className="stat-card">
+            <div className="stat-icon tests"><FileText size={20} /></div>
+            <div className="stat-info">
+              <label>Total Tests</label>
+              <h3>{data.totalTests}</h3>
+            </div>
           </div>
 
-          <div className="admin-card">
-            <h3>Total Students</h3>
-            <p>{data.totalStudents}</p>
+          <div className="stat-card">
+            <div className="stat-icon students"><Users size={20} /></div>
+            <div className="stat-info">
+              <label>Total Students</label>
+              <h3>{data.totalStudents}</h3>
+            </div>
           </div>
 
-          <div className="admin-card">
-            <h3>Avg Score</h3>
-            <p>{Math.round(data.avgScore)}</p>
+          <div className="stat-card">
+            <div className="stat-icon scores"><Activity size={20} /></div>
+            <div className="stat-info">
+              <label>Avg. Score</label>
+              <h3>{Math.round(data.avgScore)}%</h3>
+            </div>
           </div>
 
-          <div className="admin-card">
-            <h3>Total Violations</h3>
-            <p>{data.totalViolations}</p>
+          <div className="stat-card">
+            <div className="stat-icon alerts"><AlertTriangle size={20} /></div>
+            <div className="stat-info">
+              <label>Violations</label>
+              <h3 className={data.totalViolations > 0 ? "text-danger" : ""}>{data.totalViolations}</h3>
+            </div>
           </div>
         </div>
 
-        {/* ================= STUDENT TABLE ================= */}
+        <div className="dashboard-content-area">
+          {/* ================= LEFT COLUMN: TABLES ================= */}
+          <div className="content-left">
+            <section className="table-section">
+              <div className="section-header">
+                <h2 className="section-title">Student Performance</h2>
+                <div className="search-wrapper">
+                  <Search size={16} className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search student..."
+                    className="search-input"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+              </div>
 
-        <h2 className="section-title">Student Performance</h2>
+              <div className="table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Email</th>
+                      <th>Tests</th>
+                      <th>Avg Score</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedStudents.length === 0 ? (
+                      <tr><td colSpan="5" className="empty-row">No records found</td></tr>
+                    ) : (
+                      paginatedStudents.map((s, i) => (
+                        <tr key={i}>
+                          <td className="font-bold">{s.name}</td>
+                          <td className="text-muted">{s.email}</td>
+                          <td>{s.tests}</td>
+                          <td>
+                            <span className={`score-pill ${s.avgScore > 70 ? "high" : s.avgScore > 40 ? "mid" : "low"}`}>
+                              {s.avgScore}%
+                            </span>
+                          </td>
+                          <td><button className="btn-view-link">View Profile</button></td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-        <div className="table-container">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Tests</th>
-                <th>Avg Score</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {data.students.length === 0 ? (
-                <tr>
-                  <td colSpan="4" style={{ textAlign: "center" }}>
-                    No student data available
-                  </td>
-                </tr>
-              ) : (
-                data.students.map((s, i) => (
-                  <tr key={i}>
-                    <td>{s.name}</td>
-                    <td>{s.email}</td>
-                    <td>{s.tests}</td>
-                    <td>{s.avgScore}</td>
-                  </tr>
-                ))
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button onClick={() => setPage(p => Math.max(1, p-1))} disabled={page === 1}><ChevronLeft size={16}/></button>
+                  <span>Page {page} of {totalPages}</span>
+                  <button onClick={() => setPage(p => Math.min(totalPages, p+1))} disabled={page === totalPages}><ChevronRight size={16}/></button>
+                </div>
               )}
-            </tbody>
-          </table>
+            </section>
+
+            <section className="table-section mt-4">
+              <h2 className="section-title">Recent Test Activity</h2>
+              <div className="table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Score</th>
+                      <th>Module</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.recentResults.length === 0 ? (
+                      <tr><td colSpan="4" className="empty-row">No recent activity</td></tr>
+                    ) : (
+                      data.recentResults.map((r, i) => (
+                        <tr key={i}>
+                          <td>{r.user?.name || "Unknown"}</td>
+                          <td className="font-bold">{r.score}%</td>
+                          <td><span className="module-tag">{r.module || 'General'}</span></td>
+                          <td className="text-muted">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "-"}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          {/* ================= RIGHT COLUMN: TOP PERFORMERS ================= */}
+          <aside className="content-right">
+            <div className="performers-card">
+              <h2 className="section-title">Top Performers</h2>
+              <div className="performers-list">
+                {data.students.sort((a, b) => b.avgScore - a.avgScore).slice(0, 5).map((s, i) => (
+                  <div className="performer-item" key={i}>
+                    <div className="performer-rank">{i + 1}</div>
+                    <div className="performer-info">
+                      <p className="performer-name">{s.name}</p>
+                      <p className="performer-sub">{s.tests} Tests completed</p>
+                    </div>
+                    <div className="performer-score">{s.avgScore}%</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
         </div>
-
-        {/* ================= RECENT RESULTS ================= */}
-
-        <h2 className="section-title">Recent Test Activity</h2>
-
-        <div className="table-container">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Score</th>
-                <th>Module</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {data.recentResults.length === 0 ? (
-                <tr>
-                  <td colSpan="4" style={{ textAlign: "center" }}>
-                    No recent activity
-                  </td>
-                </tr>
-              ) : (
-                data.recentResults.map((r, i) => (
-                  <tr key={i}>
-                    <td>{r.userId?.name || "Unknown"}</td>
-                    <td>{r.score}</td>
-                    <td>{r.module}</td>
-                    <td>
-                      {r.createdAt
-                        ? new Date(r.createdAt).toLocaleDateString()
-                        : "-"}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
       </div>
     </div>
   );

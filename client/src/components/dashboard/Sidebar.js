@@ -3,14 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 export default function Sidebar() {
   const navigate = useNavigate();
 
-  // ✅ GET USER FROM LOCALSTORAGE
   const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <div className="sidebar">
 
       <div>
-
         <div className="sidebar-user">
           <h2>Welcome</h2>
           <p className="student-name">
@@ -42,19 +40,14 @@ export default function Sidebar() {
             🏆 Leaderboard
           </NavLink>
 
-          <NavLink to="/dashboard/analytics" className="menu-item">
-            📈 Analytics
-          </NavLink>
-
         </div>
-
       </div>
 
       <button
         className="logout-btn"
         onClick={() => {
           localStorage.removeItem("token");
-          localStorage.removeItem("user"); // ✅ IMPORTANT
+          localStorage.removeItem("user");
           navigate("/login/student");
         }}
       >

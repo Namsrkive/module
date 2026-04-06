@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
-import { getTests, generateTest, getQuestions } from "../../data/testStore";
-import "../../styles/adminForms.css";
+import { fetchTests, generateTestAPI } from "../../api/api";
+import { Plus, Trash2, Zap, Layout, Settings2 } from "lucide-react"; 
+import "../../styles/test.css";
 
 function TestBuilder() {
   const [tests, setTests] = useState([]);
   const [selectedTest, setSelectedTest] = useState("");
   const [sections, setSections] = useState([
-    { module: "", topic: "", difficulty: "easy", marks: 1, count: 5, company: "" }
+    { module: "", topic: "", difficulty: "easy", count: 5 }
   ]);
 
   useEffect(() => {
-    setTests(getTests());
+    fetchTests().then(setTests);
   }, []);
 
   const modules = {
@@ -23,180 +24,138 @@ function TestBuilder() {
 
   const updateSection = (i, key, val) => {
     const updated = [...sections];
-    if (key === "module") updated[i].topic = "";
     updated[i][key] = val;
     setSections(updated);
   };
 
   const addSection = () => {
-    setSections([
-      ...sections,
-      { module: "", topic: "", difficulty: "easy", marks: 1, count: 5, company: "" }
-    ]);
+    setSections([...sections, { module: "", topic: "", difficulty: "easy", count: 5 }]);
   };
 
   const removeSection = (i) => {
     setSections(sections.filter((_, idx) => idx !== i));
   };
 
-  /* ✅ VALIDATION + GENERATION */
-  const handleGenerate = () => {
-    if (!selectedTest) return alert("Select a test first");
-
-    for (let sec of sections) {
-      if (!sec.module || !sec.topic) {
-        return alert("All sections must have module & topic");
-      }
-
-      // Check availability
-      const available = getQuestions().filter(q =>
-        q.module === sec.module &&
-        q.topic === sec.topic &&
-        q.difficulty === sec.difficulty &&
-        q.marks === sec.marks &&
-        (sec.company ? q.company === sec.company : true)
-      );
-
-      if (available.length < sec.count) {
-        return alert(
-          `Not enough questions for ${sec.module} - ${sec.topic} (${sec.difficulty})`
-        );
-      }
+  const handleGenerate = async () => {
+    if (!selectedTest) return alert("Please select a target test profile first.");
+    try {
+      await generateTestAPI({ testId: selectedTest, sections });
+      alert("✅ Test Questions Populated Successfully");
+    } catch (err) {
+      console.error(err);
+      alert("Error generating test");
     }
-
-    generateTest({ testId: selectedTest, sections });
-    alert("✅ Test Generated Successfully");
   };
-
-  /* ✅ SUMMARY CALCULATION */
-  const totalQuestions = sections.reduce((sum, s) => sum + s.count, 0);
-  const totalMarks = sections.reduce((sum, s) => sum + (s.count * s.marks), 0);
 
   return (
     <div className="dashboard-layout">
       <AdminSidebar />
 
       <div className="dashboard-main">
-        <h1 className="page-title">Test Builder</h1>
+        <header className="page-header">
+          <h1 className="page-title">Automated Test Builder</h1>
+          <p className="page-subtitle">Define question distribution logic for your assessments.</p>
+        </header>
 
-        {/* TEST SELECT */}
-        <div className="form-card">
-          <label>Target Assessment</label>
-          <select
-            value={selectedTest}
-            onChange={(e) => setSelectedTest(Number(e.target.value))}
-          >
-            <option value="">Select a test to build...</option>
-            {tests.map(t => (
-              <option key={t.id} value={t.id}>{t.name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* SUMMARY */}
-        <div className="summary-card">
-          <h3>Test Summary</h3>
-          <p>Total Questions: <b>{totalQuestions}</b></p>
-          <p>Total Marks: <b>{totalMarks}</b></p>
-          <p>Sections: <b>{sections.length}</b></p>
-        </div>
-
-        {/* SECTIONS */}
-        {sections.map((sec, i) => (
-          <div key={i} className="section-card">
-            
-            <div className="section-top">
-              <h4>Section {i + 1}</h4>
-              <button className="delete-btn" onClick={() => removeSection(i)}>
-                Remove
-              </button>
+        <div className="builder-wrapper">
+          {/* STEP 1: SELECT TEST */}
+          <div className="builder-card config-header-card">
+            <div className="card-icon-title">
+              <Layout size={20} className="text-indigo" />
+              <h3>Step 1: Select Assessment Profile</h3>
             </div>
-
-            <div className="input-row">
-              <div className="input-group">
-                <label>Module</label>
-                <select
-                  value={sec.module}
-                  onChange={(e) => updateSection(i, "module", e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {Object.keys(modules).map(m => <option key={m}>{m}</option>)}
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label>Topic</label>
-                <select
-                  value={sec.topic}
-                  onChange={(e) => updateSection(i, "topic", e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {sec.module && modules[sec.module].map(t => <option key={t}>{t}</option>)}
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label>Difficulty</label>
-                <select
-                  value={sec.difficulty}
-                  onChange={(e) => updateSection(i, "difficulty", e.target.value)}
-                >
-                  <option>easy</option>
-                  <option>medium</option>
-                  <option>hard</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="input-row">
-              <div className="input-group">
-                <label>Marks</label>
-                <select
-                  value={sec.marks}
-                  onChange={(e) => updateSection(i, "marks", Number(e.target.value))}
-                >
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={5}>5</option>
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label>Questions</label>
-                <input
-                  type="number"
-                  value={sec.count}
-                  onChange={(e) => updateSection(i, "count", Number(e.target.value))}
-                />
-              </div>
-
-              <div className="input-group">
-                <label>Company</label>
-                <select
-                  value={sec.company}
-                  onChange={(e) => updateSection(i, "company", e.target.value)}
-                >
-                  <option value="">All</option>
-                  <option>TCS</option>
-                  <option>IBM</option>
-                  <option>Accenture</option>
-                  <option>Wipro</option>
-                  <option>Deloitte</option>
-                </select>
-              </div>
+            <div className="form-group-full">
+              <select
+                className="main-test-select"
+                value={selectedTest}
+                onChange={(e) => setSelectedTest(e.target.value)}
+              >
+                <option value="">Choose an existing test...</option>
+                {tests.map(t => (
+                  <option key={t._id} value={t._id}>{t.name}</option>
+                ))}
+              </select>
             </div>
           </div>
-        ))}
 
-        {/* ACTIONS */}
-        <div className="builder-actions">
-          <button className="secondary-btn" onClick={addSection}>
-            + Add Section
-          </button>
+          {/* STEP 2: SECTIONS */}
+          <div className="sections-list">
+            <div className="card-icon-title mb-15">
+              <Settings2 size={20} className="text-indigo" />
+              <h3>Step 2: Configure Logic Sections</h3>
+            </div>
 
-          <button className="primary-btn" onClick={handleGenerate}>
-            Generate Test
-          </button>
+            {sections.map((sec, i) => (
+              <div className="builder-card section-row-card" key={i}>
+                <div className="section-meta">
+                  <span className="section-badge">Section {i + 1}</span>
+                  {sections.length > 1 && (
+                    <button className="btn-icon-danger" onClick={() => removeSection(i)}>
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="builder-input-grid">
+                  <div className="input-group">
+                    <label>Module</label>
+                    <select
+                      value={sec.module}
+                      onChange={(e) => updateSection(i, "module", e.target.value)}
+                    >
+                      <option value="">Module</option>
+                      {Object.keys(modules).map(m => <option key={m}>{m}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="input-group">
+                    <label>Topic</label>
+                    <select
+                      value={sec.topic}
+                      onChange={(e) => updateSection(i, "topic", e.target.value)}
+                      disabled={!sec.module}
+                    >
+                      <option value="">Topic</option>
+                      {sec.module && modules[sec.module].map(t => <option key={t}>{t}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="input-group">
+                    <label>Level</label>
+                    <select
+                      value={sec.difficulty}
+                      onChange={(e) => updateSection(i, "difficulty", e.target.value)}
+                    >
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                    </select>
+                  </div>
+
+                  <div className="input-group q-count">
+                    <label>Qty</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={sec.count}
+                      onChange={(e) => updateSection(i, "count", Number(e.target.value))}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* FOOTER ACTIONS */}
+          <div className="builder-footer-actions">
+            <button className="btn-secondary-dashed" onClick={addSection}>
+              <Plus size={18} /> Add Logic Section
+            </button>
+
+            <button className="btn-primary-gradient" onClick={handleGenerate}>
+              <Zap size={18} fill="currentColor" /> Generate Questions
+            </button>
+          </div>
         </div>
       </div>
     </div>

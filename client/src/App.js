@@ -42,6 +42,7 @@ import AdminStudentResults from "./pages/admin/StudentResults";
 import StudentResults from "./pages/StudentResults";
 import TopicTestList from "./pages/TopicTestList";
 import Analytics from "./pages/Analytics"; // student analytics
+import CompanyTests from "./pages/CompanyTests";
 
 /* ================= NAV ITEMS ================= */
 
@@ -247,8 +248,8 @@ function Layout() {
     </ProtectedRoute>
   }
 />
-
-            <Route path="/tests/:module/:topic" element={<TopicTestList />} />
+<Route path="/tests/company/:companyId" element={<CompanyTests />} />
+            <Route path="/tests/topic/:topicId" element={<TopicTestList />} />
             <Route path="/test/start/:testId" element={<TestStart />} />
             <Route path="/test/:testId" element={<TestPage />} />
  

@@ -61,3 +61,17 @@ export const getLatestResult = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+/* ================= GET ALL RESULTS ================= */
+export const getAllResults = async (req, res) => {
+  try {
+    const results = await Result.find({ user: req.user.id })
+      .sort({ createdAt: -1 });
+
+    res.json(results);
+
+  } catch (err) {
+    console.error("Get All Results Error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -101,3 +101,166 @@
   color: orange;
   font-weight: bold;
 }
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.stat-pill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  margin-left: 8px;
+}
+
+.stat-pill.published {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Modern Search */
+.search-container-large {
+  position: relative;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  color: #94a3b8;
+}
+
+.search-input-modern {
+  width: 100%;
+  padding: 14px 14px 14px 45px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 15px;
+  background: white;
+  transition: all 0.2s;
+}
+
+.search-input-modern:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Table Design */
+.table-wrapper {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.admin-table-modern {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table-modern th {
+  background: #f8fafc;
+  text-align: left;
+  padding: 16px 20px;
+  font-size: 13px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table-modern td {
+  padding: 18px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+/* Cell Specifics */
+.test-name-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.test-primary-name {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 15px;
+}
+
+.test-secondary-type {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge.published { background: #dcfce7; color: #166534; }
+.status-badge.draft { background: #f1f5f9; color: #475569; }
+
+/* Difficulty Pills */
+.diff-pill {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.diff-pill.easy { background: #dcfce7; color: #166534; }
+.diff-pill.medium { background: #fef9c3; color: #854d0e; }
+.diff-pill.hard { background: #fee2e2; color: #991b1b; }
+
+/* Actions */
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn.publish { background: #e0e7ff; color: #4338ca; }
+.action-btn.unpublish { background: #fef9c3; color: #854d0e; }
+.action-btn.delete { background: #fee2e2; color: #b91c1c; }
+
+.action-btn:hover { transform: scale(1.1); }
+
+/* No Data */
+.no-data-msg {
+  padding: 60px;
+  text-align: center;
+  color: #94a3b8;
+}

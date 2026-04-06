@@ -1,6 +1,6 @@
 import Sidebar from "../components/dashboard/Sidebar";
 import { useNavigate } from "react-router-dom";
-import { getTestsByModuleTopic } from "../data/testStore";
+import { useEffect, useState } from "react";
 import "../styles/test.css";
 
 const modules = [
@@ -30,8 +30,7 @@ tests: [
 name: "DBMS",
 description: "Database management and SQL",
 tests: [
-"SQL Basics",
-"Joins",
+"SQL Queries",
 "Transactions",
 "Normalization"
 ]
@@ -41,10 +40,9 @@ tests: [
 name: "Programming",
 description: "Core programming and CS fundamentals",
 tests: [
-"OOP Concepts",
+"OOP",
 "Operating Systems",
-"Computer Networks",
-"Coding Problems"
+"Computer Networks"
 ]
 }
 ];
@@ -52,6 +50,42 @@ tests: [
 export default function ModuleTests(){
 
 const navigate = useNavigate();
+
+/* 🔥 NEW STATE */
+const [topicIdMap, setTopicIdMap] = useState({});
+const [testCountMap, setTestCountMap] = useState({});
+
+/* 🔥 LOAD DATA FROM BACKEND */
+useEffect(() => {
+  const loadData = async () => {
+
+    const modulesRes = await fetch("/api/modules");
+    const modulesData = await modulesRes.json();
+
+    let topicMap = {};
+    let countMap = {};
+
+    for (let mod of modulesData) {
+
+      const topicsRes = await fetch(`/api/topics/${mod._id}`);
+      const topics = await topicsRes.json();
+
+      for (let t of topics) {
+        topicMap[t.name] = t._id;
+
+        const testsRes = await fetch(`/api/tests/topic/${t._id}`);
+        const tests = await testsRes.json();
+
+        countMap[t.name] = tests.length;
+      }
+    }
+
+    setTopicIdMap(topicMap);
+    setTestCountMap(countMap);
+  };
+
+  loadData();
+}, []);
 
 return(
 
@@ -88,23 +122,28 @@ Practice individual topics before attempting full company mock exams.
 
 {module.tests.map((topic)=>{
 
-// ✅ NEW LOGIC
-const tests = getTestsByModuleTopic(module.name, topic);
+/* 🔥 REPLACED LOGIC */
+const count = testCountMap[topic] || 0;
+const topicId = topicIdMap[topic];
 
 return(
 
 <div
 key={topic}
 className="topic-card"
-onClick={()=>navigate(`/tests/${module.name}/${topic}`)}
+onClick={()=>{
+  if(topicId){
+    navigate(`/tests/topic/${topicId}`);
+  }
+}}
 >
 
 <h4>{topic}</h4>
 
 <p className="topic-info">
 
-{tests.length > 0
-? `${tests.length} Tests Available`
+{count > 0
+? `${count} Tests Available`
 : "No Tests Available"}
 
 </p>
@@ -114,8 +153,8 @@ className="start-test-btn"
 onClick={(e)=>{
 e.stopPropagation();
 
-if(tests.length > 0){
-  navigate(`/tests/${module.name}/${topic}`);
+if(count > 0 && topicId){
+  navigate(`/tests/topic/${topicId}`);
 } else {
   alert("No tests available");
 }

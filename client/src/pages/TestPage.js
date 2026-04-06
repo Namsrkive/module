@@ -132,7 +132,7 @@ function TestPage() {
       <nav className="test-navbar">
         <div className="nav-left">
           <span className="test-badge">Live Exam</span>
-          <h2>{test.name}</h2>
+          <h2>{test.title}</h2>
         </div>
         <div className={`timer-display ${timeLeft < 300 ? "timer-low" : ""}`}>
           ⏱ {formatTime(timeLeft)}

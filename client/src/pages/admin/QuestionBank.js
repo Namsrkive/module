@@ -1,27 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
-import { addQuestion, getQuestions, deleteQuestion } from "../../data/testStore";
+import { addQuestionAPI, fetchQuestions } from "../../api/api";
+import { 
+  BookOpen, Award, Building2, ListChecks, Database, 
+  Search, Filter, PlusCircle, CheckCircle2, Trash2, Edit3 
+} from "lucide-react"; 
 import "../../styles/adminForms.css";
 
 function QuestionBank() {
-  const [form, setForm] = useState({
-    module: "",
-    topic: "",
-    type: "mcq",
-    company: "",
-    question: "",
-    options: ["", "", "", ""],
-    answer: "",
-    marks: 1,
-    negativeMarks: 0,
-    difficulty: "easy"
-  });
+  const [questions, setQuestions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterDifficulty, setFilterDifficulty] = useState("all");
 
-  const [filters, setFilters] = useState({
-    search: "",
-    module: "",
-    difficulty: "",
-    type: ""
+  const [form, setForm] = useState({
+    module: "", topic: "", type: "mcq", company: "",
+    question: "", options: ["", "", "", ""],
+    answer: "", marks: 1, difficulty: "easy"
   });
 
   const modules = {
@@ -31,232 +25,197 @@ function QuestionBank() {
     Programming: ["OOP", "Operating Systems", "Computer Networks"]
   };
 
-  const companies = ["TCS", "IBM", "Accenture", "Wipro", "Deloitte"];
+  useEffect(() => {
+    fetchQuestions().then(setQuestions);
+  }, []);
 
-  const handleChange = (key, value) => {
-    if (key === "module") {
-      setForm({ ...form, module: value, topic: "" });
-    } else {
-      setForm({ ...form, [key]: value });
-    }
+  const handleAdd = async () => {
+    if (!form.module || !form.topic || !form.question || !form.answer) return alert("Fill all fields");
+    try {
+      await addQuestionAPI(form);
+      alert("✅ Question saved successfully");
+      const updated = await fetchQuestions();
+      setQuestions(updated);
+      setForm({ ...form, question: "", options: ["", "", "", ""], answer: "" });
+    } catch (err) { alert("Error adding question"); }
   };
 
-  const handleOptionChange = (i, val) => {
-    const updated = [...form.options];
-    updated[i] = val;
-    setForm({ ...form, options: updated });
-  };
-
-  const handleAdd = () => {
-    if (!form.module || !form.topic || !form.question)
-      return alert("Fill all required fields");
-
-    if (form.type === "mcq") {
-      if (form.options.some(o => !o)) return alert("Fill all options");
-      if (!form.answer) return alert("Select correct answer");
-    }
-
-    addQuestion({
-      ...form,
-      id: Date.now(),
-      createdAt: new Date().toISOString()
-    });
-
-    alert("✅ Question Added");
-
-    setForm({
-      module: "",
-      topic: "",
-      type: "mcq",
-      company: "",
-      question: "",
-      options: ["", "", "", ""],
-      answer: "",
-      marks: 1,
-      negativeMarks: 0,
-      difficulty: "easy"
-    });
-  };
-
-  const questions = getQuestions();
-
-  const filtered = questions.filter(q =>
-    q.question.toLowerCase().includes(filters.search.toLowerCase()) &&
-    (filters.module ? q.module === filters.module : true) &&
-    (filters.difficulty ? q.difficulty === filters.difficulty : true) &&
-    (filters.type ? q.type === filters.type : true)
-  );
+  const filteredQuestions = questions.filter(q => {
+    const matchesSearch = q.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          q.module.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDifficulty = filterDifficulty === "all" || q.difficulty === filterDifficulty;
+    return matchesSearch && matchesDifficulty;
+  });
 
   return (
     <div className="dashboard-layout">
       <AdminSidebar />
-
       <div className="dashboard-main">
-        <h1 className="page-title">Question Bank</h1>
+        {/* Header Section */}
+        <header className="page-header">
+          <div className="header-text">
+            <h1 className="page-title">Question Repository</h1>
+            <p className="page-subtitle">Centralized database for all assessment content.</p>
+          </div>
+          <div className="header-meta">
+            <span className="total-count-pill">
+              <Database size={14} /> Total Items: {questions.length}
+            </span>
+          </div>
+        </header>
 
-        {/* 🔍 FILTER BAR */}
-        <div className="filter-bar">
-          <input
-            placeholder="Search questions..."
-            value={filters.search}
-            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-          />
+        {/* 1. CREATE SECTION */}
+        <div className="builder-card main-form-card">
+          <div className="card-header-simple">
+            <PlusCircle size={18} />
+            <h2>Create New Question</h2>
+          </div>
 
-          <select onChange={(e) => setFilters({ ...filters, module: e.target.value })}>
-            <option value="">All Modules</option>
-            {Object.keys(modules).map(m => <option key={m}>{m}</option>)}
-          </select>
-
-          <select onChange={(e) => setFilters({ ...filters, difficulty: e.target.value })}>
-            <option value="">All Difficulty</option>
-            <option>easy</option>
-            <option>medium</option>
-            <option>hard</option>
-          </select>
-
-          <select onChange={(e) => setFilters({ ...filters, type: e.target.value })}>
-            <option value="">All Types</option>
-            <option value="mcq">MCQ</option>
-            <option value="short">Short</option>
-            <option value="coding">Coding</option>
-          </select>
-
-          <button className="primary-btn">Search</button>
-          <button className="secondary-btn" onClick={() => setFilters({ search:"", module:"", difficulty:"", type:"" })}>
-            Reset
-          </button>
-        </div>
-
-        {/* ➕ ADD QUESTION */}
-        <div className="form-card">
-          <h3>Add New Question</h3>
-
-          <div className="form-section">
-            <label>Basic Details</label>
-            <div className="input-row">
-              <div className="input-group">
-                <label>Module</label>
-                <select value={form.module} onChange={(e) => handleChange("module", e.target.value)}>
-                  <option value="">Select</option>
+          <div className="form-inner-layout">
+            {/* Metadata Sidebar */}
+            <aside className="form-side-panel">
+              <div className="panel-group">
+                <label className="input-label"><BookOpen size={14}/> Module</label>
+                <select className="modern-select" value={form.module} onChange={(e) => setForm({ ...form, module: e.target.value, topic: "" })}>
+                  <option value="">Select Module</option>
                   {Object.keys(modules).map(m => <option key={m}>{m}</option>)}
                 </select>
               </div>
 
-              <div className="input-group">
-                <label>Topic</label>
-                <select value={form.topic} onChange={(e) => handleChange("topic", e.target.value)}>
-                  <option value="">Select</option>
+              <div className="panel-group">
+                <label className="input-label"><ListChecks size={14}/> Topic</label>
+                <select className="modern-select" value={form.topic} onChange={(e) => setForm({ ...form, topic: e.target.value })} disabled={!form.module}>
+                  <option value="">Select Topic</option>
                   {form.module && modules[form.module].map(t => <option key={t}>{t}</option>)}
                 </select>
               </div>
 
-              <div className="input-group">
-                <label>Type</label>
-                <select value={form.type} onChange={(e) => handleChange("type", e.target.value)}>
-                  <option value="mcq">MCQ</option>
-                  <option value="short">Short</option>
-                  <option value="coding">Coding</option>
+              <div className="panel-group">
+                <label className="input-label"><Award size={14}/> Difficulty</label>
+                <select className="modern-select" value={form.difficulty} onChange={(e) => setForm({ ...form, difficulty: e.target.value })}>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
                 </select>
               </div>
 
-              <div className="input-group">
-                <label>Company</label>
-                <select value={form.company} onChange={(e) => handleChange("company", e.target.value)}>
-                  <option value="">All</option>
-                  {companies.map(c => <option key={c}>{c}</option>)}
+              <div className="panel-group">
+                <label className="input-label"><Building2 size={14}/> Target Company</label>
+                <select className="modern-select" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })}>
+                  <option value="">General (No Company)</option>
+                  <option>TCS</option><option>IBM</option><option>Accenture</option>
+                  <option>Wipro</option><option>Deloitte</option>
                 </select>
               </div>
-            </div>
-          </div>
+            </aside>
 
-          <div className="form-section">
-            <label>Question</label>
-            <textarea
-              placeholder="Enter question..."
-              value={form.question}
-              onChange={(e) => handleChange("question", e.target.value)}
-            />
-          </div>
-
-          {form.type === "mcq" && (
-            <div className="form-section">
-              <label>Options</label>
-              <div className="input-row">
-                {form.options.map((opt, i) => (
-                  <input
-                    key={i}
-                    placeholder={`Option ${String.fromCharCode(65 + i)}`}
-                    value={opt}
-                    onChange={(e) => handleOptionChange(i, e.target.value)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="form-section">
-            <label>Correct Answer / Keywords</label>
-            <input
-              placeholder="Correct answer"
-              value={form.answer}
-              onChange={(e) => handleChange("answer", e.target.value)}
-            />
-          </div>
-
-          <div className="form-section">
-            <label>Marking Scheme</label>
-            <div className="input-row">
-              <div className="input-group">
-                <label>Marks</label>
-                <select value={form.marks} onChange={(e) => handleChange("marks", Number(e.target.value))}>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={5}>5</option>
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label>Negative Marks</label>
-                <input
-                  type="number"
-                  value={form.negativeMarks}
-                  onChange={(e) => handleChange("negativeMarks", Number(e.target.value))}
+            {/* Content Area */}
+            <main className="form-main-content">
+              <div className="form-group-full">
+                <label className="input-label">Question Text</label>
+                <textarea 
+                  className="modern-textarea" 
+                  placeholder="Type the detailed question scenario here..." 
+                  value={form.question}
+                  onChange={(e) => setForm({ ...form, question: e.target.value })}
                 />
               </div>
 
-              <div className="input-group">
-                <label>Difficulty</label>
-                <select value={form.difficulty} onChange={(e) => handleChange("difficulty", e.target.value)}>
-                  <option>easy</option>
-                  <option>medium</option>
-                  <option>hard</option>
-                </select>
+              <div className="options-grid-modern">
+                {form.options.map((opt, i) => (
+                  <div className="option-field" key={i}>
+                    <span className="option-prefix">{String.fromCharCode(65 + i)}</span>
+                    <input 
+                       className="modern-input"
+                       placeholder={`Option ${i + 1}`}
+                       value={opt} 
+                       onChange={(e) => {
+                         const updated = [...form.options];
+                         updated[i] = e.target.value;
+                         setForm({ ...form, options: updated });
+                       }} 
+                    />
+                  </div>
+                ))}
               </div>
-            </div>
+
+              <div className="form-group-full">
+                <label className="input-label label-success">Correct Answer Identifier</label>
+                <div className="ans-input-wrapper">
+                   <CheckCircle2 size={18} className="ans-icon" />
+                   <input 
+                      className="modern-input ans-field" 
+                      placeholder="Type the exact text of the correct option..." 
+                      value={form.answer} 
+                      onChange={(e) => setForm({ ...form, answer: e.target.value })} 
+                   />
+                </div>
+              </div>
+
+              <button className="btn-primary-glow" onClick={handleAdd}>Save Question to Bank</button>
+            </main>
+          </div>
+        </div>
+
+        {/* 2. INVENTORY SECTION */}
+        <section className="inventory-section">
+          <div className="inventory-header">
+             <div className="header-left">
+                <Database size={20} className="text-indigo" />
+                <h2>Database Inventory</h2>
+             </div>
+             
+             <div className="inventory-tools">
+                <div className="modern-search">
+                  <Search size={18} />
+                  <input 
+                    placeholder="Search by keyword or module..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                <div className="modern-filter">
+                  <Filter size={16} />
+                  <select value={filterDifficulty} onChange={(e) => setFilterDifficulty(e.target.value)}>
+                    <option value="all">All Difficulties</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                  </select>
+                </div>
+             </div>
           </div>
 
-          <button className="primary-btn" onClick={handleAdd}>
-            Add Question
-          </button>
-        </div>
-
-        {/* 📦 QUESTIONS */}
-        <div className="question-grid">
-          {filtered.map(q => (
-            <div key={q.id} className="question-card">
-              <div className="top">
-                <small>{q.module} • {q.topic}</small>
-                <button className="delete-btn" onClick={() => deleteQuestion(q.id)}>✕</button>
+          <div className="questions-feed">
+            {filteredQuestions.length === 0 ? (
+              <div className="empty-feed">
+                <p>No questions found matching your criteria.</p>
               </div>
-
-              <p>{q.question}</p>
-
-              <div className="meta">
-                {q.type} | {q.difficulty} | {q.marks} marks
-              </div>
-            </div>
-          ))}
-        </div>
+            ) : (
+              filteredQuestions.map((q, idx) => (
+                <div key={q._id || idx} className="feed-card">
+                  <div className="feed-card-header">
+                    <div className="feed-tags">
+                      <span className="feed-tag module">{q.module}</span>
+                      <span className="feed-tag topic">{q.topic}</span>
+                      <span className={`feed-tag difficulty ${q.difficulty}`}>{q.difficulty}</span>
+                      {q.company && <span className="feed-tag company">{q.company}</span>}
+                    </div>
+                    <div className="feed-actions">
+                      <button className="icon-btn-subtle" title="Edit"><Edit3 size={16} /></button>
+                      <button className="icon-btn-subtle danger" title="Delete"><Trash2 size={16} /></button>
+                    </div>
+                  </div>
+                  <p className="feed-q-text">{q.question}</p>
+                  <div className="feed-ans-bar">
+                    <CheckCircle2 size={14} />
+                    <span>Answer: <strong>{q.answer}</strong></span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
