@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
 import resultRoutes from "./routes/resultRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js"; 
+import testRoutes from "./routes/testRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/results", resultRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/tests", testRoutes);
 
 /* ================= TEST ROUTE ================= */
 app.get("/", (req, res) => {

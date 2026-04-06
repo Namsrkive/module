@@ -11,25 +11,41 @@ export const getStudentAnalytics = async (req, res) => {
     const avgScore =
       totalTests === 0
         ? 0
-        : results.reduce((sum, r) => sum + r.score, 0) / totalTests;
+        : Math.round(
+            results.reduce((sum, r) => sum + r.score, 0) / totalTests
+          );
 
+    /* ✅ FIX MODULE STATS */
     const moduleStats = {};
 
     results.forEach(r => {
       if (!r.module) return;
 
       if (!moduleStats[r.module]) {
-        moduleStats[r.module] = { total: 0, count: 0 };
+        moduleStats[r.module] = [];
       }
 
-      moduleStats[r.module].total += r.score;
-      moduleStats[r.module].count++;
+      moduleStats[r.module].push(r.score);
+    });
+
+    // convert to %
+    Object.keys(moduleStats).forEach(module => {
+      const arr = moduleStats[module];
+      moduleStats[module] =
+        Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
     });
 
     res.json({
       totalTests,
       avgScore,
-      recentResults: results.slice(-5),
+      recentResults: results
+        .slice(-5)
+        .reverse()
+        .map(r => ({
+          testName: r.testName,
+          score: r.score,
+          date: r.createdAt
+        })),
       moduleStats
     });
 
@@ -37,7 +53,6 @@ export const getStudentAnalytics = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 /* ================= ADMIN ANALYTICS ================= */
 export const getAdminAnalytics = async (req, res) => {
@@ -89,6 +104,37 @@ export const getAdminAnalytics = async (req, res) => {
       students,
       recentResults: results.slice(-10)
     });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getLeaderboard = async (req, res) => {
+  try {
+    const results = await Result.find().populate("user", "name");
+
+    const map = {};
+
+    results.forEach(r => {
+      const name = r.user.name;
+
+      if (!map[name]) {
+        map[name] = [];
+      }
+
+      map[name].push(r.score);
+    });
+
+    const leaderboard = Object.entries(map).map(([name, scores]) => ({
+      name,
+      avgScore:
+        Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+    }));
+
+    leaderboard.sort((a, b) => b.avgScore - a.avgScore);
+
+    res.json(leaderboard);
 
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,54 +1,63 @@
 import Result from "../models/Result.js";
+import Test from "../models/Test.js";
 
-/* SAVE RESULT */
+/* ================= SAVE RESULT ================= */
 export const saveResult = async (req, res) => {
   try {
     const { testId, score, total, answers } = req.body;
 
-    // VALIDATION
-    if (!testId || score === undefined || total === undefined) {
-      return res.status(400).json({ error: "Missing fields" });
+    // ✅ VALIDATION
+    if (!testId || score === undefined) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
-    if (answers && !Array.isArray(answers)) {
-      return res.status(400).json({ error: "Answers must be array" });
+    // ✅ GET TEST DETAILS (IMPORTANT FIX)
+    const test = await Test.findById(testId);
+
+    if (!test) {
+      return res.status(404).json({ error: "Test not found" });
     }
 
-    // SAFE handling (fixes your error)
-    const safeAnswers = answers || [];
+    // ✅ SAFE ANSWERS
+    const safeAnswers = Array.isArray(answers) ? answers : [];
 
-    // Optional processing (no crash now)
-    safeAnswers.forEach(ans => {
-      // you can process if needed
-    });
-
-    const result = new Result({
+    // ✅ CREATE RESULT
+    const result = await Result.create({
       user: req.user.id,
       testId,
+      testName: test.name,     // 🔥 ADD
+      module: test.module,     // 🔥 ADD (important for analytics)
       score,
-      total,
+      total: total || test.questions.length, // fallback safe
       answers: safeAnswers
     });
 
-    await result.save();
-
-    res.json({ msg: "Result saved", result });
+    res.json({
+      msg: "Result saved successfully",
+      result
+    });
 
   } catch (err) {
-    console.error(err);
+    console.error("Save Result Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
-/* GET LATEST RESULT */
+
+/* ================= GET LATEST RESULT ================= */
 export const getLatestResult = async (req, res) => {
   try {
     const result = await Result.findOne({ user: req.user.id })
       .sort({ createdAt: -1 });
 
+    if (!result) {
+      return res.json({ msg: "No results found" });
+    }
+
     res.json(result);
 
   } catch (err) {
+    console.error("Get Latest Result Error:", err);
     res.status(500).json({ error: err.message });
   }
 };
