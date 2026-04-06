@@ -196,7 +196,6 @@ function TestPage() {
 
         {/* SIDEBAR */}
         <aside className="test-sidebar">
-          {/* ✅ REMOVE CAMERA AFTER SUBMIT */}
           {!testEnded && (
             <div className="sidebar-section">
               <ProctorPanel onAutoSubmit={autoSubmit} />

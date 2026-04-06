@@ -3,30 +3,38 @@ import Test from "../models/Test.js";
 
 const router = express.Router();
 
-/* GET ALL TESTS */
-router.get("/", async (req, res) => {
+/* ================= CREATE TEST ================= */
+router.post("/", async (req, res) => {
   try {
-    const tests = await Test.find();
-    res.json(tests);
+    const test = await Test.create(req.body);
+    res.json(test);
   } catch (err) {
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* GET SINGLE TEST */
+/* ================= GET BY MODULE ================= */
+router.get("/module/:moduleId", async (req, res) => {
+  const tests = await Test.find({ module: req.params.moduleId });
+  res.json(tests);
+});
+
+/* ================= GET BY TOPIC ================= */
+router.get("/topic/:topicId", async (req, res) => {
+  const tests = await Test.find({ topic: req.params.topicId });
+  res.json(tests);
+});
+
+/* ================= GET BY COMPANY ================= */
+router.get("/company/:companyId", async (req, res) => {
+  const tests = await Test.find({ company: req.params.companyId });
+  res.json(tests);
+});
+
+/* ================= GET BY ID (KEEP LAST) ================= */
 router.get("/:id", async (req, res) => {
-  try {
-    const test = await Test.findById(req.params.id);
-
-    if (!test) {
-      return res.status(404).json({ msg: "Test not found" });
-    }
-
-    res.json(test);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Server error" });
-  }
+  const test = await Test.findById(req.params.id).populate("questions");
+  res.json(test);
 });
 
 export default router;
