@@ -30,14 +30,41 @@ function QuestionBank() {
   }, []);
 
   const handleAdd = async () => {
-    if (!form.module || !form.topic || !form.question || !form.answer) return alert("Fill all fields");
+    const { module, topic, question, answer, options } = form;
+
+    if (!module || !topic || !question || !answer) {
+      return alert("Please fill all fields");
+    }
+
+    if (options.some(opt => !opt.trim())) {
+      return alert("All options must be filled");
+    }
+
+    if (!options.includes(answer)) {
+      return alert("Answer must match one of the options exactly");
+    }
+
     try {
-      await addQuestionAPI(form);
+      await addQuestionAPI({
+        ...form,
+        answer: answer.trim()
+      });
+
       alert("✅ Question saved successfully");
+
       const updated = await fetchQuestions();
       setQuestions(updated);
-      setForm({ ...form, question: "", options: ["", "", "", ""], answer: "" });
-    } catch (err) { alert("Error adding question"); }
+
+      setForm({
+        module: "", topic: "", type: "mcq", company: "",
+        question: "", options: ["", "", "", ""],
+        answer: "", marks: 1, difficulty: "easy"
+      });
+
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Error adding question");
+    }
   };
 
   const filteredQuestions = questions.filter(q => {
@@ -143,12 +170,18 @@ function QuestionBank() {
                 <label className="input-label label-success">Correct Answer Identifier</label>
                 <div className="ans-input-wrapper">
                    <CheckCircle2 size={18} className="ans-icon" />
-                   <input 
-                      className="modern-input ans-field" 
-                      placeholder="Type the exact text of the correct option..." 
-                      value={form.answer} 
-                      onChange={(e) => setForm({ ...form, answer: e.target.value })} 
-                   />
+                   <select
+                      className="modern-input ans-field"
+                      value={form.answer}
+                      onChange={(e) => setForm({ ...form, answer: e.target.value })}
+                    >
+                      <option value="">Select Correct Answer</option>
+                      {form.options.map((opt, i) => (
+                        <option key={i} value={opt}>
+                          {opt || `Option ${i + 1}`}
+                        </option>
+                      ))}
+                    </select>
                 </div>
               </div>
 

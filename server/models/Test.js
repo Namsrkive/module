@@ -4,18 +4,22 @@ const testSchema = new mongoose.Schema(
   {
     name: String,
     duration: Number,
-    type: String, // module | company
+    type: String,
     difficulty: String,
 
     module: String,
     topic: String,
     company: String,
 
+    isPublished: {
+      type: Boolean,
+      default: false
+    },
+
     questions: [
       {
-        question: String,
-        options: [String],
-        answer: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question"
       }
     ]
   },

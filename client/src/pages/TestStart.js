@@ -8,13 +8,27 @@ export default function TestStart() {
   const [test, setTest] = useState(null);
 
   useEffect(() => {
-    const fetchTest = async () => {
-      const res = await fetch(`/api/tests/${testId}`);
+  const fetchTest = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/tests/${testId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      );
+
       const data = await res.json();
       setTest(data);
-    };
-    fetchTest();
-  }, [testId]);
+
+    } catch (err) {
+      console.error("Failed to load test:", err);
+    }
+  };
+
+  fetchTest();
+}, [testId]);
 
   if (!test) return <h2>Loading...</h2>;
 
@@ -23,8 +37,8 @@ export default function TestStart() {
       <div className="start-card">
 
         <header className="start-header">
-          {/* ✅ FIXED */}
-          <h1>{test.title}</h1>
+
+          <h1>{test.name}</h1>
 
           <div className="proctor-badge">
             <span className="pulse-icon"></span> Proctoring Active
@@ -39,7 +53,7 @@ export default function TestStart() {
 
           <div className="info-item">
             <span className="label">Questions</span>
-            <span className="value">{test.questions.length}</span>
+            <span className="value">{test.questions?.length || 0}</span>
           </div>
         </div>
 

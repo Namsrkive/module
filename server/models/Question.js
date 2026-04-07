@@ -14,14 +14,11 @@ const questionSchema = new mongoose.Schema(
     question: { type: String, required: true },
 
     options: {
-      type: [String],
-      validate: {
-        validator: function (v) {
-          return this.type !== "mcq" || (v && v.length >= 4);
-        },
-        message: "MCQ must have at least 4 options"
-      }
-    },
+type: [String],
+required: function () {
+return this.type === "mcq";
+}
+},
 
     answer: { type: String, required: true },
 

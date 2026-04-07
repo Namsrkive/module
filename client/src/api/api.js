@@ -1,33 +1,104 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-// TESTS
-export const fetchTests = async () => {
-  const res = await fetch(`${BASE_URL}/tests`);
-  return res.json();
-};
+/* ================= TESTS ================= */
 
-export const fetchTestsByModuleTopic = async (module, topic) => {
+// Get all tests
+export const fetchTests = async () => {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(
-    `${process.env.REACT_APP_API_URL}/api/tests/filter?module=${module}&topic=${topic}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+  const res = await fetch(`${BASE_URL}/api/tests`, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  );
+  });
 
   if (!res.ok) throw new Error("Failed to fetch tests");
 
   return res.json();
 };
 
-/* ================= CREATE TEST ================= */
+// Filter tests by module & topic
+export const fetchTestsByModuleTopic = async (module, topic) => {
+const token = localStorage.getItem("token");
+
+const res = await fetch(
+`${BASE_URL}/api/tests/filter?module=${module}&topic=${topic}`,
+{
+headers: {
+Authorization: `Bearer ${token}`
+}
+}
+);
+
+if (!res.ok) throw new Error("Failed to fetch tests");
+
+return res.json();
+};
+
+// Create test
 export const createTestAPI = async (data) => {
+const token = localStorage.getItem("token");
+
+const res = await fetch(`${BASE_URL}/api/tests`, {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${token}`
+},
+body: JSON.stringify(data)
+});
+
+if (!res.ok) {
+const err = await res.json();
+throw new Error(err.error || "Failed to create test");
+}
+
+return res.json();
+};
+
+// Delete test
+export const deleteTestAPI = async (id) => {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`${BASE_URL}/api/tests`, {
+  const res = await fetch(`${BASE_URL}/api/tests/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!res.ok) throw new Error("Failed to delete test");
+};
+
+// Toggle publish
+export const togglePublishAPI = async (id) => {
+  const token = localStorage.getItem("token");
+
+  console.log("Calling API for:", id); // 👈 ADD
+
+  const res = await fetch(`${BASE_URL}/api/tests/${id}/publish`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  console.log("Response status:", res.status); // 👈 ADD
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.msg || data.error);
+  }
+
+  return data;
+};
+
+// Generate test questions
+export const generateTestAPI = async (data) => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${BASE_URL}/api/tests/generate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,58 +108,58 @@ export const createTestAPI = async (data) => {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create test");
+    const err = await res.json();
+    throw new Error(err.error || "Failed to generate test");
   }
 
   return res.json();
 };
 
-export const deleteTestAPI = async (id) => {
-  await fetch(`${BASE_URL}/tests/${id}`, { method: "DELETE" });
-};
+/* ================= QUESTIONS ================= */
 
-export const togglePublishAPI = async (id) => {
-  await fetch(`${BASE_URL}/tests/${id}/publish`, { method: "PUT" });
-};
-
-export const generateTestAPI = async (data) => {
-  await fetch(`${BASE_URL}/tests/generate`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
-};
-
-// QUESTIONS
+// Get all questions
 export const fetchQuestions = async () => {
-  const res = await fetch(`${BASE_URL}/questions`);
-  return res.json();
+const res = await fetch(`${BASE_URL}/api/questions`);
+if (!res.ok) throw new Error("Failed to fetch questions");
+return res.json();
 };
 
+// Add question
 export const addQuestionAPI = async (data) => {
-  await fetch(`${BASE_URL}/questions`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+const res = await fetch(`${BASE_URL}/api/questions`, {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify(data)
+});
+
+if (!res.ok) {
+const err = await res.json();
+throw new Error(err.error || "Failed to add question");
+}
+
+return res.json();
 };
+
+/* ================= SEED ================= */
 
 export const seedCompanyAPI = async (company) => {
-  const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-  const res = await fetch(
-    `${process.env.REACT_APP_API_URL}/api/seed/company`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ company })
-    }
-  );
+const res = await fetch(`${BASE_URL}/api/seed/company`, {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+Authorization: `Bearer ${token}`
+},
+body: JSON.stringify({ company })
+});
 
-  if (!res.ok) throw new Error("Seeder failed");
+if (!res.ok) {
+const err = await res.json();
+throw new Error(err.error || "Seeder failed");
+}
 
-  return res.json();
+return res.json();
 };

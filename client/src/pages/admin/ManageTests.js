@@ -31,8 +31,16 @@ function ManageTests() {
   };
 
   const handleToggle = async (id) => {
-    await togglePublishAPI(id);
-    loadTests();
+    console.log("Clicked publish for:", id); // 👈 ADD
+
+    try {
+      await togglePublishAPI(id);
+      console.log("API called"); // 👈 ADD
+      loadTests();
+    } catch (err) {
+      console.error("Publish Error:", err);
+      alert("Failed to publish test");
+    }
   };
 
   const filteredTests = tests.filter(

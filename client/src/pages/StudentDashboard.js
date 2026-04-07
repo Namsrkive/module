@@ -23,7 +23,7 @@ export default function StudentDashboard() {
       const testData = await testRes.json();
       const analyticsData = await analyticsRes.json();
 
-      setTests(testData.filter((t) => t.isPublished));
+      setTests(testData);
       setAnalytics(analyticsData);
     } catch (err) {
       console.error(err);

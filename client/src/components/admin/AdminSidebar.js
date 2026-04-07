@@ -41,10 +41,6 @@ function AdminSidebar() {
             📊 Student Results
           </NavLink>
 
-          <NavLink to="/admin/company-tests" className="menu-item">
-            🏢 Company Tests
-          </NavLink>
-
         </div>
       </div>
 

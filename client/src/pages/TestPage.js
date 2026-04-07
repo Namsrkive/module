@@ -16,18 +16,29 @@ function TestPage() {
 
   /* ================= LOAD TEST ================= */
   useEffect(() => {
-    const fetchTest = async () => {
-      try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/tests/${testId}`);
-        const data = await res.json();
+  const fetchTest = async () => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/tests/${testId}`, {
+        headers: {
+          // You MUST include the token to pass the 'protect' middleware
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      const data = await res.json();
+      
+      // Check if data actually contains questions
+      if (data && data.questions) {
         setTest(data);
         setTimeLeft((data.duration || 30) * 60);
-      } catch (err) {
-        console.error("Failed to load test:", err);
+      } else {
+        console.error("Test loaded but has no questions. Did you run 'Generate Test'?");
       }
-    };
-    fetchTest();
-  }, [testId]);
+    } catch (err) {
+      console.error("Failed to load test:", err);
+    }
+  };
+  fetchTest();
+}, [testId]);
 
   const questions = test?.questions || [];
   const q = questions[current];
@@ -75,7 +86,7 @@ function TestPage() {
       return;
     }
 
-    const t = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+    const t = setInterval(() => setTimeLeft((prev) => prev - 1), 2000);
     return () => clearInterval(t);
   }, [timeLeft, test, testEnded, processSubmission]);
 

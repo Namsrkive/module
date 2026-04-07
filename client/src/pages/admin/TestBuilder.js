@@ -12,8 +12,18 @@ function TestBuilder() {
   ]);
 
   useEffect(() => {
-    fetchTests().then(setTests);
-  }, []);
+  const loadTests = async () => {
+    try {
+      const data = await fetchTests();
+      setTests(data);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to fetch tests (auth issue)");
+    }
+  };
+
+  loadTests();
+}, []);
 
   const modules = {
     Aptitude: ["Quant Basics", "Probability", "Number Series", "Logical Reasoning"],

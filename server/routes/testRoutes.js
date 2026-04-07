@@ -92,20 +92,26 @@ router.delete("/:id", protect, async (req, res) => {
 /* ================= TOGGLE PUBLISH ================= */
 router.put("/:id/publish", protect, async (req, res) => {
   try {
+    console.log("Publish route hit"); // ✅ ADD
+
     if (req.user.role !== "admin") {
+      console.log("Not admin:", req.user); // ✅ ADD
       return res.status(403).json({ msg: "Access denied" });
     }
 
     const test = await Test.findById(req.params.id);
 
-    if (!test) return res.status(404).json({ msg: "Test not found" });
+    console.log("Before:", test.isPublished); // ✅ ADD
 
     test.isPublished = !test.isPublished;
     await test.save();
 
+    console.log("After:", test.isPublished); // ✅ ADD
+
     res.json(test);
 
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -144,10 +150,13 @@ router.post("/generate", protect, async (req, res) => {
 
 /* ================= GET BY ID ================= */
 router.get("/:id", protect, async (req, res) => {
-  const test = await Test.findById(req.params.id).populate("questions");
-  res.json(test);
+  try {
+    const test = await Test.findById(req.params.id).populate("questions");
+    res.json(test);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
-
 /* ================= GET BY MODULE + TOPIC ================= */
 router.get("/filter", protect, async (req, res) => {
   try {
