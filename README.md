@@ -311,10 +311,6 @@ This platform aims to:
 B.Tech Computer Science (AI/ML)  
 GitHub: https://github.com/namsrkive  
 
-### Riya Malik
-B.Tech Computer Science (AI/ML)  
-GitHub: https://github.com/riyamalik05  
-
 ---
 
 # 🤝 Contributing
